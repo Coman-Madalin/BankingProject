@@ -1,4 +1,4 @@
-package org.poo.deserializers;
+package org.poo.json.deserializers;
 
 import com.google.gson.*;
 import org.poo.Input;

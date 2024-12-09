@@ -1,14 +1,11 @@
 package org.poo.main;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import org.poo.Input;
 import org.poo.checker.Checker;
 import org.poo.checker.CheckerConstants;
-import org.poo.Input;
-import org.poo.command.BaseCommand;
-import org.poo.deserializers.CommandDeserializer;
-import org.poo.deserializers.InputDeserializer;
+import org.poo.json.JsonUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -73,13 +70,13 @@ public final class Main {
      */
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Input.class, new InputDeserializer())
-                .registerTypeAdapter(BaseCommand.class, new CommandDeserializer())
-                .create();
+        Gson gson = JsonUtils.getGson();
         JsonReader reader = new JsonReader(new FileReader(CheckerConstants.TESTS_PATH + filePath1));
 
         Input input = gson.fromJson(reader, Input.class);
+        input.executeAllCommands();
+        System.out.println(gson.toJson(input));
+        input.gamesToJson(filePath2);
         /*
          * TODO Implement your function here
          *
