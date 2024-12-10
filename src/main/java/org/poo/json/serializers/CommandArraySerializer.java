@@ -18,7 +18,6 @@ public class CommandArraySerializer implements JsonSerializer<BaseCommand[]> {
                 continue;
             }
             jsonArray.add(context.serialize(baseCommand));
-
         }
 
         return jsonArray;

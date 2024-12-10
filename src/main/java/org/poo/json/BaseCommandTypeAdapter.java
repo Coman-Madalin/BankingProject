@@ -34,7 +34,7 @@ public class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
         JsonElement outputJsonElement = JsonParser.parseString(value.getOutput());
 
         out.name("output");
-        Gson gson = new Gson();
+        Gson gson = JsonUtils.getGson();
         gson.toJson(outputJsonElement, out);
 
         out.endObject();
