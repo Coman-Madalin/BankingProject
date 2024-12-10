@@ -17,7 +17,13 @@ public class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
             new AbstractMap.SimpleEntry<>("addAccount", AddAccount.class),
             new AbstractMap.SimpleEntry<>("createCard", CreateCard.class),
             new AbstractMap.SimpleEntry<>("addFunds", AddFunds.class),
-            new AbstractMap.SimpleEntry<>("deleteAccount", DeleteAccount.class)
+            new AbstractMap.SimpleEntry<>("deleteAccount", DeleteAccount.class),
+            new AbstractMap.SimpleEntry<>("createOneTimeCard", CreateOneTimeCard.class),
+            new AbstractMap.SimpleEntry<>("deleteCard", DeleteCard.class),
+            new AbstractMap.SimpleEntry<>("setMinimumBalance", SetMinimumBalance.class),
+            new AbstractMap.SimpleEntry<>("payOnline", PayOnline.class)
+
+
     );
 
     @Override

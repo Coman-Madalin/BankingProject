@@ -75,26 +75,7 @@ public final class Main {
 
         Input input = gson.fromJson(reader, Input.class);
         input.executeAllCommands();
-        System.out.println(gson.toJson(input));
         input.gamesToJson(filePath2);
-        /*
-         * TODO Implement your function here
-         *
-         * How to add output to the output array?
-         * There are multiple ways to do this, here is one example:
-         *
-         * ObjectMapper mapper = new ObjectMapper();
-         *
-         * ObjectNode objectNode = mapper.createObjectNode();
-         * objectNode.put("field_name", "field_value");
-         *
-         * ArrayNode arrayNode = mapper.createArrayNode();
-         * arrayNode.add(objectNode);
-         *
-         * output.add(arrayNode);
-         * output.add(objectNode);
-         *
-         */
     }
 
     /**

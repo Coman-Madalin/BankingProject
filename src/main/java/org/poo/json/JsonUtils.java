@@ -7,7 +7,9 @@ import org.poo.Input;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
 import org.poo.json.deserializers.InputDeserializer;
+import org.poo.json.serializers.AccountSerializer;
 import org.poo.json.serializers.CommandArraySerializer;
+import org.poo.user.Account;
 
 public class JsonUtils {
     @Getter
@@ -19,14 +21,18 @@ public class JsonUtils {
             AddFunds.class,
             CreateCard.class,
             PrintUsers.class,
-            DeleteAccount.class
+            DeleteAccount.class,
+            CreateOneTimeCard.class,
+            DeleteCard.class,
+            PayOnline.class
     };
 
     static {
         GsonBuilder gsonBuilder = new GsonBuilder()
                 .registerTypeAdapter(BaseCommand[].class, new CommandArraySerializer())
-                .registerTypeAdapter(Input.class, new InputDeserializer());
-//                .disableHtmlEscaping();
+                .registerTypeAdapter(Input.class, new InputDeserializer())
+                .registerTypeAdapter(Account.class, new AccountSerializer());
+        //                .disableHtmlEscaping();
 //                .create();
 
         for (Class<?> subclass : command_subclasses) {

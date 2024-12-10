@@ -13,6 +13,7 @@ import java.util.List;
 public class Account {
     private String IBAN;
     private int balance = 0;
+    private int minBalance = 0;
     private String currency;
     private String type;
     private List<Card> cards = new ArrayList<>();

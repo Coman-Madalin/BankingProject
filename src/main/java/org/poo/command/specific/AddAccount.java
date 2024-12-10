@@ -8,12 +8,12 @@ import org.poo.user.User;
 import static org.poo.utils.Utils.generateIBAN;
 
 public class AddAccount extends BaseCommand {
-    String email;
-    String currency;
-    String accountType;
+    private String email;
+    private String currency;
+    private String accountType;
 
-    public AddAccount(String command, int timestamp, String email, String currency,
-                      String accountType) {
+    public AddAccount(final String command, final int timestamp, final String email, final String currency,
+                      final String accountType) {
         super(command, timestamp);
         this.email = email;
         this.currency = currency;
@@ -21,13 +21,13 @@ public class AddAccount extends BaseCommand {
     }
 
     @Override
-    public void execute(Input input) {
-        Account account = new Account();
+    public void execute(final Input input) {
+        final Account account = new Account();
         account.setIBAN(generateIBAN());
         account.setCurrency(this.currency);
         account.setType(this.accountType);
 
-        for (User inputUser : input.getUsers()) {
+        for (final User inputUser : input.getUsers()) {
             if ( inputUser.getEmail().equals(this.email)){
                 inputUser.getAccounts().add(account);
                 return;

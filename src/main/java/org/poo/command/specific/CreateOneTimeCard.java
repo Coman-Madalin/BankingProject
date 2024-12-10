@@ -8,14 +8,15 @@ import org.poo.user.User;
 
 import static org.poo.utils.Utils.generateCardNumber;
 
-public class CreateCard extends BaseCommand {
+public class CreateOneTimeCard extends BaseCommand {
     private String account;
     private String email;
 
-    public CreateCard(String command, int timestamp) {
+    public CreateOneTimeCard(String command, int timestamp) {
         super(command, timestamp);
     }
 
+    // TODO: now there is no way to know if it is one time or not
     @Override
     public void execute(Input input) {
         Card card = new Card();

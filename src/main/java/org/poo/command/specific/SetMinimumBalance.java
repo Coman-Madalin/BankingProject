@@ -5,11 +5,11 @@ import org.poo.command.BaseCommand;
 import org.poo.user.Account;
 import org.poo.user.User;
 
-public class AddFunds extends BaseCommand {
+public class SetMinimumBalance extends BaseCommand {
     private String account;
     private int amount;
 
-    public AddFunds(String command, int timestamp) {
+    public SetMinimumBalance(String command, int timestamp) {
         super(command, timestamp);
     }
 
@@ -18,7 +18,7 @@ public class AddFunds extends BaseCommand {
         for (User user : input.getUsers()) {
             for (Account userAccount : user.getAccounts()) {
                 if (userAccount.getIBAN().equals(this.account)){
-                    userAccount.increaseBalance(this.amount);
+                    userAccount.setMinBalance(amount);
                     return;
                 }
             }

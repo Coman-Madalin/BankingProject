@@ -6,30 +6,31 @@ import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-import static org.poo.utils.Utils.generateCardNumber;
-
-public class CreateCard extends BaseCommand {
-    private String account;
+public class PayOnline extends BaseCommand {
+    private String cardNumber;
+    private int amount;
+    private String currency;
+    private String description;
+    private String commerciant;
     private String email;
 
-    public CreateCard(String command, int timestamp) {
+    public PayOnline(String command, int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute(Input input) {
-        Card card = new Card();
-        card.setCardNumber(generateCardNumber());
-        card.setStatus("active");
         for (User user : input.getUsers()) {
             if (!user.getEmail().equals(this.email)) {
                 continue;
             }
 
             for (Account userAccount : user.getAccounts()) {
-                if (userAccount.getIBAN().equals(this.account)) {
-                    userAccount.getCards().add(card);
-                    return;
+                for (Card card : userAccount.getCards()) {
+                    if(card.getCardNumber().equals(this.cardNumber)){
+                        userAccount.increaseBalance(-amount);
+                        return;
+                    }
                 }
             }
         }
