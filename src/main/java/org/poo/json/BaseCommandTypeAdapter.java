@@ -4,10 +4,7 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.poo.command.BaseCommand;
-import org.poo.command.specific.AddAccount;
-import org.poo.command.specific.AddFunds;
-import org.poo.command.specific.CreateCard;
-import org.poo.command.specific.PrintUsers;
+import org.poo.command.specific.*;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -19,7 +16,8 @@ public class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
             new AbstractMap.SimpleEntry<>("printUsers", PrintUsers.class),
             new AbstractMap.SimpleEntry<>("addAccount", AddAccount.class),
             new AbstractMap.SimpleEntry<>("createCard", CreateCard.class),
-            new AbstractMap.SimpleEntry<>("addFunds", AddFunds.class)
+            new AbstractMap.SimpleEntry<>("addFunds", AddFunds.class),
+            new AbstractMap.SimpleEntry<>("deleteAccount", DeleteAccount.class)
     );
 
     @Override

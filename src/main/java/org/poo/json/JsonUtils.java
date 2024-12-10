@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import org.poo.Input;
 import org.poo.command.BaseCommand;
-import org.poo.command.specific.AddAccount;
-import org.poo.command.specific.AddFunds;
-import org.poo.command.specific.CreateCard;
-import org.poo.command.specific.PrintUsers;
+import org.poo.command.specific.*;
 import org.poo.json.deserializers.InputDeserializer;
 import org.poo.json.serializers.CommandArraySerializer;
 
@@ -21,7 +18,8 @@ public class JsonUtils {
             AddAccount.class,
             AddFunds.class,
             CreateCard.class,
-            PrintUsers.class
+            PrintUsers.class,
+            DeleteAccount.class
     };
 
     static {
