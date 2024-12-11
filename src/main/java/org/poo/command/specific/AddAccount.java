@@ -1,6 +1,6 @@
 package org.poo.command.specific;
 
-import org.poo.Input;
+import org.poo.input.Input;
 import org.poo.command.BaseCommand;
 import org.poo.user.Account;
 import org.poo.user.User;

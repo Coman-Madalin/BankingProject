@@ -3,7 +3,7 @@ package org.poo.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
-import org.poo.Input;
+import org.poo.input.Input;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
 import org.poo.json.deserializers.InputDeserializer;
@@ -28,14 +28,14 @@ public class JsonUtils {
     };
 
     static {
-        GsonBuilder gsonBuilder = new GsonBuilder()
+        final GsonBuilder gsonBuilder = new GsonBuilder()
                 .registerTypeAdapter(BaseCommand[].class, new CommandArraySerializer())
                 .registerTypeAdapter(Input.class, new InputDeserializer())
                 .registerTypeAdapter(Account.class, new AccountSerializer());
         //                .disableHtmlEscaping();
 //                .create();
 
-        for (Class<?> subclass : command_subclasses) {
+        for (final Class<?> subclass : command_subclasses) {
             gsonBuilder.registerTypeAdapter(subclass, new BaseCommandTypeAdapter());
         }
 

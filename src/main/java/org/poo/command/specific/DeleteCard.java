@@ -1,6 +1,6 @@
 package org.poo.command.specific;
 
-import org.poo.Input;
+import org.poo.input.Input;
 import org.poo.command.BaseCommand;
 import org.poo.user.Account;
 import org.poo.user.Card;
@@ -10,20 +10,20 @@ public class DeleteCard extends BaseCommand {
     private String email;
     private String cardNumber;
 
-    public DeleteCard(String command, int timestamp) {
+    public DeleteCard(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     // TODO: make methods to search for a specific User, Account and Card
 
     @Override
-    public void execute(Input input) {
-        for (User inputUser : input.getUsers()) {
+    public void execute(final Input input) {
+        for (final User inputUser : input.getUsers()) {
             if (!inputUser.getEmail().equals(this.email)) {
                 continue;
             }
-            for (Account inputUserAccount : inputUser.getAccounts()) {
-                for (Card card : inputUserAccount.getCards()) {
+            for (final Account inputUserAccount : inputUser.getAccounts()) {
+                for (final Card card : inputUserAccount.getCards()) {
                     if (card.getCardNumber().equals(this.cardNumber)) {
                         inputUserAccount.getCards().remove(card);
 

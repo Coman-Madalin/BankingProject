@@ -12,13 +12,19 @@ import java.util.List;
 @Getter
 public class Account {
     private String IBAN;
-    private int balance = 0;
-    private int minBalance = 0;
+    private double balance = 0;
+    private double minBalance = 0;
     private String currency;
     private String type;
     private List<Card> cards = new ArrayList<>();
 
-    public void increaseBalance(int amount){
+    public void increaseBalance(final double amount) {
         balance += amount;
+    }
+
+    public void decreaseBalance(final double amount) {
+        balance -= amount;
+        if (balance < minBalance)
+            balance = minBalance;
     }
 }

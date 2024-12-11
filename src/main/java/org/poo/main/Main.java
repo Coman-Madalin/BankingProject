@@ -2,7 +2,7 @@ package org.poo.main;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import org.poo.Input;
+import org.poo.input.Input;
 import org.poo.checker.Checker;
 import org.poo.checker.CheckerConstants;
 import org.poo.json.JsonUtils;
@@ -35,26 +35,26 @@ public final class Main {
      * @throws IOException in case of exceptions to reading / writing
      */
     public static void main(final String[] args) throws IOException {
-        File directory = new File(CheckerConstants.TESTS_PATH);
-        Path path = Paths.get(CheckerConstants.RESULT_PATH);
+        final File directory = new File(CheckerConstants.TESTS_PATH);
+        final Path path = Paths.get(CheckerConstants.RESULT_PATH);
 
         if (Files.exists(path)) {
-            File resultFile = new File(String.valueOf(path));
-            for (File file : Objects.requireNonNull(resultFile.listFiles())) {
+            final File resultFile = new File(String.valueOf(path));
+            for (final File file : Objects.requireNonNull(resultFile.listFiles())) {
                 file.delete();
             }
             resultFile.delete();
         }
         Files.createDirectories(path);
 
-        var sortedFiles = Arrays.stream(Objects.requireNonNull(directory.listFiles())).
+        final var sortedFiles = Arrays.stream(Objects.requireNonNull(directory.listFiles())).
                 sorted(Comparator.comparingInt(Main::fileConsumer))
                 .toList();
 
-        for (File file : sortedFiles) {
-            String filepath = CheckerConstants.OUT_PATH + file.getName();
-            File out = new File(filepath);
-            boolean isCreated = out.createNewFile();
+        for (final File file : sortedFiles) {
+            final String filepath = CheckerConstants.OUT_PATH + file.getName();
+            final File out = new File(filepath);
+            final boolean isCreated = out.createNewFile();
             if (isCreated) {
                 action(file.getName(), filepath);
             }
@@ -70,10 +70,10 @@ public final class Main {
      */
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
-        Gson gson = JsonUtils.getGson();
-        JsonReader reader = new JsonReader(new FileReader(CheckerConstants.TESTS_PATH + filePath1));
+        final Gson gson = JsonUtils.getGson();
+        final JsonReader reader = new JsonReader(new FileReader(CheckerConstants.TESTS_PATH + filePath1));
 
-        Input input = gson.fromJson(reader, Input.class);
+        final Input input = gson.fromJson(reader, Input.class);
         input.executeAllCommands();
         input.gamesToJson(filePath2);
     }
