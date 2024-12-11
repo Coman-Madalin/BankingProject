@@ -1,10 +1,10 @@
 package org.poo.json.deserializers;
 
 import com.google.gson.*;
+import org.poo.command.BaseCommand;
 import org.poo.input.Exchanges;
 import org.poo.input.Input;
-import org.poo.command.BaseCommand;
-import org.poo.user.User;
+import org.poo.input.Users;
 
 import java.lang.reflect.Type;
 
@@ -15,10 +15,12 @@ public class InputDeserializer implements JsonDeserializer<Input> {
 
         // TODO: Make all of them lists
         final JsonArray users = json.getAsJsonObject().getAsJsonArray("users");
-        toReturn.setUsers(context.deserialize(users, User[].class));
+        JsonObject elem = new JsonObject();
+        elem.add("users", users);
+        toReturn.setUsers(context.deserialize(elem, Users.class));
 
         final JsonArray exchangeRates = json.getAsJsonObject().getAsJsonArray("exchangeRates");
-        final JsonObject elem = new JsonObject();
+        elem = new JsonObject();
         elem.add("exchangeRates", exchangeRates);
         toReturn.setExchanges(context.deserialize(elem, Exchanges.class));
 

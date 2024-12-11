@@ -17,4 +17,39 @@ public final class User {
     private String lastName;
     private String email;
     private List<Account> accounts = new ArrayList<>();
+
+    public boolean deleteAccountByIBAN(final String IBAN) {
+        for (final Account account : accounts) {
+            if (account.getIBAN().equals(IBAN)) {
+                this.getAccounts().remove(account);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean deleteCardByCardNumber(final String cardNumber) {
+        for (final Account account : accounts) {
+            for (final Card card : account.getCards()) {
+                if (card.getCardNumber().equals(cardNumber)) {
+                    account.getCards().remove(card);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public Card getCardByCardNumber(final String cardNumber) {
+        for (final Account account : accounts) {
+            for (final Card card : account.getCards()) {
+                if (card.getCardNumber().equals(cardNumber)) {
+                    return card;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -2,9 +2,9 @@ package org.poo.main;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import org.poo.input.Input;
 import org.poo.checker.Checker;
 import org.poo.checker.CheckerConstants;
+import org.poo.input.Input;
 import org.poo.json.JsonUtils;
 
 import java.io.File;

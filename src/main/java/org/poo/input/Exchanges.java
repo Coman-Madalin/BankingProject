@@ -56,6 +56,10 @@ public class Exchanges {
     }
 
     public double convertCurrency(final double amount, final String actualCurrency, final String wantedCurrency) {
+        if (actualCurrency.equals(wantedCurrency)) {
+            return amount;
+        }
+
         if (actualCurrency.equals(superiorCurrency)) {
             final double rate = exchangeMap.get(wantedCurrency);
             return amount / rate;

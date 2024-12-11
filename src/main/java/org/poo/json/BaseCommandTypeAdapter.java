@@ -21,13 +21,13 @@ public class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
             new AbstractMap.SimpleEntry<>("createOneTimeCard", CreateOneTimeCard.class),
             new AbstractMap.SimpleEntry<>("deleteCard", DeleteCard.class),
             new AbstractMap.SimpleEntry<>("setMinimumBalance", SetMinimumBalance.class),
-            new AbstractMap.SimpleEntry<>("payOnline", PayOnline.class)
-
+            new AbstractMap.SimpleEntry<>("payOnline", PayOnline.class),
+            new AbstractMap.SimpleEntry<>("sendMoney", SendMoney.class)
 
     );
 
     @Override
-    public void write(JsonWriter out, BaseCommand value) throws IOException {
+    public void write(final JsonWriter out, final BaseCommand value) throws IOException {
         out.beginObject();
         out.name("command");
         out.value(value.getCommand());
@@ -35,20 +35,20 @@ public class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
         out.name("timestamp");
         out.value(value.getTimestamp());
 
-        JsonElement outputJsonElement = JsonParser.parseString(value.getOutput());
+        final JsonElement outputJsonElement = JsonParser.parseString(value.getOutput());
 
         out.name("output");
-        Gson gson = JsonUtils.getGson();
+        final Gson gson = JsonUtils.getGson();
         gson.toJson(outputJsonElement, out);
 
         out.endObject();
     }
 
     @Override
-    public BaseCommand read(JsonReader in) {
-        JsonObject jsonObject = JsonParser.parseReader(in).getAsJsonObject();
-        String commandName = jsonObject.getAsJsonPrimitive("command").getAsString();
-        Class<?> clazz = NAME_TO_COMMAND_CLASS.get(commandName);
+    public BaseCommand read(final JsonReader in) {
+        final JsonObject jsonObject = JsonParser.parseReader(in).getAsJsonObject();
+        final String commandName = jsonObject.getAsJsonPrimitive("command").getAsString();
+        final Class<?> clazz = NAME_TO_COMMAND_CLASS.get(commandName);
 
         if (clazz == null) {
             throw new JsonParseException("Unknown command type: " + commandName);

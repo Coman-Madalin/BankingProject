@@ -1,8 +1,8 @@
 package org.poo.command.specific;
 
 import com.google.gson.Gson;
-import org.poo.input.Input;
 import org.poo.command.BaseCommand;
+import org.poo.input.Input;
 import org.poo.json.JsonUtils;
 
 public class PrintUsers extends BaseCommand {
@@ -14,7 +14,7 @@ public class PrintUsers extends BaseCommand {
     public void execute(final Input input) {
         final Gson gson = JsonUtils.getGson();
 
-        this.setOutput(gson.toJson(input.getUsers()));
+        this.setOutput(gson.toJson(input.getUsers().getUsers()));
     }
 
 }

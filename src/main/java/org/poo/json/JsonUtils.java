@@ -3,9 +3,9 @@ package org.poo.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
-import org.poo.input.Input;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
+import org.poo.input.Input;
 import org.poo.json.deserializers.InputDeserializer;
 import org.poo.json.serializers.AccountSerializer;
 import org.poo.json.serializers.CommandArraySerializer;
@@ -24,7 +24,8 @@ public class JsonUtils {
             DeleteAccount.class,
             CreateOneTimeCard.class,
             DeleteCard.class,
-            PayOnline.class
+            PayOnline.class,
+            SendMoney.class
     };
 
     static {

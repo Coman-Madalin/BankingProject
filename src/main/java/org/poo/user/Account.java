@@ -1,13 +1,13 @@
 package org.poo.user;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
+import static org.poo.utils.Utils.generateIBAN;
+
 @Setter
 @Getter
 public class Account {
@@ -18,6 +18,12 @@ public class Account {
     private String type;
     private List<Card> cards = new ArrayList<>();
 
+    public Account(final String currency, final String type) {
+        this.currency = currency;
+        this.type = type;
+        this.IBAN = generateIBAN();
+    }
+
     public void increaseBalance(final double amount) {
         balance += amount;
     }
@@ -26,5 +32,15 @@ public class Account {
         balance -= amount;
         if (balance < minBalance)
             balance = minBalance;
+    }
+
+    public Card getCardByCardNumber(final String cardNumber) {
+        for (final Card card : this.getCards()) {
+            if (card.getCardNumber().equals(cardNumber)) {
+                return card;
+            }
+        }
+
+        return null;
     }
 }

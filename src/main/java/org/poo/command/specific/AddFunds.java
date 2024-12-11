@@ -1,9 +1,8 @@
 package org.poo.command.specific;
 
-import org.poo.input.Input;
 import org.poo.command.BaseCommand;
+import org.poo.input.Input;
 import org.poo.user.Account;
-import org.poo.user.User;
 
 public class AddFunds extends BaseCommand {
     private String account;
@@ -15,13 +14,10 @@ public class AddFunds extends BaseCommand {
 
     @Override
     public void execute(final Input input) {
-        for (final User user : input.getUsers()) {
-            for (final Account userAccount : user.getAccounts()) {
-                if (userAccount.getIBAN().equals(this.account)){
-                    userAccount.increaseBalance(this.amount);
-                    return;
-                }
-            }
+        final Account userAccount = input.getUsers().getAccountByIBAN(account);
+
+        if (userAccount != null) {
+            userAccount.increaseBalance(amount);
         }
     }
 }

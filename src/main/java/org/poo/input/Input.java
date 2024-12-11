@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.Commerciant;
 import org.poo.json.JsonUtils;
-import org.poo.user.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.io.IOException;
 @Data
 @NoArgsConstructor
 public final class Input {
-    private User[] users;
+    private Users users;
     private Exchanges exchanges;
     private BaseCommand[] commands;
     private Commerciant[] commerciants;

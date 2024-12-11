@@ -5,7 +5,6 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.user.Account;
 import org.poo.user.Card;
-import org.poo.user.User;
 
 public class PayOnline extends BaseCommand {
     private String cardNumber;
@@ -21,29 +20,21 @@ public class PayOnline extends BaseCommand {
 
     @Override
     public void execute(final Input input) {
-        for (final User user : input.getUsers()) {
-            if (!user.getEmail().equals(this.email)) {
-                continue;
-            }
+        final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
 
-            for (final Account userAccount : user.getAccounts()) {
-                for (final Card card : userAccount.getCards()) {
-                    if (card.getCardNumber().equals(this.cardNumber)) {
-                        double sameCurrencyAmount = amount;
-                        if (!currency.equals(userAccount.getCurrency())) {
-                            sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
-                                    currency, userAccount.getCurrency());
-                        }
-
-                        userAccount.decreaseBalance(sameCurrencyAmount);
-                        return;
-                    }
-                }
-            }
+        if (account == null) {
+            final JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("description", "Card not found");
+            outputJson.addProperty("timestamp", this.getTimestamp());
+            this.setOutput(outputJson.toString());
+            return;
         }
-        final JsonObject outputJson = new JsonObject();
-        outputJson.addProperty("description", "Card not found");
-        outputJson.addProperty("timestamp", this.getTimestamp());
-        this.setOutput(outputJson.toString());
+
+        final Card card = account.getCardByCardNumber(cardNumber);
+
+        final double sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
+                currency, account.getCurrency());
+
+        account.decreaseBalance(sameCurrencyAmount);
     }
 }

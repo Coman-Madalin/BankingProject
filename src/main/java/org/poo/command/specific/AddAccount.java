@@ -1,16 +1,14 @@
 package org.poo.command.specific;
 
-import org.poo.input.Input;
 import org.poo.command.BaseCommand;
+import org.poo.input.Input;
 import org.poo.user.Account;
 import org.poo.user.User;
 
-import static org.poo.utils.Utils.generateIBAN;
-
 public class AddAccount extends BaseCommand {
-    private String email;
-    private String currency;
-    private String accountType;
+    private final String email;
+    private final String currency;
+    private final String accountType;
 
     public AddAccount(final String command, final int timestamp, final String email, final String currency,
                       final String accountType) {
@@ -22,16 +20,11 @@ public class AddAccount extends BaseCommand {
 
     @Override
     public void execute(final Input input) {
-        final Account account = new Account();
-        account.setIBAN(generateIBAN());
-        account.setCurrency(this.currency);
-        account.setType(this.accountType);
+        final Account account = new Account(currency, accountType);
+        final User user = input.getUsers().getUserByEmail(email);
 
-        for (final User inputUser : input.getUsers()) {
-            if ( inputUser.getEmail().equals(this.email)){
-                inputUser.getAccounts().add(account);
-                return;
-            }
+        if (user != null) {
+            user.getAccounts().add(account);
         }
     }
 }
