@@ -1,8 +1,8 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.input.Input;
 import org.poo.command.BaseCommand;
+import org.poo.input.Input;
 import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
@@ -29,10 +29,10 @@ public class PayOnline extends BaseCommand {
             for (final Account userAccount : user.getAccounts()) {
                 for (final Card card : userAccount.getCards()) {
                     if (card.getCardNumber().equals(this.cardNumber)) {
-                        final double sameCurrencyAmount = amount;
+                        double sameCurrencyAmount = amount;
                         if (!currency.equals(userAccount.getCurrency())) {
-//                            sameCurrencyAmount = input.exchangeCurrency(amount, currency,
-//                                    userAccount.getCurrency());
+                            sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
+                                    currency, userAccount.getCurrency());
                         }
 
                         userAccount.decreaseBalance(sameCurrencyAmount);
