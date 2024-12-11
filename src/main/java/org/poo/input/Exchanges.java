@@ -15,6 +15,10 @@ public class Exchanges {
     private String superiorCurrency;
 
     public void makeCommonCurrencyExchange() {
+        if (exchangeRates.isEmpty()) {
+            return;
+        }
+
         superiorCurrency = exchangeRates.getFirst().getTo();
         exchangeMap = new HashMap<>();
         exchangeMap.put(exchangeRates.getFirst().getFrom(), exchangeRates.getFirst().getRate());

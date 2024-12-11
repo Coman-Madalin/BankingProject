@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
+import static org.poo.utils.Utils.resetRandom;
+
 /**
  * The entry point to this homework. It runs the checker that tests your implementation.
  */
@@ -76,6 +78,7 @@ public final class Main {
         final Input input = gson.fromJson(reader, Input.class);
         input.executeAllCommands();
         input.gamesToJson(filePath2);
+        resetRandom();
     }
 
     /**

@@ -15,7 +15,6 @@ public class PrintUsers extends BaseCommand {
         final Gson gson = JsonUtils.getGson();
 
         this.setOutput(gson.toJson(input.getUsers()));
-        System.out.println(this.getOutput());
     }
 
 }
