@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.poo.transactions.BaseTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,16 @@ public final class User {
     private String lastName;
     private String email;
     private List<Account> accounts = new ArrayList<>();
+    private List<BaseTransaction> transactionsHistory = new ArrayList<>();
+
+    public Account getAccountByAlias(final String alias) {
+        for (final Account account : accounts) {
+            if (alias.equals(account.getAlias())) {
+                return account;
+            }
+        }
+        return null;
+    }
 
     public boolean deleteAccountByIBAN(final String IBAN) {
         for (final Account account : accounts) {

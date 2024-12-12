@@ -11,6 +11,22 @@ import java.util.List;
 public class Users {
     private List<User> users;
 
+    public void addAlias(final String aliasName, final String email, final String IBAN) {
+        final Account account = getAccountByEmailAndIBAN(email, IBAN);
+        account.setAlias(aliasName);
+    }
+
+    private Account checkAlias(final String name) {
+        for (final User user : users) {
+            final Account account = user.getAccountByAlias(name);
+            if (account != null) {
+                return account;
+            }
+        }
+
+        return null;
+    }
+
     public User getUserByEmail(final String email) {
         for (final User user : users) {
             if (user.getEmail().equals(email)) {
@@ -21,7 +37,24 @@ public class Users {
         return null;
     }
 
+    public User getUserByIBAN(final String IBAN) {
+        for (final User user : users) {
+            for (final Account account : user.getAccounts()) {
+                if (account.getIBAN().equals(IBAN) || IBAN.equals(account.getAlias())) {
+                    return user;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public Account getAccountByEmailAndIBAN(final String email, final String IBAN) {
+        final Account aliasAccount = checkAlias(IBAN);
+        if (aliasAccount != null) {
+            return aliasAccount;
+        }
+
         for (final User user : users) {
             if (!user.getEmail().equals(email)) {
                 continue;
@@ -38,6 +71,17 @@ public class Users {
     }
 
     public Account getAccountByIBAN(final String IBAN) {
+        final Account accountAlias = checkAlias(IBAN);
+        if (accountAlias != null) {
+            return accountAlias;
+        }
+
+
+        final Account aliasAccount = checkAlias(IBAN);
+        if (aliasAccount != null) {
+            return aliasAccount;
+        }
+
         for (final User user : users) {
             for (final Account account : user.getAccounts()) {
                 if (account.getIBAN().equals(IBAN)) {

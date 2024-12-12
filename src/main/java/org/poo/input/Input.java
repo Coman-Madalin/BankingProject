@@ -19,6 +19,10 @@ public final class Input {
     private BaseCommand[] commands;
     private Commerciant[] commerciants;
 
+    public static boolean isAlias(final String account) {
+        return !account.startsWith("RO");
+    }
+
     public void executeAllCommands() {
         exchanges.makeCommonCurrencyExchange();
         for (final BaseCommand command : commands) {

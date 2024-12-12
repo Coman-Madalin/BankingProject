@@ -16,6 +16,7 @@ public class Account {
     private double minBalance = 0;
     private String currency;
     private String type;
+    private String alias = null;
     private List<Card> cards = new ArrayList<>();
 
     public Account(final String currency, final String type) {

@@ -2,6 +2,7 @@ package org.poo.command.specific;
 
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
+import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 import org.poo.user.User;
 
@@ -25,6 +26,8 @@ public class AddAccount extends BaseCommand {
 
         if (user != null) {
             user.getAccounts().add(account);
+            user.getTransactionsHistory().add(new BaseTransaction("New account created",
+                    getTimestamp()));
         }
     }
 }
