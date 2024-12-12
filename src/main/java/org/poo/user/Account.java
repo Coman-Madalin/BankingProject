@@ -28,6 +28,16 @@ public class Account {
         balance += amount;
     }
 
+    public boolean hasEnoughBalance(final double amount) {
+        final double oldBalance = balance;
+        double balanceCopy = balance - amount;
+        if (balanceCopy < minBalance) {
+            balanceCopy = minBalance;
+        }
+
+        return (oldBalance - balanceCopy) == amount;
+    }
+
     public void decreaseBalance(final double amount) {
         balance -= amount;
         if (balance < minBalance)

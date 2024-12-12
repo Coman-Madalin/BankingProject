@@ -48,7 +48,7 @@ public class Exchanges {
 
                 if (exchangeMap.containsKey(currentExchange.getFrom())) {
                     exchangeMap.put(currentExchange.getTo(),
-                            currentExchange.getRate() / exchangeMap.get(currentExchange.getTo()));
+                            exchangeMap.get(currentExchange.getFrom()) / currentExchange.getRate());
                     exchangeRates.remove(i);
                 }
             }
