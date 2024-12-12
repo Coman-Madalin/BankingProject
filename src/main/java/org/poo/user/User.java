@@ -32,25 +32,27 @@ public final class User {
     public boolean deleteAccountByIBAN(final String IBAN) {
         for (final Account account : accounts) {
             if (account.getIBAN().equals(IBAN)) {
-                this.getAccounts().remove(account);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean deleteCardByCardNumber(final String cardNumber) {
-        for (final Account account : accounts) {
-            for (final Card card : account.getCards()) {
-                if (card.getCardNumber().equals(cardNumber)) {
-                    account.getCards().remove(card);
+                if (account.getBalance() == 0) {
+                    this.getAccounts().remove(account);
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    public Card deleteCardByCardNumber(final String cardNumber) {
+        for (final Account account : accounts) {
+            for (final Card card : account.getCards()) {
+                if (card.getCardNumber().equals(cardNumber)) {
+                    account.getCards().remove(card);
+                    return card;
+                }
+            }
+        }
+
+        return null;
     }
 
     public Card getCardByCardNumber(final String cardNumber) {

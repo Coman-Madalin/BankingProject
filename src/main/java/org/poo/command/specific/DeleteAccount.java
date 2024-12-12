@@ -22,7 +22,11 @@ public class DeleteAccount extends BaseCommand {
             outputJson.addProperty("success", "Account deleted");
             outputJson.addProperty("timestamp", this.getTimestamp());
             this.setOutput(outputJson.toString());
+        } else {
+            final JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("error", "Account couldn't be deleted - see org.poo.transactions for details");
+            outputJson.addProperty("timestamp", this.getTimestamp());
+            this.setOutput(outputJson.toString());
         }
-        // TODO: complete else branch if an account with the specified IBAN doesn't exist for user
     }
 }

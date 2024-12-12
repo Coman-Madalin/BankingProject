@@ -8,7 +8,7 @@ public class TransferTransaction extends BaseTransaction {
     private final String amount;
     private final String transferType;
 
-    public TransferTransaction(final int timestamp, final String description, final String senderIBAN,
+    public TransferTransaction(final String description, final int timestamp, final String senderIBAN,
                                final String receiverIBAN, final String amount, final String transferType) {
         super(description, timestamp);
         this.senderIBAN = senderIBAN;

@@ -24,8 +24,18 @@ public class SendMoney extends BaseCommand {
         // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
         final User receiverUser = input.getUsers().getUserByIBAN(receiver);
+
+        if (senderUser == null || receiverUser == null) {
+            return;
+        }
+
         final Account senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
         final Account receiverAccount = input.getUsers().getAccountByIBAN(receiver);
+
+
+        if (senderAccount == null || receiverAccount == null) {
+            return;
+        }
 
         if (isAlias(account) && !isAlias(receiver)) {
             return;
@@ -50,8 +60,8 @@ public class SendMoney extends BaseCommand {
         receiverAccount.increaseBalance(receiverCurrencyAmount);
 
         senderUser.getTransactionsHistory().add(new TransferTransaction(
-                getTimestamp(),
                 description,
+                getTimestamp(),
                 account,
                 receiver,
                 amount + " " + senderAccount.getCurrency(),

@@ -36,7 +36,7 @@ public class Account {
             balanceCopy = minBalance;
         }
 
-        return (oldBalance - balanceCopy) == amount;
+        return amount - 1 < (oldBalance - balanceCopy) && (oldBalance - balanceCopy) < amount + 1;
     }
 
     public void decreaseBalance(final double amount) {
