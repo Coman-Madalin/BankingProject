@@ -30,7 +30,9 @@ public class JsonUtils {
             SendMoney.class,
             SetAlias.class,
             PrintTransactions.class,
-            CheckCardStatus.class
+            CheckCardStatus.class,
+            ChangeInterestRate.class,
+            SplitPayment.class
     };
 
     static {

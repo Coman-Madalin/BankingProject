@@ -13,4 +13,10 @@ public class BaseTransaction {
         this.description = description;
         this.timestamp = timestamp;
     }
+
+    public BaseTransaction(final int timestamp) {
+        this.description = "Insufficient funds";
+        this.timestamp = timestamp;
+    }
+
 }

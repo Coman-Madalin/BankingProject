@@ -56,7 +56,6 @@ public class PayOnline extends BaseCommand {
 
         if (!account.hasEnoughBalance(sameCurrencyAmount)) {
             user.getTransactionsHistory().add(new BaseTransaction(
-                    "Insufficient funds",
                     getTimestamp()
             ));
             return;

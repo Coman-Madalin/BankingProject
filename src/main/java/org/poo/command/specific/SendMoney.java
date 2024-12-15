@@ -2,6 +2,7 @@ package org.poo.command.specific;
 
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
+import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.TransferTransaction;
 import org.poo.user.Account;
 import org.poo.user.User;
@@ -48,7 +49,9 @@ public class SendMoney extends BaseCommand {
         }
 
         if (!senderAccount.hasEnoughBalance(amount)) {
-            // TODO: Make an failed transaction for this account
+            senderUser.getTransactionsHistory().add(new BaseTransaction(
+                    getTimestamp()
+            ));
             return;
         }
 
@@ -64,7 +67,8 @@ public class SendMoney extends BaseCommand {
                 getTimestamp(),
                 account,
                 receiver,
-                amount + " " + senderAccount.getCurrency(),
+                String.format("%.1f %s", amount, senderAccount.getCurrency()),
+//                amount + " " + senderAccount.getCurrency(),
                 "sent"
         ));
 
