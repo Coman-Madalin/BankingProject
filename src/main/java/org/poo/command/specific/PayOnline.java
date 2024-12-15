@@ -31,6 +31,7 @@ public class PayOnline extends BaseCommand {
     @Override
     public void execute(final Input input) {
         final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
+        final User user = input.getUsers().getUserByEmail(email);
 
         if (account == null) {
             setOutputAsError();
@@ -38,15 +39,20 @@ public class PayOnline extends BaseCommand {
         }
 
         final Card card = account.getCardByCardNumber(cardNumber);
+
         if (card == null) {
             setOutputAsError();
             return;
         }
 
+        if (card.getStatus().equals("frozen")) {
+            user.getTransactionsHistory().add(new BaseTransaction("The card is frozen",
+                    getTimestamp()));
+            return;
+        }
+
         final double sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 currency, account.getCurrency());
-
-        final User user = input.getUsers().getUserByEmail(email);
 
         if (!account.hasEnoughBalance(sameCurrencyAmount)) {
             user.getTransactionsHistory().add(new BaseTransaction(

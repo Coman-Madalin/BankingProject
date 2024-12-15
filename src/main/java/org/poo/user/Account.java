@@ -32,8 +32,8 @@ public class Account {
     public boolean hasEnoughBalance(final double amount) {
         final double oldBalance = balance;
         double balanceCopy = balance - amount;
-        if (balanceCopy < minBalance) {
-            balanceCopy = minBalance;
+        if (balanceCopy < 0) {
+            balanceCopy = 0;
         }
 
         return amount - 1 < (oldBalance - balanceCopy) && (oldBalance - balanceCopy) < amount + 1;
@@ -41,8 +41,9 @@ public class Account {
 
     public void decreaseBalance(final double amount) {
         balance -= amount;
-        if (balance < minBalance)
-            balance = minBalance;
+        if (balance < 0) {
+            balance = 0;
+        }
     }
 
     public Card getCardByCardNumber(final String cardNumber) {

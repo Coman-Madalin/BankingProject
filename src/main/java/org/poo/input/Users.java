@@ -128,4 +128,34 @@ public class Users {
         return null;
     }
 
+    public Card getCardByCardNumber(final String cardNumber) {
+        for (final User user : users) {
+            for (final Account account : user.getAccounts()) {
+                final Card result = account.getCardByCardNumber(cardNumber);
+                if (result != null)
+                    return result;
+            }
+        }
+        return null;
+    }
+
+    public Account getAccountByCardNumber(final String cardNumber) {
+        for (final User user : users) {
+            for (final Account account : user.getAccounts()) {
+                if (account.getCardByCardNumber(cardNumber) != null)
+                    return account;
+            }
+        }
+        return null;
+    }
+
+    public User getUserByCardNumber(final String cardNumber) {
+        for (final User user : users) {
+            for (final Account account : user.getAccounts()) {
+                if (account.getCardByCardNumber(cardNumber) != null)
+                    return user;
+            }
+        }
+        return null;
+    }
 }

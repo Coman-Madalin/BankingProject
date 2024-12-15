@@ -29,7 +29,8 @@ public class JsonUtils {
             PayOnline.class,
             SendMoney.class,
             SetAlias.class,
-            PrintTransactions.class
+            PrintTransactions.class,
+            CheckCardStatus.class
     };
 
     static {
