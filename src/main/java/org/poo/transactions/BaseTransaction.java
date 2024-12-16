@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BaseTransaction {
+public class BaseTransaction implements Comparable<BaseTransaction> {
     private String description;
     private int timestamp;
 
@@ -19,4 +19,9 @@ public class BaseTransaction {
         this.timestamp = timestamp;
     }
 
+    // This is more or less a safe check, it shouldn't be necessary in a single-threaded environment
+    @Override
+    public int compareTo(final BaseTransaction o) {
+        return this.timestamp - o.getTimestamp();
+    }
 }

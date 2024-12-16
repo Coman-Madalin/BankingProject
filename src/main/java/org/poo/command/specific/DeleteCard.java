@@ -15,6 +15,12 @@ public class DeleteCard extends BaseCommand {
         super(command, timestamp);
     }
 
+    public DeleteCard(final String command, final int timestamp, final String email, final String cardNumber) {
+        super(command, timestamp);
+        this.email = email;
+        this.cardNumber = cardNumber;
+    }
+
     @Override
     public void execute(final Input input) {
         final User user = input.getUsers().getUserByEmail(email);

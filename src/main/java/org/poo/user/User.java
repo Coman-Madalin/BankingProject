@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.poo.transactions.BaseTransaction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -71,6 +72,9 @@ public final class User {
         for (final Account account : accounts) {
             allTransactions.addAll(account.getTransactionsHistory());
         }
+
+        Collections.sort(allTransactions);
+
         return allTransactions;
     }
 }

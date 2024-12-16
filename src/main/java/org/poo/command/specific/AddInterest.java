@@ -3,14 +3,12 @@ package org.poo.command.specific;
 import com.google.gson.JsonObject;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
-import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 
-public class ChangeInterestRate extends BaseCommand {
+public class AddInterest extends BaseCommand {
     private String account;
-    private double interestRate;
 
-    public ChangeInterestRate(final String command, final int timestamp) {
+    public AddInterest(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
@@ -26,10 +24,6 @@ public class ChangeInterestRate extends BaseCommand {
             return;
         }
 
-        userAccount.setInterestRate(interestRate);
-        userAccount.getTransactionsHistory().add(new BaseTransaction(
-                String.format("Interest rate of the account changed to %.2f", interestRate),
-                getTimestamp()
-        ));
+        userAccount.increaseBalance(userAccount.getBalance() * userAccount.getInterestRate());
     }
 }

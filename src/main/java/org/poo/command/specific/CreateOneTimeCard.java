@@ -15,7 +15,12 @@ public class CreateOneTimeCard extends BaseCommand {
         super(command, timestamp);
     }
 
-    // TODO: now there is no way to know if it is one time or not
+    public CreateOneTimeCard(final String command, final int timestamp, final String account, final String email) {
+        super(command, timestamp);
+        this.account = account;
+        this.email = email;
+    }
+
     @Override
     public void execute(final Input input) {
         final Card card = new Card(true);

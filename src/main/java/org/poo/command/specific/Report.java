@@ -26,6 +26,14 @@ public class Report extends BaseCommand {
         final Account userAccount = input.getUsers().getAccountByIBAN(account);
 
         final JsonObject outputObject = new JsonObject();
+
+        if (userAccount == null) {
+            outputObject.addProperty("timestamp", getTimestamp());
+            outputObject.addProperty("description", "Account not found");
+            setOutput(outputObject.toString());
+            return;
+        }
+
         outputObject.addProperty("IBAN", account);
         outputObject.addProperty("balance", userAccount.getBalance());
         outputObject.addProperty("currency", userAccount.getCurrency());

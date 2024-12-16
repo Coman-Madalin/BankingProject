@@ -21,6 +21,8 @@ public class Account {
     private String alias = null;
     private List<Card> cards = new ArrayList<>();
     private List<BaseTransaction> transactionsHistory = new ArrayList<>();
+    // TODO: maybe make a savings account since normal account doesn't have interestRate
+    private double interestRate;
 
     public Account(final String currency, final String type) {
         this.currency = currency;
@@ -46,17 +48,6 @@ public class Account {
         balance -= amount;
         if (balance < 0) {
             balance = 0;
-        }
-    }
-
-    public void decreaseBalance(final double amount, final Card card) {
-        balance -= amount;
-        if (balance < 0) {
-            balance = 0;
-        }
-
-        if (card.isOneTimeCard()) {
-            card.setCardNumber(generateCardNumber());
         }
     }
 

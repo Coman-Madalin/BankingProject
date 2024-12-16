@@ -65,6 +65,14 @@ public class PayOnline extends BaseCommand {
                 sameCurrencyAmount,
                 commerciant
         ));
-        account.decreaseBalance(sameCurrencyAmount, card);
+
+        account.decreaseBalance(sameCurrencyAmount);
+
+        if (card.isOneTimeCard()) {
+            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute(input);
+            new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIBAN(), email)
+                    .execute(input);
+        }
+
     }
 }

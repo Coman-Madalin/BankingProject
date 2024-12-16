@@ -25,10 +25,24 @@ public class SpendingsReport extends BaseCommand {
     public void execute(final Input input) {
         final Account userAccount = input.getUsers().getAccountByIBAN(account);
 
-        final JsonObject outputObject = new JsonObject();
-        outputObject.addProperty("IBAN", account);
-        outputObject.addProperty("balance", userAccount.getBalance());
-        outputObject.addProperty("currency", userAccount.getCurrency());
+        final JsonObject outputJson = new JsonObject();
+
+        if (userAccount == null) {
+            outputJson.addProperty("timestamp", getTimestamp());
+            outputJson.addProperty("description", "Account not found");
+            setOutput(outputJson.toString());
+            return;
+        }
+        if (userAccount.getType().equals("savings")) {
+            outputJson.addProperty("error",
+                    "This kind of report is not supported for a saving account");
+            setOutput(outputJson.toString());
+            return;
+        }
+
+        outputJson.addProperty("IBAN", account);
+        outputJson.addProperty("balance", userAccount.getBalance());
+        outputJson.addProperty("currency", userAccount.getCurrency());
         final List<BaseTransaction> transactions = new ArrayList<>();
         final List<Commerciant> commerciants = new ArrayList<>();
         for (final BaseTransaction baseTransaction : userAccount.getTransactionsHistory()) {
@@ -59,11 +73,11 @@ public class SpendingsReport extends BaseCommand {
 
         Collections.sort(commerciants);
 
-        outputObject.add("transactions", JsonUtils.getGson().toJsonTree(transactions));
-        outputObject.add("commerciants", JsonUtils.getGson().toJsonTree(commerciants));
+        outputJson.add("transactions", JsonUtils.getGson().toJsonTree(transactions));
+        outputJson.add("commerciants", JsonUtils.getGson().toJsonTree(commerciants));
 
 
-        setOutput(outputObject.toString());
+        setOutput(outputJson.toString());
     }
 
     private static class Commerciant implements Comparable<Commerciant> {

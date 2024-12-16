@@ -68,8 +68,16 @@ public class SendMoney extends BaseCommand {
                 account,
                 receiver,
                 String.format("%.1f %s", amount, senderAccount.getCurrency()),
-//                amount + " " + senderAccount.getCurrency(),
                 "sent"
+        ));
+
+        receiverAccount.getTransactionsHistory().add(new TransferTransaction(
+                description,
+                getTimestamp(),
+                account,
+                receiver,
+                String.format("%.1f %s", amount, receiverAccount.getCurrency()),
+                "received"
         ));
 
     }
