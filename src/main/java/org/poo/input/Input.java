@@ -30,6 +30,10 @@ public final class Input {
         }
     }
 
+    private void printAcccunts() {
+        System.out.println(JsonUtils.getGson().toJson(users.getUsers()));
+    }
+
     public void gamesToJson(final String filePath1) throws IOException {
         try (final FileWriter fileWriter = new FileWriter(filePath1)) {
             final Gson gson = JsonUtils.getGson();

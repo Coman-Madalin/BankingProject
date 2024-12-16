@@ -18,7 +18,6 @@ public final class User {
     private String lastName;
     private String email;
     private List<Account> accounts = new ArrayList<>();
-    private List<BaseTransaction> transactionsHistory = new ArrayList<>();
 
     public Account getAccountByAlias(final String alias) {
         for (final Account account : accounts) {
@@ -64,5 +63,14 @@ public final class User {
             }
         }
         return null;
+    }
+
+    public List<BaseTransaction> getTransactionsHistory() {
+        final List<BaseTransaction> allTransactions = new ArrayList<>();
+
+        for (final Account account : accounts) {
+            allTransactions.addAll(account.getTransactionsHistory());
+        }
+        return allTransactions;
     }
 }

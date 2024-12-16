@@ -2,10 +2,12 @@ package org.poo.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.transactions.BaseTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.poo.utils.Utils.generateCardNumber;
 import static org.poo.utils.Utils.generateIBAN;
 
 @Setter
@@ -18,6 +20,7 @@ public class Account {
     private String type;
     private String alias = null;
     private List<Card> cards = new ArrayList<>();
+    private List<BaseTransaction> transactionsHistory = new ArrayList<>();
 
     public Account(final String currency, final String type) {
         this.currency = currency;
@@ -43,6 +46,17 @@ public class Account {
         balance -= amount;
         if (balance < 0) {
             balance = 0;
+        }
+    }
+
+    public void decreaseBalance(final double amount, final Card card) {
+        balance -= amount;
+        if (balance < 0) {
+            balance = 0;
+        }
+
+        if (card.isOneTimeCard()) {
+            card.setCardNumber(generateCardNumber());
         }
     }
 

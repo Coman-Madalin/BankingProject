@@ -49,7 +49,7 @@ public class SendMoney extends BaseCommand {
         }
 
         if (!senderAccount.hasEnoughBalance(amount)) {
-            senderUser.getTransactionsHistory().add(new BaseTransaction(
+            senderAccount.getTransactionsHistory().add(new BaseTransaction(
                     getTimestamp()
             ));
             return;
@@ -62,7 +62,7 @@ public class SendMoney extends BaseCommand {
 
         receiverAccount.increaseBalance(receiverCurrencyAmount);
 
-        senderUser.getTransactionsHistory().add(new TransferTransaction(
+        senderAccount.getTransactionsHistory().add(new TransferTransaction(
                 description,
                 getTimestamp(),
                 account,

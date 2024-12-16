@@ -1,7 +1,9 @@
 package org.poo.transactions.specific;
 
+import lombok.Getter;
 import org.poo.transactions.BaseTransaction;
 
+@Getter
 public class PaymentTransaction extends BaseTransaction {
     private final double amount;
     private final String commerciant;

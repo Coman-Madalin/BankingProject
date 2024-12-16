@@ -23,7 +23,7 @@ public class CreateCard extends BaseCommand {
 
         if (userAccount != null) {
             userAccount.getCards().add(card);
-            user.getTransactionsHistory().add(new CardActionTransaction(
+            userAccount.getTransactionsHistory().add(new CardActionTransaction(
                     "New card created",
                     getTimestamp(),
                     userAccount.getIBAN(),

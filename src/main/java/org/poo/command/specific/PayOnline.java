@@ -7,7 +7,6 @@ import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.PaymentTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
-import org.poo.user.User;
 
 public class PayOnline extends BaseCommand {
     private String cardNumber;
@@ -31,7 +30,6 @@ public class PayOnline extends BaseCommand {
     @Override
     public void execute(final Input input) {
         final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
-        final User user = input.getUsers().getUserByEmail(email);
 
         if (account == null) {
             setOutputAsError();
@@ -46,7 +44,7 @@ public class PayOnline extends BaseCommand {
         }
 
         if (card.getStatus().equals("frozen")) {
-            user.getTransactionsHistory().add(new BaseTransaction("The card is frozen",
+            account.getTransactionsHistory().add(new BaseTransaction("The card is frozen",
                     getTimestamp()));
             return;
         }
@@ -55,18 +53,18 @@ public class PayOnline extends BaseCommand {
                 currency, account.getCurrency());
 
         if (!account.hasEnoughBalance(sameCurrencyAmount)) {
-            user.getTransactionsHistory().add(new BaseTransaction(
+            account.getTransactionsHistory().add(new BaseTransaction(
                     getTimestamp()
             ));
             return;
         }
 
-        user.getTransactionsHistory().add(new PaymentTransaction(
+        account.getTransactionsHistory().add(new PaymentTransaction(
                 "Card payment",
                 getTimestamp(),
                 sameCurrencyAmount,
                 commerciant
         ));
-        account.decreaseBalance(sameCurrencyAmount);
+        account.decreaseBalance(sameCurrencyAmount, card);
     }
 }

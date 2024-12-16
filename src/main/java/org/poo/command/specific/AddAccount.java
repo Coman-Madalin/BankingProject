@@ -26,7 +26,7 @@ public class AddAccount extends BaseCommand {
 
         if (user != null) {
             user.getAccounts().add(account);
-            user.getTransactionsHistory().add(new BaseTransaction("New account created",
+            account.getTransactionsHistory().add(new BaseTransaction("New account created",
                     getTimestamp()));
         }
     }

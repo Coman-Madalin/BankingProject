@@ -6,7 +6,6 @@ import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
-import org.poo.user.User;
 
 public class CheckCardStatus extends BaseCommand {
     private String cardNumber;
@@ -19,7 +18,6 @@ public class CheckCardStatus extends BaseCommand {
     public void execute(final Input input) {
         final Card card = input.getUsers().getCardByCardNumber(cardNumber);
         final Account account = input.getUsers().getAccountByCardNumber(cardNumber);
-        final User user = input.getUsers().getUserByCardNumber(cardNumber);
         if (card == null) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());
@@ -29,12 +27,8 @@ public class CheckCardStatus extends BaseCommand {
         }
         if (account.getBalance() <= account.getMinBalance()) {
             card.setStatus("frozen");
-            user.getTransactionsHistory().add(new BaseTransaction("You have reached the minimum " +
+            account.getTransactionsHistory().add(new BaseTransaction("You have reached the minimum " +
                     "amount of funds, the card will be frozen", getTimestamp()));
-//            final JsonObject outputJson = new JsonObject();
-//            outputJson.addProperty("timestamp", getTimestamp());
-//            outputJson.addProperty("description", "You have reached the minimum amount of funds, the card will be frozen");
-//            this.setOutput(outputJson.toString());
             return;
         }
 

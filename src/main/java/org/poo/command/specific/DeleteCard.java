@@ -22,7 +22,7 @@ public class DeleteCard extends BaseCommand {
 
         final Card card = user.deleteCardByCardNumber(cardNumber);
         if (card != null) {
-            user.getTransactionsHistory().add(new CardActionTransaction(
+            account.getTransactionsHistory().add(new CardActionTransaction(
                     "The card has been destroyed",
                     getTimestamp(),
                     account.getIBAN(),

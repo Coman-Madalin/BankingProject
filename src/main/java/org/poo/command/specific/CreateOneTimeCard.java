@@ -18,13 +18,13 @@ public class CreateOneTimeCard extends BaseCommand {
     // TODO: now there is no way to know if it is one time or not
     @Override
     public void execute(final Input input) {
-        final Card card = new Card();
+        final Card card = new Card(true);
         final User user = input.getUsers().getUserByEmail(email);
         final Account userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
         if (userAccount != null) {
             userAccount.getCards().add(card);
-            user.getTransactionsHistory().add(new CardActionTransaction(
+            userAccount.getTransactionsHistory().add(new CardActionTransaction(
                     "New card created",
                     getTimestamp(),
                     userAccount.getIBAN(),
