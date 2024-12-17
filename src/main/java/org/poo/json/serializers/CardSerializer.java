@@ -8,9 +8,13 @@ import org.poo.user.Card;
 
 import java.lang.reflect.Type;
 
-public class CardSerializer implements JsonSerializer<Card> {
+/**
+ * The type Card serializer.
+ */
+public final class CardSerializer implements JsonSerializer<Card> {
     @Override
-    public JsonElement serialize(final Card src, final Type typeOfSrc, final JsonSerializationContext context) {
+    public JsonElement serialize(final Card src, final Type typeOfSrc,
+                                 final JsonSerializationContext context) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("cardNumber", src.getCardNumber());
         jsonObject.addProperty("status", src.getStatus());

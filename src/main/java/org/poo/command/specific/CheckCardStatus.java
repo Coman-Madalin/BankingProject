@@ -7,9 +7,18 @@ import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
 
-public class CheckCardStatus extends BaseCommand {
+/**
+ * The type Check card status.
+ */
+public final class CheckCardStatus extends BaseCommand {
     private String cardNumber;
 
+    /**
+     * Instantiates a new Check card status.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public CheckCardStatus(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -27,18 +36,8 @@ public class CheckCardStatus extends BaseCommand {
         }
         if (account.getBalance() <= account.getMinBalance()) {
             card.setStatus("frozen");
-            account.getTransactionsHistory().add(new BaseTransaction("You have reached the minimum " +
-                    "amount of funds, the card will be frozen", getTimestamp()));
-            return;
-        }
-
-        if (account.getBalance() <= account.getMinBalance() + 30) {
-            card.setStatus("warning");
-            final JsonObject outputJson = new JsonObject();
-            outputJson.addProperty("timestamp", getTimestamp());
-            outputJson.addProperty("description", "You are close to limit the card will be " +
-                    "warning");
-            this.setOutput(outputJson.toString());
+            account.getTransactionsHistory().add(new BaseTransaction("You have reached "
+                    + "the minimum amount of funds, the card will be frozen", getTimestamp()));
         }
     }
 }

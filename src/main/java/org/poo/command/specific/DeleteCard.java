@@ -7,15 +7,33 @@ import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-public class DeleteCard extends BaseCommand {
+/**
+ * The type Delete card.
+ */
+public final class DeleteCard extends BaseCommand {
     private String email;
     private String cardNumber;
 
+    /**
+     * Instantiates a new Delete card.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public DeleteCard(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
-    public DeleteCard(final String command, final int timestamp, final String email, final String cardNumber) {
+    /**
+     * Instantiates a new Delete card.
+     *
+     * @param command    the command
+     * @param timestamp  the timestamp
+     * @param email      the email
+     * @param cardNumber the card number
+     */
+    public DeleteCard(final String command, final int timestamp, final String email,
+                      final String cardNumber) {
         super(command, timestamp);
         this.email = email;
         this.cardNumber = cardNumber;
@@ -31,7 +49,7 @@ public class DeleteCard extends BaseCommand {
             account.getTransactionsHistory().add(new CardActionTransaction(
                     "The card has been destroyed",
                     getTimestamp(),
-                    account.getIBAN(),
+                    account.getIban(),
                     card.getCardNumber(),
                     user.getEmail()
             ));

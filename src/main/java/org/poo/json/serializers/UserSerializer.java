@@ -9,14 +9,18 @@ import org.poo.user.User;
 
 import java.lang.reflect.Type;
 
-public class UserSerializer implements JsonSerializer<User> {
+/**
+ * The type User serializer.
+ */
+public final class UserSerializer implements JsonSerializer<User> {
     @Override
-    public JsonElement serialize(final User src, final Type typeOfSrc, final JsonSerializationContext context) {
+    public JsonElement serialize(final User src, final Type typeOfSrc,
+                                 final JsonSerializationContext context) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email", src.getEmail());
         jsonObject.addProperty("firstName", src.getFirstName());
         jsonObject.addProperty("lastName", src.getLastName());
-        jsonObject.add("accounts", JsonUtils.getGson().toJsonTree(src.getAccounts()));
+        jsonObject.add("accounts", JsonUtils.getGSON().toJsonTree(src.getAccounts()));
 
         return jsonObject;
     }

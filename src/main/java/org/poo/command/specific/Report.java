@@ -7,13 +7,23 @@ import org.poo.json.JsonUtils;
 import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Report extends BaseCommand {
+/**
+ * The type Report.
+ */
+public final class Report extends BaseCommand {
     private String account;
     private int startTimestamp;
     private int endTimestamp;
 
+    /**
+     * Instantiates a new Report.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public Report(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -36,13 +46,13 @@ public class Report extends BaseCommand {
         outputObject.addProperty("currency", userAccount.getCurrency());
         final List<BaseTransaction> transactions = new ArrayList<>();
         for (final BaseTransaction baseTransaction : userAccount.getTransactionsHistory()) {
-            if (baseTransaction.getTimestamp() >= startTimestamp &&
-                    baseTransaction.getTimestamp() <= endTimestamp) {
+            if (baseTransaction.getTimestamp() >= startTimestamp
+                    && baseTransaction.getTimestamp() <= endTimestamp) {
                 transactions.add(baseTransaction);
             }
         }
 
-        outputObject.add("transactions", JsonUtils.getGson().toJsonTree(transactions));
+        outputObject.add("transactions", JsonUtils.getGSON().toJsonTree(transactions));
 
         setOutput(outputObject.toString());
     }

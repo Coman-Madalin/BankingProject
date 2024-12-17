@@ -8,11 +8,20 @@ import org.poo.user.Account;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SplitPayment extends BaseCommand {
+/**
+ * The type Split payment.
+ */
+public final class SplitPayment extends BaseCommand {
     private double amount;
     private String currency;
     private List<String> accounts;
 
+    /**
+     * Instantiates a new Split payment.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public SplitPayment(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -33,12 +42,12 @@ public class SplitPayment extends BaseCommand {
         for (final String accountNumber : accounts) {
             final Account account = input.getUsers().getAccountByIBAN(accountNumber);
             accountSet.add(account);
-            final double amountInAccountCurrency = input.getExchanges().convertCurrency(amountPerPerson,
-                    currency, account.getCurrency());
+            final double amountInAccountCurrency = input.getExchanges()
+                    .convertCurrency(amountPerPerson, currency, account.getCurrency());
 
             if (!account.hasEnoughBalance(amountInAccountCurrency)) {
-                transaction.setError(String.format("Account %s has insufficient funds for a split" +
-                        " payment.", accountNumber));
+                transaction.setError(String.format("Account %s has insufficient funds for a split"
+                        + " payment.", accountNumber));
                 everyoneCanPay = false;
             }
         }
@@ -47,8 +56,8 @@ public class SplitPayment extends BaseCommand {
             account.getTransactionsHistory().add(transaction);
 
             if (everyoneCanPay) {
-                final double amountInAccountCurrency = input.getExchanges().convertCurrency(amountPerPerson,
-                        currency, account.getCurrency());
+                final double amountInAccountCurrency = input.getExchanges()
+                        .convertCurrency(amountPerPerson, currency, account.getCurrency());
                 account.decreaseBalance(amountInAccountCurrency);
             }
         }

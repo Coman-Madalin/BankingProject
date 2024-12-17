@@ -1,6 +1,11 @@
 package org.poo.json.deserializers;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import org.poo.command.BaseCommand;
 import org.poo.input.Exchanges;
 import org.poo.input.Input;
@@ -8,9 +13,13 @@ import org.poo.input.Users;
 
 import java.lang.reflect.Type;
 
-public class InputDeserializer implements JsonDeserializer<Input> {
+/**
+ * The type Input deserializer.
+ */
+public final class InputDeserializer implements JsonDeserializer<Input> {
     @Override
-    public Input deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
+    public Input deserialize(final JsonElement json, final Type typeOfT,
+                             final JsonDeserializationContext context) throws JsonParseException {
         final Input toReturn = new Input();
 
         // TODO: Make all of them lists

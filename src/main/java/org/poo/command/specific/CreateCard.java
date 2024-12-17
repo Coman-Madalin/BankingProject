@@ -7,10 +7,19 @@ import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-public class CreateCard extends BaseCommand {
+/**
+ * The type Create card.
+ */
+public final class CreateCard extends BaseCommand {
     private String account;
     private String email;
 
+    /**
+     * Instantiates a new Create card.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public CreateCard(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -27,7 +36,7 @@ public class CreateCard extends BaseCommand {
             userAccount.getTransactionsHistory().add(new CardActionTransaction(
                     "New card created",
                     getTimestamp(),
-                    userAccount.getIBAN(),
+                    userAccount.getIban(),
                     card.getCardNumber(),
                     user.getEmail()
             ));

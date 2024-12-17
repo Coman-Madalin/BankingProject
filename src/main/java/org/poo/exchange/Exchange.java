@@ -3,6 +3,9 @@ package org.poo.exchange;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The type Exchange.
+ */
 @Data
 @NoArgsConstructor
 public final class Exchange {

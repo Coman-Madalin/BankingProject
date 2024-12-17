@@ -5,9 +5,18 @@ import org.poo.input.Input;
 import org.poo.json.JsonUtils;
 import org.poo.user.User;
 
-public class PrintTransactions extends BaseCommand {
+/**
+ * The type Print transactions.
+ */
+public final class PrintTransactions extends BaseCommand {
     private String email;
 
+    /**
+     * Instantiates a new Print transactions.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public PrintTransactions(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -16,6 +25,6 @@ public class PrintTransactions extends BaseCommand {
     public void execute(final Input input) {
         final User user = input.getUsers().getUserByEmail(email);
 
-        setOutput(JsonUtils.getGson().toJson(user.getTransactionsHistory()));
+        setOutput(JsonUtils.getGSON().toJson(user.getTransactionsHistory()));
     }
 }

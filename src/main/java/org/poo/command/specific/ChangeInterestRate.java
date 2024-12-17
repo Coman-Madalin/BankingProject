@@ -6,10 +6,19 @@ import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 
-public class ChangeInterestRate extends BaseCommand {
+/**
+ * The type Change interest rate.
+ */
+public final class ChangeInterestRate extends BaseCommand {
     private String account;
     private double interestRate;
 
+    /**
+     * Instantiates a new Change interest rate.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public ChangeInterestRate(final String command, final int timestamp) {
         super(command, timestamp);
     }

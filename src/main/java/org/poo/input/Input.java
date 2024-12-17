@@ -11,6 +11,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
+/**
+ * The type Input.
+ */
 @Data
 @NoArgsConstructor
 public final class Input {
@@ -19,10 +22,19 @@ public final class Input {
     private BaseCommand[] commands;
     private Commerciant[] commerciants;
 
+    /**
+     * Is alias boolean.
+     *
+     * @param account the account
+     * @return the boolean
+     */
     public static boolean isAlias(final String account) {
         return !account.startsWith("RO");
     }
 
+    /**
+     * Execute all commands.
+     */
     public void executeAllCommands() {
         exchanges.makeCommonCurrencyExchange();
         for (final BaseCommand command : commands) {
@@ -30,9 +42,15 @@ public final class Input {
         }
     }
 
+    /**
+     * Games to json.
+     *
+     * @param filePath1 the file path 1
+     * @throws IOException the io exception
+     */
     public void gamesToJson(final String filePath1) throws IOException {
-        try (final FileWriter fileWriter = new FileWriter(filePath1)) {
-            final Gson gson = JsonUtils.getGson();
+        try (FileWriter fileWriter = new FileWriter(filePath1)) {
+            final Gson gson = JsonUtils.getGSON();
             gson.toJson(commands, fileWriter);
         }
     }

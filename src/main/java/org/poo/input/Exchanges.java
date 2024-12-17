@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Exchanges.
+ */
 public class Exchanges {
     /**
      * Do NOT use, it gets consumed after calling makeCommonCurrencyExchange
@@ -14,6 +17,9 @@ public class Exchanges {
     private Map<String, Double> exchangeMap;
     private String superiorCurrency;
 
+    /**
+     * Make common currency exchange.
+     */
     public void makeCommonCurrencyExchange() {
         if (exchangeRates.isEmpty()) {
             return;
@@ -55,7 +61,16 @@ public class Exchanges {
         }
     }
 
-    public double convertCurrency(final double amount, final String actualCurrency, final String wantedCurrency) {
+    /**
+     * Convert currency double.
+     *
+     * @param amount         the amount
+     * @param actualCurrency the actual currency
+     * @param wantedCurrency the wanted currency
+     * @return the double
+     */
+    public double convertCurrency(final double amount, final String actualCurrency,
+                                  final String wantedCurrency) {
         if (actualCurrency.equals(wantedCurrency)) {
             return amount;
         }

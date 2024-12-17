@@ -7,12 +7,22 @@ import org.poo.user.User;
 
 import java.util.List;
 
+/**
+ * The type Users.
+ */
 @Getter
 public class Users {
     private List<User> users;
 
-    public void addAlias(final String aliasName, final String email, final String IBAN) {
-        final Account account = getAccountByEmailAndIBAN(email, IBAN);
+    /**
+     * Add alias.
+     *
+     * @param aliasName the alias name
+     * @param email     the email
+     * @param iban      the iban
+     */
+    public void addAlias(final String aliasName, final String email, final String iban) {
+        final Account account = getAccountByEmailAndIBAN(email, iban);
         account.setAlias(aliasName);
     }
 
@@ -27,6 +37,12 @@ public class Users {
         return null;
     }
 
+    /**
+     * Gets user by email.
+     *
+     * @param email the email
+     * @return the user by email
+     */
     public User getUserByEmail(final String email) {
         for (final User user : users) {
             if (user.getEmail().equals(email)) {
@@ -37,10 +53,16 @@ public class Users {
         return null;
     }
 
-    public User getUserByIBAN(final String IBAN) {
+    /**
+     * Gets user by iban.
+     *
+     * @param iban the iban
+     * @return the user by iban
+     */
+    public User getUserByIBAN(final String iban) {
         for (final User user : users) {
             for (final Account account : user.getAccounts()) {
-                if (account.getIBAN().equals(IBAN) || IBAN.equals(account.getAlias())) {
+                if (account.getIban().equals(iban) || iban.equals(account.getAlias())) {
                     return user;
                 }
             }
@@ -49,8 +71,15 @@ public class Users {
         return null;
     }
 
-    public Account getAccountByEmailAndIBAN(final String email, final String IBAN) {
-        final Account aliasAccount = checkAlias(IBAN);
+    /**
+     * Gets account by email and iban.
+     *
+     * @param email the email
+     * @param iban  the iban
+     * @return the account by email and iban
+     */
+    public Account getAccountByEmailAndIBAN(final String email, final String iban) {
+        final Account aliasAccount = checkAlias(iban);
         if (aliasAccount != null) {
             return aliasAccount;
         }
@@ -61,7 +90,7 @@ public class Users {
             }
 
             for (final Account account : user.getAccounts()) {
-                if (account.getIBAN().equals(IBAN)) {
+                if (account.getIban().equals(iban)) {
                     return account;
                 }
             }
@@ -70,21 +99,27 @@ public class Users {
         return null;
     }
 
-    public Account getAccountByIBAN(final String IBAN) {
-        final Account accountAlias = checkAlias(IBAN);
+    /**
+     * Gets account by iban.
+     *
+     * @param iban the iban
+     * @return the account by iban
+     */
+    public Account getAccountByIBAN(final String iban) {
+        final Account accountAlias = checkAlias(iban);
         if (accountAlias != null) {
             return accountAlias;
         }
 
 
-        final Account aliasAccount = checkAlias(IBAN);
+        final Account aliasAccount = checkAlias(iban);
         if (aliasAccount != null) {
             return aliasAccount;
         }
 
         for (final User user : users) {
             for (final Account account : user.getAccounts()) {
-                if (account.getIBAN().equals(IBAN)) {
+                if (account.getIban().equals(iban)) {
                     return account;
                 }
             }
@@ -93,6 +128,13 @@ public class Users {
         return null;
     }
 
+    /**
+     * Gets account by email and card number.
+     *
+     * @param email      the email
+     * @param cardNumber the card number
+     * @return the account by email and card number
+     */
     public Account getAccountByEmailAndCardNumber(final String email, final String cardNumber) {
         for (final User user : users) {
             if (!user.getEmail().equals(email)) {
@@ -101,8 +143,9 @@ public class Users {
 
             for (final Account account : user.getAccounts()) {
                 for (final Card card : account.getCards()) {
-                    if (card.getCardNumber().equals(cardNumber))
+                    if (card.getCardNumber().equals(cardNumber)) {
                         return account;
+                    }
                 }
             }
         }
@@ -110,6 +153,13 @@ public class Users {
         return null;
     }
 
+    /**
+     * Gets card by email and card number.
+     *
+     * @param email      the email
+     * @param cardNumber the card number
+     * @return the card by email and card number
+     */
     public Card getCardByEmailAndCardNumber(final String email, final String cardNumber) {
         for (final User user : users) {
             if (!user.getEmail().equals(email)) {
@@ -128,32 +178,53 @@ public class Users {
         return null;
     }
 
+    /**
+     * Gets card by card number.
+     *
+     * @param cardNumber the card number
+     * @return the card by card number
+     */
     public Card getCardByCardNumber(final String cardNumber) {
         for (final User user : users) {
             for (final Account account : user.getAccounts()) {
                 final Card result = account.getCardByCardNumber(cardNumber);
-                if (result != null)
+                if (result != null) {
                     return result;
+                }
             }
         }
         return null;
     }
 
+    /**
+     * Gets account by card number.
+     *
+     * @param cardNumber the card number
+     * @return the account by card number
+     */
     public Account getAccountByCardNumber(final String cardNumber) {
         for (final User user : users) {
             for (final Account account : user.getAccounts()) {
-                if (account.getCardByCardNumber(cardNumber) != null)
+                if (account.getCardByCardNumber(cardNumber) != null) {
                     return account;
+                }
             }
         }
         return null;
     }
 
+    /**
+     * Gets user by card number.
+     *
+     * @param cardNumber the card number
+     * @return the user by card number
+     */
     public User getUserByCardNumber(final String cardNumber) {
         for (final User user : users) {
             for (final Account account : user.getAccounts()) {
-                if (account.getCardByCardNumber(cardNumber) != null)
+                if (account.getCardByCardNumber(cardNumber) != null) {
                     return user;
+                }
             }
         }
         return null;

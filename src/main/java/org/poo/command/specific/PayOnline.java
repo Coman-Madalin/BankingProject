@@ -8,7 +8,10 @@ import org.poo.transactions.specific.PaymentTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
 
-public class PayOnline extends BaseCommand {
+/**
+ * The type Pay online.
+ */
+public final class PayOnline extends BaseCommand {
     private String cardNumber;
     private double amount;
     private String currency;
@@ -16,6 +19,12 @@ public class PayOnline extends BaseCommand {
     private String commerciant;
     private String email;
 
+    /**
+     * Instantiates a new Pay online.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public PayOnline(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -70,7 +79,7 @@ public class PayOnline extends BaseCommand {
 
         if (card.isOneTimeCard()) {
             new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute(input);
-            new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIBAN(), email)
+            new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIban(), email)
                     .execute(input);
         }
 

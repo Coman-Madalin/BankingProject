@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * The type Commerciant.
+ */
 @Data
 @NoArgsConstructor
 public final class Commerciant {

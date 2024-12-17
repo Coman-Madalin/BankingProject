@@ -2,6 +2,9 @@ package org.poo.utils;
 
 import java.util.Random;
 
+/**
+ * The type Utils.
+ */
 public final class Utils {
     private static final int IBAN_SEED = 1;
     private static final int CARD_SEED = 2;

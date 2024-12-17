@@ -4,10 +4,19 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.user.Account;
 
-public class AddFunds extends BaseCommand {
+/**
+ * The type Add funds.
+ */
+public final class AddFunds extends BaseCommand {
     private String account;
     private int amount;
 
+    /**
+     * Instantiates a new Add funds.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public AddFunds(final String command, final int timestamp) {
         super(command, timestamp);
     }

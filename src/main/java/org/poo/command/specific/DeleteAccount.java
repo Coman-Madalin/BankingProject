@@ -7,10 +7,19 @@ import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
 import org.poo.user.User;
 
-public class DeleteAccount extends BaseCommand {
+/**
+ * The type Delete account.
+ */
+public final class DeleteAccount extends BaseCommand {
     private String email;
     private String account;
 
+    /**
+     * Instantiates a new Delete account.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public DeleteAccount(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -26,7 +35,8 @@ public class DeleteAccount extends BaseCommand {
             this.setOutput(outputJson.toString());
         } else {
             final JsonObject outputJson = new JsonObject();
-            outputJson.addProperty("error", "Account couldn't be deleted - see org.poo.transactions for details");
+            outputJson.addProperty("error",
+                    "Account couldn't be deleted - see org.poo.transactions for details");
             outputJson.addProperty("timestamp", this.getTimestamp());
             this.setOutput(outputJson.toString());
 

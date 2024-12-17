@@ -66,14 +66,18 @@ public final class Main {
     }
 
     /**
+     * Action.
+     *
      * @param filePath1 for input file
      * @param filePath2 for output file
      * @throws IOException in case of exceptions to reading / writing
      */
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
-        final Gson gson = JsonUtils.getGson();
-        final JsonReader reader = new JsonReader(new FileReader(CheckerConstants.TESTS_PATH + filePath1));
+        final Gson gson = JsonUtils.getGSON();
+        final JsonReader reader = new JsonReader(
+                new FileReader(CheckerConstants.TESTS_PATH + filePath1)
+        );
 
         final Input input = gson.fromJson(reader, Input.class);
         input.executeAllCommands();

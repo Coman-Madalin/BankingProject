@@ -7,15 +7,33 @@ import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-public class CreateOneTimeCard extends BaseCommand {
+/**
+ * The type Create one time card.
+ */
+public final class CreateOneTimeCard extends BaseCommand {
     private String account;
     private String email;
 
+    /**
+     * Instantiates a new Create one time card.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public CreateOneTimeCard(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
-    public CreateOneTimeCard(final String command, final int timestamp, final String account, final String email) {
+    /**
+     * Instantiates a new Create one time card.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     * @param account   the account
+     * @param email     the email
+     */
+    public CreateOneTimeCard(final String command, final int timestamp, final String account,
+                             final String email) {
         super(command, timestamp);
         this.account = account;
         this.email = email;
@@ -32,7 +50,7 @@ public class CreateOneTimeCard extends BaseCommand {
             userAccount.getTransactionsHistory().add(new CardActionTransaction(
                     "New card created",
                     getTimestamp(),
-                    userAccount.getIBAN(),
+                    userAccount.getIban(),
                     card.getCardNumber(),
                     user.getEmail()
             ));

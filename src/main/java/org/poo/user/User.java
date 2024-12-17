@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type User.
+ */
 @Data
 @NoArgsConstructor
 @Setter
@@ -20,6 +23,12 @@ public final class User {
     private String email;
     private List<Account> accounts = new ArrayList<>();
 
+    /**
+     * Gets account by alias.
+     *
+     * @param alias the alias
+     * @return the account by alias
+     */
     public Account getAccountByAlias(final String alias) {
         for (final Account account : accounts) {
             if (alias.equals(account.getAlias())) {
@@ -29,9 +38,15 @@ public final class User {
         return null;
     }
 
-    public boolean deleteAccountByIBAN(final String IBAN) {
+    /**
+     * Delete account by iban boolean.
+     *
+     * @param iban the iban
+     * @return the boolean
+     */
+    public boolean deleteAccountByIBAN(final String iban) {
         for (final Account account : accounts) {
-            if (account.getIBAN().equals(IBAN)) {
+            if (account.getIban().equals(iban)) {
                 if (account.getBalance() == 0) {
                     this.getAccounts().remove(account);
                     return true;
@@ -42,6 +57,12 @@ public final class User {
         return false;
     }
 
+    /**
+     * Delete card by card number card.
+     *
+     * @param cardNumber the card number
+     * @return the card
+     */
     public Card deleteCardByCardNumber(final String cardNumber) {
         for (final Account account : accounts) {
             for (final Card card : account.getCards()) {
@@ -55,6 +76,12 @@ public final class User {
         return null;
     }
 
+    /**
+     * Gets card by card number.
+     *
+     * @param cardNumber the card number
+     * @return the card by card number
+     */
     public Card getCardByCardNumber(final String cardNumber) {
         for (final Account account : accounts) {
             for (final Card card : account.getCards()) {
@@ -66,6 +93,11 @@ public final class User {
         return null;
     }
 
+    /**
+     * Gets transactions history.
+     *
+     * @return the transactions history
+     */
     public List<BaseTransaction> getTransactionsHistory() {
         final List<BaseTransaction> allTransactions = new ArrayList<>();
 

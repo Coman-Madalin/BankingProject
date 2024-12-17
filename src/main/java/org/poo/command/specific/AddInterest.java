@@ -5,9 +5,18 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.user.Account;
 
-public class AddInterest extends BaseCommand {
+/**
+ * The type Add interest.
+ */
+public final class AddInterest extends BaseCommand {
     private String account;
 
+    /**
+     * Instantiates a new Add interest.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public AddInterest(final String command, final int timestamp) {
         super(command, timestamp);
     }

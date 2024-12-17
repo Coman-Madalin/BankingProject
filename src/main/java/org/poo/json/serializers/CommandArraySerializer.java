@@ -8,12 +8,16 @@ import org.poo.command.BaseCommand;
 
 import java.lang.reflect.Type;
 
-public class CommandArraySerializer implements JsonSerializer<BaseCommand[]> {
+/**
+ * The type Command array serializer.
+ */
+public final class CommandArraySerializer implements JsonSerializer<BaseCommand[]> {
     @Override
-    public JsonElement serialize(BaseCommand[] src, Type typeOfSrc, JsonSerializationContext context) {
-        JsonArray jsonArray = new JsonArray();
+    public JsonElement serialize(final BaseCommand[] src, final Type typeOfSrc,
+                                 final JsonSerializationContext context) {
+        final JsonArray jsonArray = new JsonArray();
 
-        for (BaseCommand baseCommand : src) {
+        for (final BaseCommand baseCommand : src) {
             if (baseCommand.getOutput() == null) {
                 continue;
             }

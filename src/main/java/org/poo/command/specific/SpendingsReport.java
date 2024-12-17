@@ -12,11 +12,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SpendingsReport extends BaseCommand {
+/**
+ * The type Spendings report.
+ */
+public final class SpendingsReport extends BaseCommand {
     private String account;
     private int startTimestamp;
     private int endTimestamp;
 
+    /**
+     * Instantiates a new Spendings report.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public SpendingsReport(final String command, final int timestamp) {
         super(command, timestamp);
     }
@@ -46,10 +55,11 @@ public class SpendingsReport extends BaseCommand {
         final List<BaseTransaction> transactions = new ArrayList<>();
         final List<Commerciant> commerciants = new ArrayList<>();
         for (final BaseTransaction baseTransaction : userAccount.getTransactionsHistory()) {
-            if (baseTransaction.getTimestamp() >= startTimestamp &&
-                    baseTransaction.getTimestamp() <= endTimestamp) {
+            if (baseTransaction.getTimestamp() >= startTimestamp
+                    && baseTransaction.getTimestamp() <= endTimestamp) {
                 if (baseTransaction.getDescription().equals("Card payment")) {
-                    final PaymentTransaction paymentTransaction = (PaymentTransaction) baseTransaction;
+                    final PaymentTransaction paymentTransaction =
+                            (PaymentTransaction) baseTransaction;
                     transactions.add(paymentTransaction);
 
                     boolean commerciantAlreadyExists = false;
@@ -73,8 +83,8 @@ public class SpendingsReport extends BaseCommand {
 
         Collections.sort(commerciants);
 
-        outputJson.add("transactions", JsonUtils.getGson().toJsonTree(transactions));
-        outputJson.add("commerciants", JsonUtils.getGson().toJsonTree(commerciants));
+        outputJson.add("transactions", JsonUtils.getGSON().toJsonTree(transactions));
+        outputJson.add("commerciants", JsonUtils.getGSON().toJsonTree(commerciants));
 
 
         setOutput(outputJson.toString());
@@ -84,7 +94,13 @@ public class SpendingsReport extends BaseCommand {
         private final String commerciant;
         private double total;
 
-        public Commerciant(final String commerciant, final double total) {
+        /**
+         * Instantiates a new Commerciant.
+         *
+         * @param commerciant the commerciant
+         * @param total       the total
+         */
+        Commerciant(final String commerciant, final double total) {
             this.commerciant = commerciant;
             this.total = total;
         }

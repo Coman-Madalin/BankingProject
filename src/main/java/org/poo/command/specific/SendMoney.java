@@ -9,13 +9,22 @@ import org.poo.user.User;
 
 import static org.poo.input.Input.isAlias;
 
-public class SendMoney extends BaseCommand {
+/**
+ * The type Send money.
+ */
+public final class SendMoney extends BaseCommand {
     private String account;
     private String receiver;
     private double amount;
     private String email;
     private String description;
 
+    /**
+     * Instantiates a new Send money.
+     *
+     * @param command   the command
+     * @param timestamp the timestamp
+     */
     public SendMoney(final String command, final int timestamp) {
         super(command, timestamp);
     }
