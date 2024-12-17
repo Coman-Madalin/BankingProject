@@ -22,7 +22,8 @@ public final class AddInterest extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        final Input input = Input.getInstance();
         final Account userAccount = input.getUsers().getAccountByIBAN(account);
 
         if (!userAccount.getType().equals("savings")) {

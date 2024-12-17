@@ -24,7 +24,8 @@ public final class CheckCardStatus extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        final Input input = Input.getInstance();
         final Card card = input.getUsers().getCardByCardNumber(cardNumber);
         final Account account = input.getUsers().getAccountByCardNumber(cardNumber);
         if (card == null) {

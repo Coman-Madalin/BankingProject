@@ -1,16 +1,14 @@
 package org.poo.transactions;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The type Base transaction.
  */
 @Getter
-@Setter
 public class BaseTransaction implements Comparable<BaseTransaction> {
-    private String description;
-    private int timestamp;
+    private final String description;
+    private final int timestamp;
 
     /**
      * Instantiates a new Base transaction.

@@ -1,8 +1,8 @@
 package org.poo.input;
 
 import com.google.gson.Gson;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.Commerciant;
 import org.poo.json.JsonUtils;
@@ -14,13 +14,19 @@ import java.io.IOException;
 /**
  * The type Input.
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 public final class Input {
+    @Getter
+    private static Input instance = null;
     private Users users;
     private Exchanges exchanges;
     private BaseCommand[] commands;
     private Commerciant[] commerciants;
+
+    public Input() {
+        instance = this;
+    }
 
     /**
      * Is alias boolean.
@@ -38,7 +44,7 @@ public final class Input {
     public void executeAllCommands() {
         exchanges.makeCommonCurrencyExchange();
         for (final BaseCommand command : commands) {
-            command.execute(this);
+            command.execute();
         }
     }
 

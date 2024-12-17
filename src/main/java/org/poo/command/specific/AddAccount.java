@@ -32,7 +32,8 @@ public final class AddAccount extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        final Input input = Input.getInstance();
         final Account account = new Account(currency, accountType);
         final User user = input.getUsers().getUserByEmail(email);
 

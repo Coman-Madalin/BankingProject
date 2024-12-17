@@ -31,7 +31,8 @@ public final class SpendingsReport extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        Input input = Input.getInstance();
         final Account userAccount = input.getUsers().getAccountByIBAN(account);
 
         final JsonObject outputJson = new JsonObject();

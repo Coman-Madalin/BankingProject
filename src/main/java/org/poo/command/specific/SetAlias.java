@@ -22,7 +22,7 @@ public final class SetAlias extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
-        input.getUsers().addAlias(alias, email, account);
+    public void execute() {
+        Input.getInstance().getUsers().addAlias(alias, email, account);
     }
 }

@@ -2,7 +2,6 @@ package org.poo.command;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.poo.input.Input;
 
 /**
  * The type Base command.
@@ -27,8 +26,6 @@ public abstract class BaseCommand {
 
     /**
      * Execute.
-     *
-     * @param input the input
      */
-    public abstract void execute(Input input);
+    public abstract void execute();
 }

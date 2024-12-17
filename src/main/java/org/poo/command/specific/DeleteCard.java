@@ -40,7 +40,8 @@ public final class DeleteCard extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        Input input = Input.getInstance();
         final User user = input.getUsers().getUserByEmail(email);
         final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
 

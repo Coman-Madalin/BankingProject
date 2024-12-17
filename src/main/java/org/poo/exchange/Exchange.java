@@ -1,13 +1,11 @@
 package org.poo.exchange;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 /**
  * The type Exchange.
  */
-@Data
-@NoArgsConstructor
+@Getter
 public final class Exchange {
     private String from;
     private String to;

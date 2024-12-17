@@ -30,7 +30,8 @@ public final class SendMoney extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        Input input = Input.getInstance();
         // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
         final User receiverUser = input.getUsers().getUserByIBAN(receiver);

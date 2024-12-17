@@ -1,9 +1,6 @@
 package org.poo.user;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.poo.transactions.BaseTransaction;
 
 import java.util.ArrayList;
@@ -13,9 +10,6 @@ import java.util.List;
 /**
  * The type User.
  */
-@Data
-@NoArgsConstructor
-@Setter
 @Getter
 public final class User {
     private String firstName;

@@ -22,7 +22,8 @@ public final class PrintTransactions extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        Input input = Input.getInstance();
         final User user = input.getUsers().getUserByEmail(email);
 
         setOutput(JsonUtils.getGSON().toJson(user.getTransactionsHistory()));

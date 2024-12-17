@@ -40,7 +40,8 @@ public final class CreateOneTimeCard extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        final Input input = Input.getInstance();
         final Card card = new Card(true);
         final User user = input.getUsers().getUserByEmail(email);
         final Account userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);

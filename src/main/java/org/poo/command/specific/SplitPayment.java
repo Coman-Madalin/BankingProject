@@ -27,7 +27,8 @@ public final class SplitPayment extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        Input input = Input.getInstance();
         final double amountPerPerson = amount / accounts.size();
 
         final SplitTransaction transaction = new SplitTransaction(

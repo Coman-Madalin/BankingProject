@@ -25,7 +25,8 @@ public final class CreateCard extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        final Input input = Input.getInstance();
         final User user = input.getUsers().getUserByEmail(email);
         final Account userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 

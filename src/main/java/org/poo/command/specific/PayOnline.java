@@ -37,7 +37,8 @@ public final class PayOnline extends BaseCommand {
     }
 
     @Override
-    public void execute(final Input input) {
+    public void execute() {
+        final Input input = Input.getInstance();
         final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
 
         if (account == null) {
@@ -78,9 +79,9 @@ public final class PayOnline extends BaseCommand {
         account.decreaseBalance(sameCurrencyAmount);
 
         if (card.isOneTimeCard()) {
-            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute(input);
+            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute();
             new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIban(), email)
-                    .execute(input);
+                    .execute();
         }
 
     }
