@@ -33,7 +33,6 @@ public class SendMoney extends BaseCommand {
         final Account senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
         final Account receiverAccount = input.getUsers().getAccountByIBAN(receiver);
 
-
         if (senderAccount == null || receiverAccount == null) {
             return;
         }
@@ -67,7 +66,7 @@ public class SendMoney extends BaseCommand {
                 getTimestamp(),
                 account,
                 receiver,
-                String.format("%.1f %s", amount, senderAccount.getCurrency()),
+                String.format("%f %s", amount, senderAccount.getCurrency()),
                 "sent"
         ));
 
@@ -76,7 +75,7 @@ public class SendMoney extends BaseCommand {
                 getTimestamp(),
                 account,
                 receiver,
-                String.format("%.1f %s", amount, receiverAccount.getCurrency()),
+                String.format("%f %s", receiverCurrencyAmount, receiverAccount.getCurrency()),
                 "received"
         ));
 

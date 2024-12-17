@@ -5,6 +5,7 @@ import org.poo.input.Input;
 import org.poo.transactions.specific.SplitTransaction;
 import org.poo.user.Account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SplitPayment extends BaseCommand {
@@ -26,25 +27,30 @@ public class SplitPayment extends BaseCommand {
                 currency,
                 accounts);
 
-        //TODO: if it is needed in the future, the accounts can be cached
-        // TODO: DO THAT ^, BUT PUT THEM IN A SET
+        boolean everyoneCanPay = true;
 
+        final List<Account> accountSet = new ArrayList<>();
         for (final String accountNumber : accounts) {
             final Account account = input.getUsers().getAccountByIBAN(accountNumber);
+            accountSet.add(account);
             final double amountInAccountCurrency = input.getExchanges().convertCurrency(amountPerPerson,
                     currency, account.getCurrency());
 
-            if (account.hasEnoughBalance(amountInAccountCurrency)) {
-                account.decreaseBalance(amountInAccountCurrency);
-            } else {
+            if (!account.hasEnoughBalance(amountInAccountCurrency)) {
                 transaction.setError(String.format("Account %s has insufficient funds for a split" +
                         " payment.", accountNumber));
+                everyoneCanPay = false;
             }
         }
 
-        for (final String accountNumber : accounts) {
-            final Account account = input.getUsers().getAccountByIBAN(accountNumber);
+        for (final Account account : accountSet) {
             account.getTransactionsHistory().add(transaction);
+
+            if (everyoneCanPay) {
+                final double amountInAccountCurrency = input.getExchanges().convertCurrency(amountPerPerson,
+                        currency, account.getCurrency());
+                account.decreaseBalance(amountInAccountCurrency);
+            }
         }
     }
 }

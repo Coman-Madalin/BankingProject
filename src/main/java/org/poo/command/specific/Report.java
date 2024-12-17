@@ -6,10 +6,8 @@ import org.poo.input.Input;
 import org.poo.json.JsonUtils;
 import org.poo.transactions.BaseTransaction;
 import org.poo.user.Account;
-import org.poo.user.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Report extends BaseCommand {
     private String account;
@@ -22,7 +20,6 @@ public class Report extends BaseCommand {
 
     @Override
     public void execute(final Input input) {
-        final User user = input.getUsers().getUserByIBAN(account);
         final Account userAccount = input.getUsers().getAccountByIBAN(account);
 
         final JsonObject outputObject = new JsonObject();
@@ -38,7 +35,7 @@ public class Report extends BaseCommand {
         outputObject.addProperty("balance", userAccount.getBalance());
         outputObject.addProperty("currency", userAccount.getCurrency());
         final List<BaseTransaction> transactions = new ArrayList<>();
-        for (final BaseTransaction baseTransaction : user.getTransactionsHistory()) {
+        for (final BaseTransaction baseTransaction : userAccount.getTransactionsHistory()) {
             if (baseTransaction.getTimestamp() >= startTimestamp &&
                     baseTransaction.getTimestamp() <= endTimestamp) {
                 transactions.add(baseTransaction);

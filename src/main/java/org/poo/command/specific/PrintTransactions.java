@@ -16,12 +16,6 @@ public class PrintTransactions extends BaseCommand {
     public void execute(final Input input) {
         final User user = input.getUsers().getUserByEmail(email);
 
-        if (email.equals("Leanne_Scott-Davies@yandex.nz")) {
-            System.out.println("DADADA");
-        }
-
-//        Collections.sort(user.getTransactionsHistory());
-
         setOutput(JsonUtils.getGson().toJson(user.getTransactionsHistory()));
     }
 }

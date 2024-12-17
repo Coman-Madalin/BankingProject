@@ -17,11 +17,12 @@ public class CreateCard extends BaseCommand {
 
     @Override
     public void execute(final Input input) {
-        final Card card = new Card();
         final User user = input.getUsers().getUserByEmail(email);
         final Account userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
         if (userAccount != null) {
+            final Card card = new Card();
+
             userAccount.getCards().add(card);
             userAccount.getTransactionsHistory().add(new CardActionTransaction(
                     "New card created",
