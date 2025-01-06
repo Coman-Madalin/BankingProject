@@ -3,6 +3,7 @@ package org.poo.user;
 import lombok.Getter;
 import org.poo.transactions.BaseTransaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,10 +13,15 @@ import java.util.List;
  */
 @Getter
 public final class User {
+    private final List<Account> accounts = new ArrayList<>();
     private String firstName;
     private String lastName;
     private String email;
-    private List<Account> accounts = new ArrayList<>();
+    private int age;
+    /**
+     * DON'T use this, this is only for deserialization purposes, use age field instead
+     */
+    private String birthDate;
 
     /**
      * Gets account by alias.
@@ -102,5 +108,18 @@ public final class User {
         Collections.sort(allTransactions);
 
         return allTransactions;
+    }
+
+    public void calculateAge() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate birthDate = LocalDate.parse(getBirthDate());
+        int days = currentDate.getDayOfYear() - birthDate.getDayOfYear();
+        int years = currentDate.getYear() - birthDate.getYear();
+
+        if (days >= 0) {
+            years++;
+        }
+
+        age = years;
     }
 }

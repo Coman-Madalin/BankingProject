@@ -1,33 +1,10 @@
 package org.poo.json;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapter;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import org.poo.command.BaseCommand;
-import org.poo.command.specific.AddAccount;
-import org.poo.command.specific.AddFunds;
-import org.poo.command.specific.CreateCard;
-import org.poo.command.specific.PrintUsers;
-import org.poo.command.specific.DeleteAccount;
-import org.poo.command.specific.CreateOneTimeCard;
-import org.poo.command.specific.DeleteCard;
-import org.poo.command.specific.SetMinimumBalance;
-import org.poo.command.specific.PayOnline;
-import org.poo.command.specific.SendMoney;
-import org.poo.command.specific.SetAlias;
-import org.poo.command.specific.PrintTransactions;
-import org.poo.command.specific.CheckCardStatus;
-import org.poo.command.specific.ChangeInterestRate;
-import org.poo.command.specific.SplitPayment;
-import org.poo.command.specific.Report;
-import org.poo.command.specific.SpendingsReport;
-import org.poo.command.specific.AddInterest;
+import org.poo.command.specific.*;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -56,7 +33,8 @@ public final class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
             new AbstractMap.SimpleEntry<>("splitPayment", SplitPayment.class),
             new AbstractMap.SimpleEntry<>("report", Report.class),
             new AbstractMap.SimpleEntry<>("spendingsReport", SpendingsReport.class),
-            new AbstractMap.SimpleEntry<>("addInterest", AddInterest.class)
+            new AbstractMap.SimpleEntry<>("addInterest", AddInterest.class),
+            new AbstractMap.SimpleEntry<>("withdrawSavings", WithdrawSavings.class)
     );
 
     @Override

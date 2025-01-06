@@ -80,7 +80,7 @@ public final class Main {
         );
 
         final Input input = gson.fromJson(reader, Input.class);
-        input.executeAllCommands();
+        input.run();
         input.gamesToJson(filePath2);
         resetRandom();
     }

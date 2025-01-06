@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.Commerciant;
 import org.poo.json.JsonUtils;
+import org.poo.user.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,10 +39,9 @@ public final class Input {
         return !account.startsWith("RO");
     }
 
-    /**
-     * Execute all commands.
-     */
-    public void executeAllCommands() {
+    public void run() {
+        calculateAgeOfUsers();
+
         exchanges.makeCommonCurrencyExchange();
         for (final BaseCommand command : commands) {
             command.execute();
@@ -58,6 +58,16 @@ public final class Input {
         try (FileWriter fileWriter = new FileWriter(filePath1)) {
             final Gson gson = JsonUtils.getGSON();
             gson.toJson(commands, fileWriter);
+        }
+    }
+
+    public void calculateAgeOfUsers() {
+        for (User user : getUsers().getUsers()) {
+            user.calculateAge();
+        }
+
+        for (User user : getUsers().getUsers()) {
+            System.out.println(user.getAge());
         }
     }
 }
