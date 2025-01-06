@@ -34,7 +34,8 @@ public final class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
             new AbstractMap.SimpleEntry<>("report", Report.class),
             new AbstractMap.SimpleEntry<>("spendingsReport", SpendingsReport.class),
             new AbstractMap.SimpleEntry<>("addInterest", AddInterest.class),
-            new AbstractMap.SimpleEntry<>("withdrawSavings", WithdrawSavings.class)
+            new AbstractMap.SimpleEntry<>("withdrawSavings", WithdrawSavings.class),
+            new AbstractMap.SimpleEntry<>("upgradePlan", UpgradePlan.class)
     );
 
     @Override

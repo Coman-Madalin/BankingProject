@@ -66,6 +66,13 @@ public final class SendMoney extends BaseCommand {
 
         senderAccount.decreaseBalance(amount);
 
+        double commission = amount * 2 / 100;
+        double senderCurrencyCommission = input.getExchanges().convertCurrency(commission, "RON",
+                senderAccount.getCurrency());
+
+        senderAccount.decreaseBalance(senderCurrencyCommission);
+
+
         final double receiverCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 senderAccount.getCurrency(), receiverAccount.getCurrency());
 

@@ -1,6 +1,7 @@
 package org.poo.user;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.poo.transactions.BaseTransaction;
 
 import java.time.LocalDate;
@@ -18,6 +19,8 @@ public final class User {
     private String lastName;
     private String email;
     private int age;
+    @Setter
+    private ServicePlans servicePlan = ServicePlans.STANDARD;
     /**
      * DON'T use this, this is only for deserialization purposes, use age field instead
      */

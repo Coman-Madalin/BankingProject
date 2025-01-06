@@ -39,7 +39,8 @@ public class JsonUtils {
             Report.class,
             SpendingsReport.class,
             AddInterest.class,
-            WithdrawSavings.class
+            WithdrawSavings.class,
+            UpgradePlan.class
     };
 
     static {
