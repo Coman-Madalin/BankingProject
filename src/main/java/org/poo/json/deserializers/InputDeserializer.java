@@ -2,6 +2,7 @@ package org.poo.json.deserializers;
 
 import com.google.gson.*;
 import org.poo.command.BaseCommand;
+import org.poo.commerciant.Commerciants;
 import org.poo.input.Exchanges;
 import org.poo.input.Input;
 import org.poo.input.Users;
@@ -27,6 +28,11 @@ public final class InputDeserializer implements JsonDeserializer<Input> {
         elem = new JsonObject();
         elem.add("exchangeRates", exchangeRates);
         toReturn.setExchanges(context.deserialize(elem, Exchanges.class));
+
+        final JsonArray commerciants = json.getAsJsonObject().getAsJsonArray("commerciants");
+        elem = new JsonObject();
+        elem.add("commerciants", commerciants);
+        toReturn.setCommerciants(context.deserialize(elem, Commerciants.class));
 
         final JsonArray commands = json.getAsJsonObject().getAsJsonArray("commands");
         toReturn.setCommands(context.deserialize(commands, BaseCommand[].class));

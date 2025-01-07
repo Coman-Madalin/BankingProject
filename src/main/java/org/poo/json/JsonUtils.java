@@ -40,7 +40,7 @@ public class JsonUtils {
             SpendingsReport.class,
             AddInterest.class,
             WithdrawSavings.class,
-            UpgradePlan.class
+            CashWithdrawal.class
     };
 
     static {

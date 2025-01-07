@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.poo.command.BaseCommand;
-import org.poo.commerciant.Commerciant;
+import org.poo.commerciant.Commerciants;
 import org.poo.json.JsonUtils;
+import org.poo.user.ServicePlans;
 import org.poo.user.User;
 
 import java.io.FileWriter;
@@ -23,7 +24,7 @@ public final class Input {
     private Users users;
     private Exchanges exchanges;
     private BaseCommand[] commands;
-    private Commerciant[] commerciants;
+    private Commerciants commerciants;
 
     public Input() {
         instance = this;
@@ -41,6 +42,7 @@ public final class Input {
 
     public void run() {
         calculateAgeOfUsers();
+        checkForStudents();
 
         exchanges.makeCommonCurrencyExchange();
         for (final BaseCommand command : commands) {
@@ -61,13 +63,17 @@ public final class Input {
         }
     }
 
-    public void calculateAgeOfUsers() {
+    private void calculateAgeOfUsers() {
         for (User user : getUsers().getUsers()) {
             user.calculateAge();
         }
+    }
 
+    private void checkForStudents() {
         for (User user : getUsers().getUsers()) {
-            System.out.println(user.getAge());
+            if (user.getOccupation().equalsIgnoreCase("student")) {
+                user.setServicePlan(ServicePlans.STUDENT);
+            }
         }
     }
 }

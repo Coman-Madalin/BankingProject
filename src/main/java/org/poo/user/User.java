@@ -5,9 +5,7 @@ import lombok.Setter;
 import org.poo.transactions.BaseTransaction;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * The type User.
@@ -18,6 +16,8 @@ public final class User {
     private String firstName;
     private String lastName;
     private String email;
+    private final Statistics statistics = null;
+    private String occupation;
     private int age;
     @Setter
     private ServicePlans servicePlan = ServicePlans.STANDARD;
@@ -90,6 +90,17 @@ public final class User {
             for (final Card card : account.getCards()) {
                 if (card.getCardNumber().equals(cardNumber)) {
                     return card;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Account getAccountByCardNumber(final String cardNumber) {
+        for (final Account account : accounts) {
+            for (final Card card : account.getCards()) {
+                if (card.getCardNumber().equals(cardNumber)) {
+                    return account;
                 }
             }
         }
