@@ -1,11 +1,14 @@
 package org.poo.input;
 
 import lombok.Getter;
+import org.poo.commerciant.Commerciant;
 import org.poo.user.Account;
 import org.poo.user.Card;
+import org.poo.user.Data;
 import org.poo.user.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The type Users.
@@ -228,5 +231,56 @@ public class Users {
             }
         }
         return null;
+    }
+
+    public void printAll(int time) {
+        System.out.println("[");
+        System.out.println("!!!!TIME=" + time + "!!!!");
+        for (User user : users) {
+            System.out.println("    {");
+            System.out.println("    email: " + user.getEmail());
+            System.out.println("    plan: " + user.getServicePlan());
+            System.out.println("    Accounts: [");
+            for (Account account : user.getAccounts()) {
+                System.out.println("        Iban: " + account.getIban());
+                System.out.println("        Balance: " + account.getBalance());
+                System.out.println("        Currency: " + account.getCurrency());
+                System.out.println("        Commerciants data: [");
+                for (Map.Entry<Commerciant, Data> commerciantDataEntry : account.getCOMMERCIANT_TO_DATA().entrySet()) {
+                    System.out.println("            {");
+                    System.out.println("            Commerciant name = " + commerciantDataEntry.getKey().getCommerciant());
+                    System.out.println("            Spend = " + commerciantDataEntry.getValue().getTotalSpend());
+                    System.out.println("            Transactions = " + commerciantDataEntry.getValue().getNrTransactions());
+
+                    System.out.println("            }");
+                }
+                System.out.println("        ],");
+            }
+            System.out.println("    ],");
+            System.out.println("    },");
+        }
+        System.out.println("]\n\n");
+    }
+
+    public void printSpecific(int time, String IBAN) {
+        System.out.println("!!!!TIME=" + time + "!!!!");
+        Account account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
+        if (account == null)
+            return;
+
+        System.out.println("Iban: " + account.getIban());
+        System.out.println("Balance: " + account.getBalance() + " " + account.getCurrency());
+        System.out.println("Commerciants data: [");
+        for (Map.Entry<Commerciant, Data> commerciantDataEntry : account.getCOMMERCIANT_TO_DATA().entrySet()) {
+            System.out.println("    {");
+            System.out.println("    Commerciant name = " + commerciantDataEntry.getKey().getCommerciant());
+            System.out.println("    Commerciant cashback = " + commerciantDataEntry.getKey().getCashback());
+
+            System.out.println("    Spend = " + commerciantDataEntry.getValue().getTotalSpend());
+            System.out.println("    Transactions = " + commerciantDataEntry.getValue().getNrTransactions());
+            System.out.println("    }");
+        }
+        System.out.println("]");
+        System.out.println("\n");
     }
 }

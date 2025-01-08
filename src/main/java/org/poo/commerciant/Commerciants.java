@@ -1,7 +1,10 @@
 package org.poo.commerciant;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class Commerciants {
     private List<Commerciant> commerciants;
 

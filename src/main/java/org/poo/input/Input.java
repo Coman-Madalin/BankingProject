@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.poo.command.BaseCommand;
+import org.poo.commerciant.CashbackPlans;
+import org.poo.commerciant.Commerciant;
 import org.poo.commerciant.Commerciants;
 import org.poo.json.JsonUtils;
 import org.poo.user.ServicePlans;
@@ -43,10 +45,13 @@ public final class Input {
     public void run() {
         calculateAgeOfUsers();
         checkForStudents();
+        initializeCashbackPlans();
 
         exchanges.makeCommonCurrencyExchange();
         for (final BaseCommand command : commands) {
             command.execute();
+
+            users.printSpecific(command.getTimestamp(), "RO58POOB7344468893732422");
         }
     }
 
@@ -74,6 +79,12 @@ public final class Input {
             if (user.getOccupation().equalsIgnoreCase("student")) {
                 user.setServicePlan(ServicePlans.STUDENT);
             }
+        }
+    }
+
+    private void initializeCashbackPlans() {
+        for (Commerciant commerciant : commerciants.getCommerciants()) {
+            commerciant.setCashback(CashbackPlans.parse(commerciant.getCashbackStrategy()));
         }
     }
 }

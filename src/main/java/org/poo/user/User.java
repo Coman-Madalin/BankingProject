@@ -5,7 +5,9 @@ import lombok.Setter;
 import org.poo.transactions.BaseTransaction;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The type User.
@@ -16,7 +18,6 @@ public final class User {
     private String firstName;
     private String lastName;
     private String email;
-    private final Statistics statistics = null;
     private String occupation;
     private int age;
     @Setter

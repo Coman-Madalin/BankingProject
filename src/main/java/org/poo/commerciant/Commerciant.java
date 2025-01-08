@@ -1,11 +1,13 @@
 package org.poo.commerciant;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The type Commerciant.
  */
 @Getter
+@Setter
 public final class Commerciant {
     private int id;
     private String commerciant;

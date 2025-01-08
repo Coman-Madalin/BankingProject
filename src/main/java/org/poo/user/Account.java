@@ -2,9 +2,12 @@ package org.poo.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.commerciant.Cashbacks;
+import org.poo.commerciant.Commerciant;
 import org.poo.transactions.BaseTransaction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.poo.utils.Utils.generateIBAN;
@@ -25,14 +28,15 @@ public class Account {
     private List<BaseTransaction> transactionsHistory = new ArrayList<>();
     // TODO: maybe make a savings account since normal account doesn't have interestRate
     private double interestRate;
+    private User user;
 
-    /**
-     * Instantiates a new Account.
-     *
-     * @param currency the currency
-     * @param type     the type
-     */
-    public Account(final String currency, final String type) {
+    @Setter
+    private Cashbacks cashbackForTransactionsCount = Cashbacks.NONE;
+
+    private HashMap<Commerciant, Data> COMMERCIANT_TO_DATA = new HashMap<>();
+
+    public Account(final String currency, final String type, User user) {
+        this.user = user;
         this.currency = currency;
         this.type = type;
         this.iban = generateIBAN();
@@ -89,5 +93,47 @@ public class Account {
         }
 
         return null;
+    }
+
+    public double getSpendingDiscount(Commerciant commerciant, double amount) {
+        Data data = COMMERCIANT_TO_DATA.get(commerciant);
+        if (data == null) {
+            data = new Data(0, 0);
+        }
+
+        int[] thresholds = {100, 300, 500};
+        for (int i = 0; i < thresholds.length; i++) {
+            if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount > thresholds[i]) {
+                return user.getServicePlan().getSpendingDiscount(i);
+            }
+        }
+        return 0;
+    }
+
+    public void addTransaction(Commerciant commerciant, double amount) {
+        Data data = COMMERCIANT_TO_DATA.putIfAbsent(commerciant, new Data(1, amount));
+        if (data == null) {
+            return;
+        }
+
+        data.addTransaction(amount);
+        COMMERCIANT_TO_DATA.put(commerciant, data);
+    }
+
+    public double getDiscountForTransactionCount(String commerciantType) {
+        if (Cashbacks.valueOf(commerciantType.toUpperCase()) == cashbackForTransactionsCount) {
+            return cashbackForTransactionsCount.getDiscount();
+        }
+        return 0;
+    }
+
+    public void updateCashback(Commerciant commerciant) {
+        Data data = COMMERCIANT_TO_DATA.get(commerciant);
+        cashbackForTransactionsCount =
+                cashbackForTransactionsCount.updateCashBack(data.getNrTransactions());
+    }
+
+    public void invalidateCashback() {
+        cashbackForTransactionsCount = Cashbacks.NONE;
     }
 }

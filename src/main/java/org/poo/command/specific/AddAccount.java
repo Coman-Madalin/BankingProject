@@ -34,13 +34,16 @@ public final class AddAccount extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        final Account account = new Account(currency, accountType);
         final User user = input.getUsers().getUserByEmail(email);
-
-        if (user != null) {
-            user.getAccounts().add(account);
-            account.getTransactionsHistory().add(new BaseTransaction("New account created",
-                    getTimestamp()));
+        if (user == null) {
+            // TODO: user not found
+            return;
         }
+
+        final Account account = new Account(currency, accountType, user);
+        user.getAccounts().add(account);
+        account.getTransactionsHistory().add(new BaseTransaction("New account created",
+                getTimestamp()));
+
     }
 }

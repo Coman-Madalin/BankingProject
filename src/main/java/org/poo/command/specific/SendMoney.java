@@ -66,11 +66,11 @@ public final class SendMoney extends BaseCommand {
 
         senderAccount.decreaseBalance(amount);
 
-        double commission = receiverUser.getServicePlan().getCommission(amount);
-        double senderCurrencyCommission = input.getExchanges().convertCurrency(commission, "RON",
-                senderAccount.getCurrency());
+        double senderCommission = senderUser.getServicePlan().getCommission(amount);
+//        double senderCurrencyCommission = input.getExchanges().convertCurrency(senderCommission, "RON",
+//                senderAccount.getCurrency());
 
-        senderAccount.decreaseBalance(senderCurrencyCommission);
+        senderAccount.decreaseBalance(senderCommission);
 
 
         final double receiverCurrencyAmount = input.getExchanges().convertCurrency(amount,

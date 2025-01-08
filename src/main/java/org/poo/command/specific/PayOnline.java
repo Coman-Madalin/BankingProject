@@ -2,11 +2,14 @@ package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
 import org.poo.command.BaseCommand;
+import org.poo.commerciant.CashbackPlans;
+import org.poo.commerciant.Commerciant;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.PaymentTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
+import org.poo.user.User;
 
 /**
  * The type Pay online.
@@ -59,14 +62,47 @@ public final class PayOnline extends BaseCommand {
             return;
         }
 
+        final User user = account.getUser();
+
         final double sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 currency, account.getCurrency());
+        double commission = user.getServicePlan().getCommission(sameCurrencyAmount);
+        double totalAmount = sameCurrencyAmount + commission;
 
-        if (!account.hasEnoughBalance(sameCurrencyAmount)) {
+        if (!account.hasEnoughBalance(totalAmount)) {
             account.getTransactionsHistory().add(new BaseTransaction(
                     getTimestamp()
             ));
             return;
+        }
+
+        Commerciant commerciant1 = Input.getInstance().getCommerciants()
+                .getCommerciantByName(commerciant);
+
+        if (commerciant1 == null) {
+            // TODO: there is no commerciant with this name
+            return;
+        }
+
+        double discount = account.getDiscountForTransactionCount(commerciant1.getType());
+        if (discount != 0) {
+            totalAmount = totalAmount - sameCurrencyAmount * discount;
+            account.invalidateCashback();
+        }
+
+
+        double amountInRON = input.getExchanges().convertCurrency(amount, currency, "RON");
+        if(commerciant1.getCashback() == CashbackPlans.SPENDING_THRESHOLD){
+            discount = account.getSpendingDiscount(commerciant1, amountInRON);
+            if (discount != 0) {
+                totalAmount = totalAmount - sameCurrencyAmount * discount;
+            }
+        }
+
+        account.addTransaction(commerciant1, amountInRON);
+
+        if (commerciant1.getCashback() == CashbackPlans.NR_OF_TRANSACTIONS) {
+            account.updateCashback(commerciant1);
         }
 
         account.getTransactionsHistory().add(new PaymentTransaction(
@@ -76,7 +112,7 @@ public final class PayOnline extends BaseCommand {
                 commerciant
         ));
 
-        account.decreaseBalance(sameCurrencyAmount);
+        account.decreaseBalance(totalAmount);
 
         if (card.isOneTimeCard()) {
             new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute();
