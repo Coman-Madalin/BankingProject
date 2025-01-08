@@ -47,6 +47,10 @@ public class Users {
      * @return the user by email
      */
     public User getUserByEmail(final String email) {
+        if (email == null) {
+            return null;
+        }
+
         for (final User user : users) {
             if (user.getEmail().equals(email)) {
                 return user;
@@ -263,11 +267,11 @@ public class Users {
     }
 
     public void printSpecific(int time, String IBAN) {
-        System.out.println("!!!!TIME=" + time + "!!!!");
         Account account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
         if (account == null)
             return;
 
+        System.out.println("!!!!TIME=" + time + "!!!!");
         System.out.println("Iban: " + account.getIban());
         System.out.println("Balance: " + account.getBalance() + " " + account.getCurrency());
         System.out.println("Commerciants data: [");

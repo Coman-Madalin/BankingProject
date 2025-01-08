@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
+import org.poo.transactions.specific.WithdrawalTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
@@ -46,14 +47,12 @@ public class CashWithdrawal extends BaseCommand {
         if (card == null) {
             return;
         }
-        // TODO: Convert amount in RON
-        // Amount is already in RON
-        double amountInRON = Input.getInstance().getExchanges()
-                .convertCurrency(amount, account.getCurrency(), "RON");
-        double commission = user.getServicePlan().getCommission(amountInRON);
+        double amountAccountCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(amount, "RON", account.getCurrency());
+        double commission = user.getServicePlan().getCommission(amount);
         double commissionAccountCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(commission, "RON", account.getCurrency());
-        double totalAmount = amount + commissionAccountCurrency;
+        double totalAmount = amountAccountCurrency + commissionAccountCurrency;
 
         if (!account.hasEnoughBalance(totalAmount)) {
             account.getTransactionsHistory().add(new BaseTransaction(
@@ -63,5 +62,6 @@ public class CashWithdrawal extends BaseCommand {
         }
 
         account.decreaseBalance(totalAmount);
+        account.getTransactionsHistory().add(new WithdrawalTransaction(getTimestamp(), amount));
     }
 }

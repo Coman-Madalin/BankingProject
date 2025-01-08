@@ -41,6 +41,10 @@ public final class PayOnline extends BaseCommand {
 
     @Override
     public void execute() {
+        if (amount == 0) {
+            return;
+        }
+
         final Input input = Input.getInstance();
         final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
 

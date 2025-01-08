@@ -51,7 +51,7 @@ public final class Input {
         for (final BaseCommand command : commands) {
             command.execute();
 
-            users.printSpecific(command.getTimestamp(), "RO58POOB7344468893732422");
+            users.printSpecific(command.getTimestamp(), "RO76POOB4035116042454483");
         }
     }
 

@@ -1,5 +1,6 @@
 package org.poo.command.specific;
 
+import com.google.gson.JsonObject;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
@@ -38,14 +39,14 @@ public final class SendMoney extends BaseCommand {
         final User senderUser = input.getUsers().getUserByEmail(email);
 
         if (senderUser == null) {
+            final JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("timestamp", getTimestamp());
+            outputJson.addProperty("description", "User not found");
+            setOutput(outputJson.toString());
             return;
         }
 
         final Account senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
-
-        if (getTimestamp() == 8) {
-            System.out.println("DDADAD");
-        }
 
         Commerciant commerciant = Input.getInstance().getCommerciants()
                 .getCommerciantByIBAN(receiver);
@@ -59,6 +60,10 @@ public final class SendMoney extends BaseCommand {
         final User receiverUser = input.getUsers().getUserByIBAN(receiver);
 
         if (receiverUser == null) {
+            final JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("timestamp", getTimestamp());
+            outputJson.addProperty("description", "User not found");
+            setOutput(outputJson.toString());
             return;
         }
 
