@@ -64,6 +64,7 @@ public final class PayOnline extends BaseCommand {
 
         final User user = account.getUser();
 
+        // TODO: Convert amount in RON
         final double sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 currency, account.getCurrency());
         double commission = user.getServicePlan().getCommission(sameCurrencyAmount);
@@ -80,6 +81,7 @@ public final class PayOnline extends BaseCommand {
                 .getCommerciantByName(commerciant);
 
         if (commerciant1 == null) {
+            System.out.println("NO COMMERCIANT");
             // TODO: there is no commerciant with this name
             return;
         }

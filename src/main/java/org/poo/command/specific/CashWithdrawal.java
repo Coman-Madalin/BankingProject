@@ -50,6 +50,7 @@ public class CashWithdrawal extends BaseCommand {
         if (card == null) {
             return;
         }
+        // TODO: Convert amount in RON
 
         double accountCurrencyAmount = Input.getInstance().getExchanges()
                 .convertCurrency(amount, "RON", account.getCurrency());

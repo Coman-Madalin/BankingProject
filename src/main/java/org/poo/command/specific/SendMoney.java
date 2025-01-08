@@ -1,6 +1,8 @@
 package org.poo.command.specific;
 
 import org.poo.command.BaseCommand;
+import org.poo.commerciant.CashbackPlans;
+import org.poo.commerciant.Commerciant;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.TransferTransaction;
@@ -34,13 +36,32 @@ public final class SendMoney extends BaseCommand {
         Input input = Input.getInstance();
         // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
-        final User receiverUser = input.getUsers().getUserByIBAN(receiver);
 
-        if (senderUser == null || receiverUser == null) {
+        if (senderUser == null) {
             return;
         }
 
         final Account senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
+
+        if (getTimestamp() == 8) {
+            System.out.println("DDADAD");
+        }
+
+        Commerciant commerciant = Input.getInstance().getCommerciants()
+                .getCommerciantByIBAN(receiver);
+
+        if (commerciant != null) {
+            System.out.println("SEND MONEY: FOUND COMMERCIANT");
+            sendToCompany(senderAccount, commerciant);
+            return;
+        }
+
+        final User receiverUser = input.getUsers().getUserByIBAN(receiver);
+
+        if (receiverUser == null) {
+            return;
+        }
+
         final Account receiverAccount = input.getUsers().getAccountByIBAN(receiver);
 
         if (senderAccount == null || receiverAccount == null) {
@@ -66,12 +87,13 @@ public final class SendMoney extends BaseCommand {
 
         senderAccount.decreaseBalance(amount);
 
-        double senderCommission = senderUser.getServicePlan().getCommission(amount);
-//        double senderCurrencyCommission = input.getExchanges().convertCurrency(senderCommission, "RON",
-//                senderAccount.getCurrency());
+        double amountInRON = Input.getInstance().getExchanges().convertCurrency(amount,
+                senderAccount.getCurrency(), "RON");
+        double commissionInRON = senderUser.getServicePlan().getCommission(amountInRON);
+        double senderCurrencyCommission = input.getExchanges().convertCurrency(commissionInRON, "RON",
+                senderAccount.getCurrency());
 
-        senderAccount.decreaseBalance(senderCommission);
-
+        senderAccount.decreaseBalance(senderCurrencyCommission);
 
         final double receiverCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 senderAccount.getCurrency(), receiverAccount.getCurrency());
@@ -96,5 +118,45 @@ public final class SendMoney extends BaseCommand {
                 "received"
         ));
 
+    }
+
+    private void sendToCompany(Account account, Commerciant commerciant) {
+        // TODO: Might need to check after applying discounts
+        if (!account.hasEnoughBalance(amount)) {
+            account.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
+            return;
+        }
+
+        User user = account.getUser();
+        double totalAmount = amount;
+        // TODO: Convert amount in RON
+
+        double senderCommission = user.getServicePlan().getCommission(amount);
+        totalAmount += senderCommission;
+        account.decreaseBalance(senderCommission);
+
+        double discount = account.getDiscountForTransactionCount(commerciant.getType());
+        if (discount != 0) {
+            totalAmount = totalAmount - amount * discount;
+            account.invalidateCashback();
+        }
+
+        double amountInRON = Input.getInstance().getExchanges().convertCurrency(amount,
+                account.getCurrency(), "RON");
+
+        if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
+            discount = account.getSpendingDiscount(commerciant, amountInRON);
+            if (discount != 0) {
+                totalAmount = totalAmount - amount * discount;
+            }
+        }
+
+        account.addTransaction(commerciant, amountInRON);
+
+        if (commerciant.getCashback() == CashbackPlans.NR_OF_TRANSACTIONS) {
+            account.updateCashback(commerciant);
+        }
+
+        account.decreaseBalance(amount);
     }
 }

@@ -18,10 +18,10 @@ public class Commerciants {
         return null;
     }
 
-    public String getCommerciantTypeByName(String name) {
+    public Commerciant getCommerciantByIBAN(String iban) {
         for (Commerciant commerciant : commerciants) {
-            if (commerciant.getCommerciant().equals(name)) {
-                return commerciant.getType();
+            if (commerciant.getAccount().equals(iban)) {
+                return commerciant;
             }
         }
 
