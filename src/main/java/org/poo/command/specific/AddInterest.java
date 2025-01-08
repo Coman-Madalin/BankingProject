@@ -3,6 +3,7 @@ package org.poo.command.specific;
 import com.google.gson.JsonObject;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
+import org.poo.transactions.specific.InterestTransaction;
 import org.poo.user.Account;
 
 /**
@@ -34,6 +35,12 @@ public final class AddInterest extends BaseCommand {
             return;
         }
 
-        userAccount.increaseBalance(userAccount.getBalance() * userAccount.getInterestRate());
+        double amountToAdd = userAccount.getBalance() * userAccount.getInterestRate();
+        userAccount.increaseBalance(amountToAdd);
+        userAccount.getTransactionsHistory().add(new InterestTransaction(
+                getTimestamp(),
+                amountToAdd,
+                userAccount.getCurrency()
+        ));
     }
 }

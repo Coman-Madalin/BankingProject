@@ -108,6 +108,15 @@ public final class User {
         return null;
     }
 
+    public Account getClassicAccountInCurrency(String currency) {
+        for (Account account : accounts) {
+            if (account.getType().equals("classic") && account.getCurrency().equalsIgnoreCase(currency)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
     /**
      * Gets transactions history.
      *

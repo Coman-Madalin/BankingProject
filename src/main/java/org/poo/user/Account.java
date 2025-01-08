@@ -42,6 +42,14 @@ public class Account {
         this.iban = generateIBAN();
     }
 
+    public Account(String currency, User user, double interestRate) {
+        this.currency = currency;
+        this.user = user;
+        this.interestRate = interestRate;
+        this.type = "savings";
+        this.iban = generateIBAN();
+    }
+
     /**
      * Increase balance.
      *
@@ -57,6 +65,7 @@ public class Account {
      * @param amount the amount
      * @return the boolean
      */
+
     public boolean hasEnoughBalance(final double amount) {
         final double oldBalance = balance;
         double balanceCopy = balance - amount;

@@ -25,12 +25,20 @@ public class WithdrawSavings extends BaseCommand {
 
     @Override
     public void execute() {
-        User user = Input.getInstance().getUsers().getUserByIBAN(account);
-        Account accountUser = Input.getInstance().getUsers().getAccountByIBAN(account);
+        Account senderAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
+        User user = senderAccount.getUser();
 
         if (user.getAge() < MINIMUM_AGE) {
-            accountUser.getTransactionsHistory().add(new BaseTransaction(
+            senderAccount.getTransactionsHistory().add(new BaseTransaction(
                     "You don't have the minimum age required.", getTimestamp()
+            ));
+        }
+
+        Account receiverAccount = user.getClassicAccountInCurrency(currency);
+        if (receiverAccount == null) {
+            senderAccount.getTransactionsHistory().add(new BaseTransaction(
+                    "You do not have a classic account.",
+                    getTimestamp()
             ));
         }
 
