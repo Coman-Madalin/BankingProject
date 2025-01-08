@@ -67,7 +67,11 @@ public final class PayOnline extends BaseCommand {
         // TODO: Convert amount in RON
         final double sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 currency, account.getCurrency());
-        double commission = user.getServicePlan().getCommission(sameCurrencyAmount);
+
+        double amountInRON = input.getExchanges().convertCurrency(amount, currency, "RON");
+        double commissionInRON = user.getServicePlan().getCommission(amountInRON);
+        double commission = input.getExchanges().convertCurrency(commissionInRON, "RON", account.getCurrency());
+
         double totalAmount = sameCurrencyAmount + commission;
 
         if (!account.hasEnoughBalance(totalAmount)) {
@@ -92,9 +96,7 @@ public final class PayOnline extends BaseCommand {
             account.invalidateCashback();
         }
 
-
-        double amountInRON = input.getExchanges().convertCurrency(amount, currency, "RON");
-        if(commerciant1.getCashback() == CashbackPlans.SPENDING_THRESHOLD){
+        if (commerciant1.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
             discount = account.getSpendingDiscount(commerciant1, amountInRON);
             if (discount != 0) {
                 totalAmount = totalAmount - sameCurrencyAmount * discount;

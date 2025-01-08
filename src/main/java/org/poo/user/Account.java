@@ -102,7 +102,7 @@ public class Account {
         }
 
         int[] thresholds = {100, 300, 500};
-        for (int i = 0; i < thresholds.length; i++) {
+        for (int i = thresholds.length - 1; i >= 0; i--) {
             if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount > thresholds[i]) {
                 return user.getServicePlan().getSpendingDiscount(i);
             }

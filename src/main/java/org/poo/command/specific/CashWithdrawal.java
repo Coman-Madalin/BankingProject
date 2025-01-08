@@ -26,10 +26,6 @@ public class CashWithdrawal extends BaseCommand {
 
     @Override
     public void execute() {
-        if(getTimestamp() == 10){
-            System.out.println("dada");
-        }
-
         User user = Input.getInstance().getUsers().getUserByEmail(email);
 
         if (user == null) {
@@ -51,18 +47,21 @@ public class CashWithdrawal extends BaseCommand {
             return;
         }
         // TODO: Convert amount in RON
+        // Amount is already in RON
+        double amountInRON = Input.getInstance().getExchanges()
+                .convertCurrency(amount, account.getCurrency(), "RON");
+        double commission = user.getServicePlan().getCommission(amountInRON);
+        double commissionAccountCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(commission, "RON", account.getCurrency());
+        double totalAmount = amount + commissionAccountCurrency;
 
-        double accountCurrencyAmount = Input.getInstance().getExchanges()
-                .convertCurrency(amount, "RON", account.getCurrency());
-        double commission = user.getServicePlan().getCommission(accountCurrencyAmount);
-
-        if (!account.hasEnoughBalance(accountCurrencyAmount)) {
+        if (!account.hasEnoughBalance(totalAmount)) {
             account.getTransactionsHistory().add(new BaseTransaction(
                     "Insufficient funds", getTimestamp()
             ));
             return;
         }
 
-        account.decreaseBalance(accountCurrencyAmount);
+        account.decreaseBalance(totalAmount);
     }
 }
