@@ -2,6 +2,7 @@ package org.poo.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.command.specific.splitpayment.SplitPaymentParticipant;
 import org.poo.transactions.BaseTransaction;
 
 import java.time.LocalDate;
@@ -26,6 +27,8 @@ public final class User {
      * DON'T use this, this is only for deserialization purposes, use age field instead
      */
     private String birthDate;
+    private List<SplitPaymentParticipant> splitPaymentParticipantList = new ArrayList<>();
+
 
     /**
      * Gets account by alias.
@@ -115,6 +118,20 @@ public final class User {
             }
         }
         return null;
+    }
+
+    public SplitPaymentParticipant getFirstSplitPayment(String type) {
+        for (SplitPaymentParticipant splitPaymentParticipant : splitPaymentParticipantList) {
+            if (splitPaymentParticipant.getMediator().getPaymentCommand().getSplitPaymentType()
+                    .equalsIgnoreCase(type)) {
+                return splitPaymentParticipant;
+            }
+        }
+        return null;
+    }
+
+    public void removeSplitPayment(SplitPaymentParticipant splitPayment) {
+        splitPaymentParticipantList.remove(splitPayment);
     }
 
     /**

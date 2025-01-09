@@ -5,6 +5,9 @@ import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
+import org.poo.command.specific.splitpayment.AcceptSplitPayment;
+import org.poo.command.specific.splitpayment.RejectSplitPayment;
+import org.poo.command.specific.splitpayment.SplitPaymentCommand;
 import org.poo.input.Input;
 import org.poo.json.deserializers.InputDeserializer;
 import org.poo.json.serializers.*;
@@ -35,12 +38,14 @@ public class JsonUtils {
             PrintTransactions.class,
             CheckCardStatus.class,
             ChangeInterestRate.class,
-            SplitPayment.class,
+            SplitPaymentCommand.class,
             Report.class,
             SpendingsReport.class,
             AddInterest.class,
             WithdrawSavings.class,
-            CashWithdrawal.class
+            CashWithdrawal.class,
+            AcceptSplitPayment.class,
+            RejectSplitPayment.class
     };
 
     static {

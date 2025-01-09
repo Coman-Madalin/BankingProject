@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.poo.command.BaseCommand;
+import org.poo.command.specific.splitpayment.SplitPaymentInstance;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
 import org.poo.commerciant.Commerciants;
@@ -13,6 +14,8 @@ import org.poo.user.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -27,6 +30,7 @@ public final class Input {
     private Exchanges exchanges;
     private BaseCommand[] commands;
     private Commerciants commerciants;
+    private List<SplitPaymentInstance> splitPaymentInstances = new ArrayList<>();
 
     public Input() {
         instance = this;
@@ -51,7 +55,7 @@ public final class Input {
         for (final BaseCommand command : commands) {
             command.execute();
 
-            users.printSpecific(command.getTimestamp(), "RO76POOB4035116042454483");
+            users.printSpecific(command.getTimestamp(), "RO69POOB6209498372540635");
         }
     }
 

@@ -38,6 +38,10 @@ public final class SendMoney extends BaseCommand {
         // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
 
+        if (getTimestamp() == 13) {
+            System.out.println("dada");
+        }
+
         if (senderUser == null) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());
@@ -83,22 +87,22 @@ public final class SendMoney extends BaseCommand {
             }
         }
 
-        if (!senderAccount.hasEnoughBalance(amount)) {
-            senderAccount.getTransactionsHistory().add(new BaseTransaction(
-                    getTimestamp()
-            ));
-            return;
-        }
-
-        senderAccount.decreaseBalance(amount);
 
         double amountInRON = Input.getInstance().getExchanges().convertCurrency(amount,
                 senderAccount.getCurrency(), "RON");
         double commissionInRON = senderUser.getServicePlan().getCommission(amountInRON);
         double senderCurrencyCommission = input.getExchanges().convertCurrency(commissionInRON, "RON",
                 senderAccount.getCurrency());
+        double senderTotal = amount + senderCurrencyCommission;
 
-        senderAccount.decreaseBalance(senderCurrencyCommission);
+        if (!senderAccount.hasEnoughBalance(senderTotal)) {
+            senderAccount.getTransactionsHistory().add(new BaseTransaction(
+                    getTimestamp()
+            ));
+            return;
+        }
+
+        senderAccount.decreaseBalance(senderTotal);
 
         final double receiverCurrencyAmount = input.getExchanges().convertCurrency(amount,
                 senderAccount.getCurrency(), receiverAccount.getCurrency());

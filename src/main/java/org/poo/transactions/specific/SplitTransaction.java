@@ -10,28 +10,22 @@ import java.util.List;
  * The type Split transaction.
  */
 public class SplitTransaction extends BaseTransaction {
-    private final double amount;
+    private final List<Double> amountForUsers;
     private final String currency;
     private final List<String> involvedAccounts;
+    private final String splitPaymentType;
     @Setter
     @Getter
     private String error = null;
 
-    /**
-     * Instantiates a new Split transaction.
-     *
-     * @param description      the description
-     * @param timestamp        the timestamp
-     * @param amount           the amount
-     * @param currency         the currency
-     * @param involvedAccounts the involved accounts
-     */
-    public SplitTransaction(final String description, final int timestamp, final double amount,
-                            final String currency, final List<String> involvedAccounts) {
+
+    public SplitTransaction(String description, int timestamp, List<Double> amountForUsers,
+                            String currency, List<String> involvedAccounts,
+                            String splitPaymentType) {
         super(description, timestamp);
-        this.amount = amount;
+        this.amountForUsers = amountForUsers;
         this.currency = currency;
         this.involvedAccounts = involvedAccounts;
+        this.splitPaymentType = splitPaymentType;
     }
-
 }

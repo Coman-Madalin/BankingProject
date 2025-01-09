@@ -5,6 +5,9 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
+import org.poo.command.specific.splitpayment.AcceptSplitPayment;
+import org.poo.command.specific.splitpayment.RejectSplitPayment;
+import org.poo.command.specific.splitpayment.SplitPaymentCommand;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -30,13 +33,15 @@ public final class BaseCommandTypeAdapter extends TypeAdapter<BaseCommand> {
             new AbstractMap.SimpleEntry<>("printTransactions", PrintTransactions.class),
             new AbstractMap.SimpleEntry<>("checkCardStatus", CheckCardStatus.class),
             new AbstractMap.SimpleEntry<>("changeInterestRate", ChangeInterestRate.class),
-            new AbstractMap.SimpleEntry<>("splitPayment", SplitPayment.class),
+            new AbstractMap.SimpleEntry<>("splitPayment", SplitPaymentCommand.class),
             new AbstractMap.SimpleEntry<>("report", Report.class),
             new AbstractMap.SimpleEntry<>("spendingsReport", SpendingsReport.class),
             new AbstractMap.SimpleEntry<>("addInterest", AddInterest.class),
             new AbstractMap.SimpleEntry<>("withdrawSavings", WithdrawSavings.class),
             new AbstractMap.SimpleEntry<>("upgradePlan", UpgradePlan.class),
-            new AbstractMap.SimpleEntry<>("cashWithdrawal", CashWithdrawal.class)
+            new AbstractMap.SimpleEntry<>("cashWithdrawal", CashWithdrawal.class),
+            new AbstractMap.SimpleEntry<>("acceptSplitPayment", AcceptSplitPayment.class),
+            new AbstractMap.SimpleEntry<>("rejectSplitPayment", RejectSplitPayment.class)
     );
 
     @Override
