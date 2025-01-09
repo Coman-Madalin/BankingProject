@@ -5,6 +5,7 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.user.Account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,10 +35,8 @@ public final class SplitPaymentCommand extends BaseCommand {
         splitPaymentInstance = new SplitPaymentInstance(this);
         final double amountPerPerson = amount / accounts.size();
 
-        amountForUsers.clear();
-        for (int i = 0; i < accounts.size(); i++) {
-            amountForUsers.add(amountPerPerson);
-        }
+        amountForUsers = new ArrayList<>();
+        amountForUsers.add(amountPerPerson);
 
         for (String accountIban : accounts) {
             Account account = Input.getInstance().getUsers().getAccountByIBAN(accountIban);
@@ -83,37 +82,5 @@ public final class SplitPaymentCommand extends BaseCommand {
             case "custom" -> createCustomSplitPayment();
             default -> System.out.println("UNKNOWN SPLIT PAYMENT TYPE");
         }
-
-//        final SplitTransaction transaction = new SplitTransaction(
-//                String.format("Split payment of %.2f %s", amount, currency), getTimestamp(),
-//                amountPerPerson,
-//                currency,
-//                accounts);
-//
-//        boolean everyoneCanPay = true;
-//
-//        final List<Account> accountSet = new ArrayList<>();
-//        for (final String accountNumber : accounts) {
-//            final Account account = input.getUsers().getAccountByIBAN(accountNumber);
-//            accountSet.add(account);
-//            final double amountInAccountCurrency = input.getExchanges()
-//                    .convertCurrency(amountPerPerson, currency, account.getCurrency());
-//
-//            if (!account.hasEnoughBalance(amountInAccountCurrency)) {
-//                transaction.setError(String.format("Account %s has insufficient funds for a split"
-//                        + " payment.", accountNumber));
-//                everyoneCanPay = false;
-//            }
-//        }
-//
-//        for (final Account account : accountSet) {
-//            account.getTransactionsHistory().add(transaction);
-//
-//            if (everyoneCanPay) {
-//                final double amountInAccountCurrency = input.getExchanges()
-//                        .convertCurrency(amountPerPerson, currency, account.getCurrency());
-//                account.decreaseBalance(amountInAccountCurrency);
-//            }
-//        }
     }
 }

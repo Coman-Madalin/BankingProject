@@ -4,14 +4,12 @@ import lombok.Getter;
 import org.poo.input.Input;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class SplitPaymentInstance {
-    private List<SplitPaymentParticipant> subscribers = new ArrayList<>();
-    private Map<SplitPaymentParticipant, Boolean> subscribers_responses = new HashMap<>();
+    private List<SplitPaymentParticipant> participants = new ArrayList<>();
+    private List<SplitPaymentParticipant> acceptedRequests = new ArrayList<>();
     private SplitPaymentCommand paymentCommand;
 
     public SplitPaymentInstance(SplitPaymentCommand paymentCommand) {
@@ -22,42 +20,42 @@ public class SplitPaymentInstance {
         if (!accepted) {
             // TODO: one user rejected the payment
             Input.getInstance().getSplitPaymentInstances().remove(this);
-            for (SplitPaymentParticipant subscriber : subscribers) {
+            for (SplitPaymentParticipant subscriber : participants) {
                 subscriber.getAccount().getUser().removeSplitPayment(subscriber);
             }
             return;
         }
 
-        subscribers_responses.put(sender, accepted);
-
-        if (subscribers_responses.size() == subscribers.size()) {
+        acceptedRequests.add(sender);
+        if (acceptedRequests.size() == participants.size()) {
             notifyEveryone();
         }
     }
 
     public void add(SplitPaymentParticipant subscriber) {
-        subscribers.add(subscriber);
+        participants.add(subscriber);
         subscriber.setMediator(this);
     }
 
     private void notifyEveryoneInsufficientFunds(String insufficientFundsIban) {
-        for (SplitPaymentParticipant subscriber : subscribers) {
+        for (SplitPaymentParticipant subscriber : participants) {
             //TODO: add a transaction log
+            subscriber.invalidatePayment("Account " + insufficientFundsIban + " has insufficient funds for a split payment.");
             subscriber.getAccount().getUser().removeSplitPayment(subscriber);
         }
     }
 
     public void notifyEveryone() {
-        for (SplitPaymentParticipant subscriber : subscribers) {
-            boolean enoughFunds = subscriber.checkForFunds();
+        for (SplitPaymentParticipant participant : participants) {
+            boolean enoughFunds = participant.checkForFunds();
             if (!enoughFunds) {
-                notifyEveryoneInsufficientFunds(subscriber.getAccount().getIban());
+                notifyEveryoneInsufficientFunds(participant.getAccount().getIban());
                 Input.getInstance().getSplitPaymentInstances().remove(this);
-                break;
+                return;
             }
         }
 
-        for (SplitPaymentParticipant subscriber : subscribers) {
+        for (SplitPaymentParticipant subscriber : participants) {
             subscriber.proceedPayment();
         }
 

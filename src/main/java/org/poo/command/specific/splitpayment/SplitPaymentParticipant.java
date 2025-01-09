@@ -2,7 +2,10 @@ package org.poo.command.specific.splitpayment;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.poo.transactions.specific.SplitTransaction;
+import org.poo.input.Input;
+import org.poo.transactions.specific.split.BaseSplitTransaction;
+import org.poo.transactions.specific.split.specific.CustomSplitTransaction;
+import org.poo.transactions.specific.split.specific.EqualSplitTransaction;
 import org.poo.user.Account;
 
 public class SplitPaymentParticipant {
@@ -29,12 +32,25 @@ public class SplitPaymentParticipant {
     }
 
     public boolean checkForFunds() {
-        return account.hasEnoughBalance(amount);
+        double amountInParticipantCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(amount, currency, account.getCurrency());
+        return account.hasEnoughBalance(amountInParticipantCurrency);
     }
 
     public void proceedPayment() {
-        account.decreaseBalance(amount);
-        createTransactionLog();
+        double amountInParticipantCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(amount, currency, account.getCurrency());
+        account.decreaseBalance(amountInParticipantCurrency);
+        BaseSplitTransaction splitTransaction = createTransactionLog();
+        account.getTransactionsHistory().add(splitTransaction);
+
+        removePayment();
+    }
+
+    public void invalidatePayment(String errorMessage) {
+        BaseSplitTransaction splitTransaction = createTransactionLog();
+        splitTransaction.addError(errorMessage);
+        account.getTransactionsHistory().add(splitTransaction);
 
         removePayment();
     }
@@ -43,14 +59,32 @@ public class SplitPaymentParticipant {
         account.getUser().removeSplitPayment(this);
     }
 
-    private void createTransactionLog() {
-        account.getTransactionsHistory().add(new SplitTransaction(
-                "Split payment of " + mediator.getPaymentCommand().getAmount() + " " + currency,
-                mediator.getPaymentCommand().getTimestamp(),
-                mediator.getPaymentCommand().getAmountForUsers(),
-                currency,
-                mediator.getPaymentCommand().getAccounts(),
-                mediator.getPaymentCommand().getSplitPaymentType()
-        ));
+    private BaseSplitTransaction createTransactionLog() {
+        BaseSplitTransaction transaction = null;
+
+        switch (mediator.getPaymentCommand().getSplitPaymentType()) {
+            case "custom" -> transaction = new CustomSplitTransaction(
+                    "Split payment of " + mediator.getPaymentCommand().getAmount() + " " + currency,
+                    mediator.getPaymentCommand().getTimestamp(),
+                    currency,
+                    mediator.getPaymentCommand().getAccounts(),
+                    mediator.getPaymentCommand().getSplitPaymentType(),
+                    mediator.getPaymentCommand().getAmountForUsers()
+            );
+
+            case "equal" -> transaction = new EqualSplitTransaction(
+                    "Split payment of " + mediator.getPaymentCommand().getAmount() + " " + currency,
+                    mediator.getPaymentCommand().getTimestamp(),
+                    currency,
+                    mediator.getPaymentCommand().getAccounts(),
+                    mediator.getPaymentCommand().getSplitPaymentType(),
+                    mediator.getPaymentCommand().getAmountForUsers().get(0)
+            );
+
+            default -> System.out.println("ERROR: UNSUPPORTED SPLIT PAYMENT TYPE!");
+
+        }
+
+        return transaction;
     }
 }

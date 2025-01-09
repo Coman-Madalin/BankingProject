@@ -11,7 +11,7 @@ import org.poo.command.specific.splitpayment.SplitPaymentCommand;
 import org.poo.input.Input;
 import org.poo.json.deserializers.InputDeserializer;
 import org.poo.json.serializers.*;
-import org.poo.transactions.specific.SplitTransaction;
+import org.poo.transactions.specific.split.specific.CustomSplitTransaction;
 import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
@@ -55,7 +55,7 @@ public class JsonUtils {
                 .registerTypeAdapter(Account.class, new AccountSerializer())
                 .registerTypeAdapter(User.class, new UserSerializer())
                 .registerTypeAdapter(Card.class, new CardSerializer())
-                .registerTypeAdapter(SplitTransaction.class, new SplitTransactionSerializer());
+                .registerTypeAdapter(CustomSplitTransaction.class, new SplitTransactionSerializer());
 
         for (final Class<?> subclass : COMMAND_SUBCLASSES) {
             gsonBuilder.registerTypeAdapter(subclass, new BaseCommandTypeAdapter());
