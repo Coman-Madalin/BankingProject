@@ -17,7 +17,7 @@ public enum Cashbacks {
             new AbstractMap.SimpleEntry<>(2, Cashbacks.TECH)
     );
 
-    private static int[] threshholds = {2, 5, 10};
+    private static final int[] threshholds = {2, 5, 10};
     @Getter
     private final double discount;
 

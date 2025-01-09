@@ -1,13 +1,13 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.PaymentTransaction;
-import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
 

@@ -1,10 +1,10 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
-import org.poo.user.Account;
 import org.poo.user.User;
 
 /**
@@ -42,6 +42,11 @@ public final class DeleteAccount extends BaseCommand {
             this.setOutput(outputJson.toString());
 
             final Account userAccount = input.getUsers().getAccountByIBAN(account);
+            if (userAccount == null) {
+                //TODO: account not found
+                return;
+            }
+
             userAccount.getTransactionsHistory().add(new BaseTransaction(
                     "Account couldn't be deleted - there are funds remaining",
                     getTimestamp()

@@ -1,13 +1,13 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.TransferTransaction;
-import org.poo.user.Account;
 import org.poo.user.User;
 
 import static org.poo.input.Input.isAlias;
@@ -114,7 +114,7 @@ public final class SendMoney extends BaseCommand {
                 getTimestamp(),
                 account,
                 receiver,
-                String.format("%f %s", amount, senderAccount.getCurrency()),
+                String.format("%.1f %s", amount, senderAccount.getCurrency()),
                 "sent"
         ));
 
@@ -123,7 +123,7 @@ public final class SendMoney extends BaseCommand {
                 getTimestamp(),
                 account,
                 receiver,
-                String.format("%f %s", receiverCurrencyAmount, receiverAccount.getCurrency()),
+                String.format("%.1f %s", receiverCurrencyAmount, receiverAccount.getCurrency()),
                 "received"
         ));
 

@@ -1,8 +1,8 @@
 package org.poo.command.specific;
 
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
-import org.poo.user.Account;
 
 /**
  * The type Set minimum balance.

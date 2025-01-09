@@ -8,7 +8,7 @@ public class Data {
     private double totalSpend = 0;
     private String type = null;
 
-    public Data(){
+    public Data() {
     }
 
     public Data(int nrTransactions, double totalSpend) {
@@ -27,11 +27,11 @@ public class Data {
         this.totalSpend += amount;
     }
 
-    public void increaseTransactions(){
+    public void increaseTransactions() {
         this.nrTransactions++;
     }
 
-    public void increaseAmount(double amount){
+    public void increaseAmount(double amount) {
         this.totalSpend += amount;
     }
 }

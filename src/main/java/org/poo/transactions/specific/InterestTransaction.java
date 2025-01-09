@@ -3,8 +3,8 @@ package org.poo.transactions.specific;
 import org.poo.transactions.BaseTransaction;
 
 public class InterestTransaction extends BaseTransaction {
-    private double amount;
-    private String currency;
+    private final double amount;
+    private final String currency;
 
     public InterestTransaction(String description, int timestamp, double amount, String currency) {
         super(description, timestamp);

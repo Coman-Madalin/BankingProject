@@ -3,6 +3,7 @@ package org.poo.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
 import org.poo.command.specific.splitpayment.AcceptSplitPayment;
@@ -12,7 +13,6 @@ import org.poo.input.Input;
 import org.poo.json.deserializers.InputDeserializer;
 import org.poo.json.serializers.*;
 import org.poo.transactions.specific.split.specific.CustomSplitTransaction;
-import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.User;
 

@@ -1,8 +1,8 @@
 package org.poo.input;
 
 import lombok.Getter;
+import org.poo.account.Account;
 import org.poo.commerciant.Commerciant;
-import org.poo.user.Account;
 import org.poo.user.Card;
 import org.poo.user.Data;
 import org.poo.user.User;

@@ -1,11 +1,11 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.json.JsonUtils;
 import org.poo.transactions.BaseTransaction;
-import org.poo.user.Account;
 
 import java.util.ArrayList;
 import java.util.List;

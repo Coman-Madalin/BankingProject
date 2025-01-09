@@ -1,9 +1,9 @@
 package org.poo.command.specific;
 
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.PlanUpgradeTransaction;
-import org.poo.user.Account;
 import org.poo.user.ServicePlans;
 import org.poo.user.User;
 
@@ -26,6 +26,11 @@ public class UpgradePlan extends BaseCommand {
         User user = Input.getInstance().getUsers().getUserByIBAN(account);
 
         Account accountUser = Input.getInstance().getUsers().getAccountByIBAN(account);
+        if (accountUser == null) {
+            //TODO: account not found
+            return;
+        }
+
         accountUser.getTransactionsHistory().add(new PlanUpgradeTransaction(
                 "Upgrade plan", getTimestamp(), newPlanType, account
         ));

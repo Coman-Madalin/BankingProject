@@ -8,9 +8,9 @@ import java.util.List;
 
 @Getter
 public class SplitPaymentInstance {
-    private List<SplitPaymentParticipant> participants = new ArrayList<>();
-    private List<SplitPaymentParticipant> acceptedRequests = new ArrayList<>();
-    private SplitPaymentCommand paymentCommand;
+    private final List<SplitPaymentParticipant> participants = new ArrayList<>();
+    private final List<SplitPaymentParticipant> acceptedRequests = new ArrayList<>();
+    private final SplitPaymentCommand paymentCommand;
 
     public SplitPaymentInstance(SplitPaymentCommand paymentCommand) {
         this.paymentCommand = paymentCommand;

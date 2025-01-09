@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import org.poo.account.Account;
 import org.poo.json.JsonUtils;
-import org.poo.user.Account;
 
 import java.lang.reflect.Type;
 

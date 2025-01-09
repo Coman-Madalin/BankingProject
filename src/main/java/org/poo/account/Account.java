@@ -1,10 +1,13 @@
-package org.poo.user;
+package org.poo.account;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.poo.commerciant.Cashbacks;
 import org.poo.commerciant.Commerciant;
 import org.poo.transactions.BaseTransaction;
+import org.poo.user.Card;
+import org.poo.user.Data;
+import org.poo.user.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

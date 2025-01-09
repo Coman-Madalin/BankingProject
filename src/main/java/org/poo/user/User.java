@@ -2,6 +2,7 @@ package org.poo.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.account.Account;
 import org.poo.command.specific.splitpayment.SplitPaymentParticipant;
 import org.poo.transactions.BaseTransaction;
 
@@ -27,7 +28,7 @@ public final class User {
      * DON'T use this, this is only for deserialization purposes, use age field instead
      */
     private String birthDate;
-    private List<SplitPaymentParticipant> splitPaymentParticipantList = new ArrayList<>();
+    private final List<SplitPaymentParticipant> splitPaymentParticipantList = new ArrayList<>();
 
 
     /**

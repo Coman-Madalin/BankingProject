@@ -1,10 +1,10 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
+import org.poo.account.Account;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.InterestTransaction;
-import org.poo.user.Account;
 
 /**
  * The type Add interest.
