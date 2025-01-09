@@ -1,7 +1,7 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
@@ -33,7 +33,7 @@ public class CashWithdrawal extends BaseCommand {
             return;
         }
 
-        Account account = user.getAccountByCardNumber(cardNumber);
+        BaseAccount account = user.getAccountByCardNumber(cardNumber);
 
         if (account == null) {
             final JsonObject outputJson = new JsonObject();

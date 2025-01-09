@@ -1,6 +1,6 @@
 package org.poo.command.specific;
 
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.CardActionTransaction;
@@ -43,7 +43,7 @@ public final class DeleteCard extends BaseCommand {
     public void execute() {
         Input input = Input.getInstance();
         final User user = input.getUsers().getUserByEmail(email);
-        final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
+        final BaseAccount account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
 
         final Card card = user.deleteCardByCardNumber(cardNumber);
         if (card != null) {

@@ -1,7 +1,7 @@
 package org.poo.input;
 
 import lombok.Getter;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.commerciant.Commerciant;
 import org.poo.user.Card;
 import org.poo.user.Data;
@@ -25,13 +25,13 @@ public class Users {
      * @param iban      the iban
      */
     public void addAlias(final String aliasName, final String email, final String iban) {
-        final Account account = getAccountByEmailAndIBAN(email, iban);
+        final BaseAccount account = getAccountByEmailAndIBAN(email, iban);
         account.setAlias(aliasName);
     }
 
-    private Account checkAlias(final String name) {
+    private BaseAccount checkAlias(final String name) {
         for (final User user : users) {
-            final Account account = user.getAccountByAlias(name);
+            final BaseAccount account = user.getAccountByAlias(name);
             if (account != null) {
                 return account;
             }
@@ -68,7 +68,7 @@ public class Users {
      */
     public User getUserByIBAN(final String iban) {
         for (final User user : users) {
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 if (account.getIban().equals(iban) || iban.equals(account.getAlias())) {
                     return user;
                 }
@@ -85,8 +85,8 @@ public class Users {
      * @param iban  the iban
      * @return the account by email and iban
      */
-    public Account getAccountByEmailAndIBAN(final String email, final String iban) {
-        final Account aliasAccount = checkAlias(iban);
+    public BaseAccount getAccountByEmailAndIBAN(final String email, final String iban) {
+        final BaseAccount aliasAccount = checkAlias(iban);
         if (aliasAccount != null) {
             return aliasAccount;
         }
@@ -96,7 +96,7 @@ public class Users {
                 continue;
             }
 
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 if (account.getIban().equals(iban)) {
                     return account;
                 }
@@ -112,20 +112,20 @@ public class Users {
      * @param iban the iban
      * @return the account by iban
      */
-    public Account getAccountByIBAN(final String iban) {
-        final Account accountAlias = checkAlias(iban);
+    public BaseAccount getAccountByIBAN(final String iban) {
+        final BaseAccount accountAlias = checkAlias(iban);
         if (accountAlias != null) {
             return accountAlias;
         }
 
 
-        final Account aliasAccount = checkAlias(iban);
+        final BaseAccount aliasAccount = checkAlias(iban);
         if (aliasAccount != null) {
             return aliasAccount;
         }
 
         for (final User user : users) {
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 if (account.getIban().equals(iban)) {
                     return account;
                 }
@@ -142,13 +142,13 @@ public class Users {
      * @param cardNumber the card number
      * @return the account by email and card number
      */
-    public Account getAccountByEmailAndCardNumber(final String email, final String cardNumber) {
+    public BaseAccount getAccountByEmailAndCardNumber(final String email, final String cardNumber) {
         for (final User user : users) {
             if (!user.getEmail().equals(email)) {
                 continue;
             }
 
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 for (final Card card : account.getCards()) {
                     if (card.getCardNumber().equals(cardNumber)) {
                         return account;
@@ -173,7 +173,7 @@ public class Users {
                 continue;
             }
 
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 for (final Card card : account.getCards()) {
                     if (card.getCardNumber().equals(cardNumber)) {
                         return card;
@@ -193,7 +193,7 @@ public class Users {
      */
     public Card getCardByCardNumber(final String cardNumber) {
         for (final User user : users) {
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 final Card result = account.getCardByCardNumber(cardNumber);
                 if (result != null) {
                     return result;
@@ -209,9 +209,9 @@ public class Users {
      * @param cardNumber the card number
      * @return the account by card number
      */
-    public Account getAccountByCardNumber(final String cardNumber) {
+    public BaseAccount getAccountByCardNumber(final String cardNumber) {
         for (final User user : users) {
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 if (account.getCardByCardNumber(cardNumber) != null) {
                     return account;
                 }
@@ -228,7 +228,7 @@ public class Users {
      */
     public User getUserByCardNumber(final String cardNumber) {
         for (final User user : users) {
-            for (final Account account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 if (account.getCardByCardNumber(cardNumber) != null) {
                     return user;
                 }
@@ -245,7 +245,7 @@ public class Users {
             System.out.println("    email: " + user.getEmail());
             System.out.println("    plan: " + user.getServicePlan());
             System.out.println("    Accounts: [");
-            for (Account account : user.getAccounts()) {
+            for (BaseAccount account : user.getAccounts()) {
                 System.out.println("        Iban: " + account.getIban());
                 System.out.println("        Balance: " + account.getBalance());
                 System.out.println("        Currency: " + account.getCurrency());
@@ -267,7 +267,7 @@ public class Users {
     }
 
     public void printSpecific(int time, String IBAN) {
-        Account account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
+        BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
         if (account == null)
             return;
 

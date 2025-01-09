@@ -2,7 +2,7 @@ package org.poo.command.specific.splitpayment;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.input.Input;
 import org.poo.transactions.specific.split.BaseSplitTransaction;
 import org.poo.transactions.specific.split.specific.CustomSplitTransaction;
@@ -10,14 +10,14 @@ import org.poo.transactions.specific.split.specific.EqualSplitTransaction;
 
 public class SplitPaymentParticipant {
     @Getter
-    private final Account account;
+    private final BaseAccount account;
     private final double amount;
     private final String currency;
     @Getter
     @Setter
     private SplitPaymentInstance mediator;
 
-    public SplitPaymentParticipant(Account account, double amount, String currency) {
+    public SplitPaymentParticipant(BaseAccount account, double amount, String currency) {
         this.account = account;
         this.amount = amount;
         this.currency = currency;

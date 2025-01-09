@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.json.JsonUtils;
 
 import java.lang.reflect.Type;
@@ -12,9 +12,9 @@ import java.lang.reflect.Type;
 /**
  * The type Account serializer.
  */
-public final class AccountSerializer implements JsonSerializer<Account> {
+public final class BaseAccountSerializer implements JsonSerializer<BaseAccount> {
     @Override
-    public JsonElement serialize(final Account src, final Type typeOfSrc,
+    public JsonElement serialize(final BaseAccount src, final Type typeOfSrc,
                                  final JsonSerializationContext context) {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("IBAN", src.getIban());

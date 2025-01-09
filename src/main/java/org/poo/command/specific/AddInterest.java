@@ -1,7 +1,8 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
+import org.poo.account.specific.SavingsAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.InterestTransaction;
@@ -25,9 +26,9 @@ public final class AddInterest extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        final Account userAccount = input.getUsers().getAccountByIBAN(account);
+        BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
 
-        if (!userAccount.getType().equals("savings")) {
+        if (!baseAccount.getType().equals("savings")) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());
             outputJson.addProperty("description", "This is not a savings account");
@@ -35,12 +36,14 @@ public final class AddInterest extends BaseCommand {
             return;
         }
 
-        double amountToAdd = userAccount.getBalance() * userAccount.getInterestRate();
-        userAccount.increaseBalance(amountToAdd);
-        userAccount.getTransactionsHistory().add(new InterestTransaction(
+        SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
+
+        double amountToAdd = savingsAccount.getBalance() * savingsAccount.getInterestRate();
+        savingsAccount.increaseBalance(amountToAdd);
+        savingsAccount.getTransactionsHistory().add(new InterestTransaction(
                 getTimestamp(),
                 amountToAdd,
-                userAccount.getCurrency()
+                savingsAccount.getCurrency()
         ));
     }
 }

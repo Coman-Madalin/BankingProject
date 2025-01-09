@@ -1,6 +1,7 @@
 package org.poo.command.specific;
 
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
+import org.poo.account.specific.SavingsAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
@@ -41,11 +42,16 @@ public final class AddAccount extends BaseCommand {
             // TODO: user not found
             return;
         }
-        Account account;
-        if (accountType.equalsIgnoreCase("savings")) {
-            account = new Account(currency, user, interestRate);
-        } else {
-            account = new Account(currency, accountType, user);
+        BaseAccount account = null;
+
+        switch (accountType) {
+            case "classic" -> account = new BaseAccount(currency, user);
+            case "savings" -> account = new SavingsAccount(currency, user, interestRate);
+            default -> System.out.println("UNSUPPORTED ACCOUNT TYPE");
+        }
+
+        if (account == null) {
+            return;
         }
 
         user.getAccounts().add(account);

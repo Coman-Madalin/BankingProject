@@ -1,6 +1,6 @@
 package org.poo.command.specific;
 
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 
@@ -24,7 +24,7 @@ public final class AddFunds extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        final Account userAccount = input.getUsers().getAccountByIBAN(account);
+        final BaseAccount userAccount = input.getUsers().getAccountByIBAN(account);
 
         if (userAccount != null) {
             userAccount.increaseBalance(amount);

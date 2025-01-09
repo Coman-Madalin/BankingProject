@@ -1,7 +1,7 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
@@ -50,7 +50,7 @@ public final class SendMoney extends BaseCommand {
             return;
         }
 
-        final Account senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
+        final BaseAccount senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
         Commerciant commerciant = Input.getInstance().getCommerciants()
                 .getCommerciantByIBAN(receiver);
@@ -71,7 +71,7 @@ public final class SendMoney extends BaseCommand {
             return;
         }
 
-        final Account receiverAccount = input.getUsers().getAccountByIBAN(receiver);
+        final BaseAccount receiverAccount = input.getUsers().getAccountByIBAN(receiver);
 
         if (senderAccount == null || receiverAccount == null) {
             return;
@@ -129,7 +129,7 @@ public final class SendMoney extends BaseCommand {
 
     }
 
-    private void sendToCompany(Account account, Commerciant commerciant) {
+    private void sendToCompany(BaseAccount account, Commerciant commerciant) {
         // TODO: Might need to check after applying discounts
         if (!account.hasEnoughBalance(amount)) {
             account.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));

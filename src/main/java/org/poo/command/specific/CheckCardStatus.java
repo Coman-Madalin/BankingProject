@@ -1,7 +1,7 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
@@ -27,7 +27,7 @@ public final class CheckCardStatus extends BaseCommand {
     public void execute() {
         final Input input = Input.getInstance();
         final Card card = input.getUsers().getCardByCardNumber(cardNumber);
-        final Account account = input.getUsers().getAccountByCardNumber(cardNumber);
+        final BaseAccount account = input.getUsers().getAccountByCardNumber(cardNumber);
         if (card == null) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());

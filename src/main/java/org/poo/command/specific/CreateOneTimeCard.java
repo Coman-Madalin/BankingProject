@@ -1,6 +1,6 @@
 package org.poo.command.specific;
 
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.CardActionTransaction;
@@ -44,7 +44,7 @@ public final class CreateOneTimeCard extends BaseCommand {
         final Input input = Input.getInstance();
         final Card card = new Card(true);
         final User user = input.getUsers().getUserByEmail(email);
-        final Account userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
+        final BaseAccount userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
         if (userAccount != null) {
             userAccount.getCards().add(card);

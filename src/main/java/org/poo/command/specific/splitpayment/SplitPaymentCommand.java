@@ -1,7 +1,7 @@
 package org.poo.command.specific.splitpayment;
 
 import lombok.Getter;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 
@@ -39,7 +39,7 @@ public final class SplitPaymentCommand extends BaseCommand {
         amountForUsers.add(amountPerPerson);
 
         for (String accountIban : accounts) {
-            Account account = Input.getInstance().getUsers().getAccountByIBAN(accountIban);
+            BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(accountIban);
 
             if (account == null) {
                 System.out.println("ERROR: ACCOUNT NOT FOUND IN EQUAL SPLIT PAYMENT");
@@ -59,7 +59,7 @@ public final class SplitPaymentCommand extends BaseCommand {
         splitPaymentInstance = new SplitPaymentInstance(this);
 
         for (int i = 0; i < accounts.size(); i++) {
-            Account account = Input.getInstance().getUsers().getAccountByIBAN(accounts.get(i));
+            BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(accounts.get(i));
 
             if (account == null) {
                 System.out.println("ERROR: ACCOUNT NOT FOUND IN CUSTOM SPLIT PAYMENT");

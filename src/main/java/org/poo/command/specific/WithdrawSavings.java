@@ -1,6 +1,6 @@
 package org.poo.command.specific;
 
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
@@ -25,7 +25,7 @@ public class WithdrawSavings extends BaseCommand {
 
     @Override
     public void execute() {
-        Account senderAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
+        BaseAccount senderAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
         User user = senderAccount.getUser();
 
         if (user.getAge() < MINIMUM_AGE) {
@@ -34,7 +34,7 @@ public class WithdrawSavings extends BaseCommand {
             ));
         }
 
-        Account receiverAccount = user.getClassicAccountInCurrency(currency);
+        BaseAccount receiverAccount = user.getClassicAccountInCurrency(currency);
         if (receiverAccount == null) {
             senderAccount.getTransactionsHistory().add(new BaseTransaction(
                     "You do not have a classic account.",

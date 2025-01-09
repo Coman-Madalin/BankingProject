@@ -2,7 +2,7 @@ package org.poo.user;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.specific.splitpayment.SplitPaymentParticipant;
 import org.poo.transactions.BaseTransaction;
 
@@ -16,7 +16,8 @@ import java.util.List;
  */
 @Getter
 public final class User {
-    private final List<Account> accounts = new ArrayList<>();
+    private final List<BaseAccount> accounts = new ArrayList<>();
+    private final List<SplitPaymentParticipant> splitPaymentParticipantList = new ArrayList<>();
     private String firstName;
     private String lastName;
     private String email;
@@ -28,8 +29,6 @@ public final class User {
      * DON'T use this, this is only for deserialization purposes, use age field instead
      */
     private String birthDate;
-    private final List<SplitPaymentParticipant> splitPaymentParticipantList = new ArrayList<>();
-
 
     /**
      * Gets account by alias.
@@ -37,8 +36,8 @@ public final class User {
      * @param alias the alias
      * @return the account by alias
      */
-    public Account getAccountByAlias(final String alias) {
-        for (final Account account : accounts) {
+    public BaseAccount getAccountByAlias(final String alias) {
+        for (final BaseAccount account : accounts) {
             if (alias.equals(account.getAlias())) {
                 return account;
             }
@@ -53,7 +52,7 @@ public final class User {
      * @return the boolean
      */
     public boolean deleteAccountByIBAN(final String iban) {
-        for (final Account account : accounts) {
+        for (final BaseAccount account : accounts) {
             if (account.getIban().equals(iban)) {
                 if (account.getBalance() == 0) {
                     this.getAccounts().remove(account);
@@ -72,7 +71,7 @@ public final class User {
      * @return the card
      */
     public Card deleteCardByCardNumber(final String cardNumber) {
-        for (final Account account : accounts) {
+        for (final BaseAccount account : accounts) {
             for (final Card card : account.getCards()) {
                 if (card.getCardNumber().equals(cardNumber)) {
                     account.getCards().remove(card);
@@ -91,7 +90,7 @@ public final class User {
      * @return the card by card number
      */
     public Card getCardByCardNumber(final String cardNumber) {
-        for (final Account account : accounts) {
+        for (final BaseAccount account : accounts) {
             for (final Card card : account.getCards()) {
                 if (card.getCardNumber().equals(cardNumber)) {
                     return card;
@@ -101,8 +100,8 @@ public final class User {
         return null;
     }
 
-    public Account getAccountByCardNumber(final String cardNumber) {
-        for (final Account account : accounts) {
+    public BaseAccount getAccountByCardNumber(final String cardNumber) {
+        for (final BaseAccount account : accounts) {
             for (final Card card : account.getCards()) {
                 if (card.getCardNumber().equals(cardNumber)) {
                     return account;
@@ -112,8 +111,8 @@ public final class User {
         return null;
     }
 
-    public Account getClassicAccountInCurrency(String currency) {
-        for (Account account : accounts) {
+    public BaseAccount getClassicAccountInCurrency(String currency) {
+        for (BaseAccount account : accounts) {
             if (account.getType().equals("classic") && account.getCurrency().equalsIgnoreCase(currency)) {
                 return account;
             }
@@ -143,7 +142,7 @@ public final class User {
     public List<BaseTransaction> getTransactionsHistory() {
         final List<BaseTransaction> allTransactions = new ArrayList<>();
 
-        for (final Account account : accounts) {
+        for (final BaseAccount account : accounts) {
             allTransactions.addAll(account.getTransactionsHistory());
         }
 

@@ -1,7 +1,8 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
+import org.poo.account.specific.SavingsAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
@@ -26,9 +27,9 @@ public final class ChangeInterestRate extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        final Account userAccount = input.getUsers().getAccountByIBAN(account);
+        final BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
 
-        if (!userAccount.getType().equals("savings")) {
+        if (!baseAccount.getType().equals("savings")) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());
             outputJson.addProperty("description", "This is not a savings account");
@@ -36,8 +37,10 @@ public final class ChangeInterestRate extends BaseCommand {
             return;
         }
 
-        userAccount.setInterestRate(interestRate);
-        userAccount.getTransactionsHistory().add(new BaseTransaction(
+        SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
+
+        savingsAccount.setInterestRate(interestRate);
+        savingsAccount.getTransactionsHistory().add(new BaseTransaction(
                 String.format("Interest rate of the account changed to %.2f", interestRate),
                 getTimestamp()
         ));

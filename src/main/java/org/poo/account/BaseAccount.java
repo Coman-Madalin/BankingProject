@@ -20,17 +20,15 @@ import static org.poo.utils.Utils.generateIBAN;
  */
 @Setter
 @Getter
-public class Account {
+public class BaseAccount {
     private String iban;
     private double balance = 0;
     private double minBalance = 0;
     private String currency;
-    private String type;
+    private String type = "classic";
     private String alias = null;
     private List<Card> cards = new ArrayList<>();
     private List<BaseTransaction> transactionsHistory = new ArrayList<>();
-    // TODO: maybe make a savings account since normal account doesn't have interestRate
-    private double interestRate;
     private User user;
 
     @Setter
@@ -38,18 +36,9 @@ public class Account {
 
     private HashMap<Commerciant, Data> COMMERCIANT_TO_DATA = new HashMap<>();
 
-    public Account(final String currency, final String type, User user) {
+    public BaseAccount(final String currency, User user) {
         this.user = user;
         this.currency = currency;
-        this.type = type;
-        this.iban = generateIBAN();
-    }
-
-    public Account(String currency, User user, double interestRate) {
-        this.currency = currency;
-        this.user = user;
-        this.interestRate = interestRate;
-        this.type = "savings";
         this.iban = generateIBAN();
     }
 

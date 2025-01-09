@@ -3,7 +3,8 @@ package org.poo.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
+import org.poo.account.specific.SavingsAccount;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
 import org.poo.command.specific.splitpayment.AcceptSplitPayment;
@@ -52,7 +53,8 @@ public class JsonUtils {
         final GsonBuilder gsonBuilder = new GsonBuilder()
                 .registerTypeAdapter(BaseCommand[].class, new CommandArraySerializer())
                 .registerTypeAdapter(Input.class, new InputDeserializer())
-                .registerTypeAdapter(Account.class, new AccountSerializer())
+                .registerTypeAdapter(BaseAccount.class, new BaseAccountSerializer())
+                .registerTypeAdapter(SavingsAccount.class, new BaseAccountSerializer())
                 .registerTypeAdapter(User.class, new UserSerializer())
                 .registerTypeAdapter(Card.class, new CardSerializer())
                 .registerTypeAdapter(CustomSplitTransaction.class, new SplitTransactionSerializer());

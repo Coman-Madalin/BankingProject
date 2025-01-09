@@ -1,7 +1,7 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.json.JsonUtils;
@@ -31,7 +31,7 @@ public final class Report extends BaseCommand {
     @Override
     public void execute() {
         Input input = Input.getInstance();
-        final Account userAccount = input.getUsers().getAccountByIBAN(account);
+        final BaseAccount userAccount = input.getUsers().getAccountByIBAN(account);
 
         final JsonObject outputObject = new JsonObject();
 

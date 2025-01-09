@@ -1,7 +1,7 @@
 package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
-import org.poo.account.Account;
+import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
@@ -46,7 +46,7 @@ public final class PayOnline extends BaseCommand {
         }
 
         final Input input = Input.getInstance();
-        final Account account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
+        final BaseAccount account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
 
         if (account == null) {
             setOutputAsError();
