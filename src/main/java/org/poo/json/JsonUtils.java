@@ -46,7 +46,11 @@ public class JsonUtils {
             WithdrawSavings.class,
             CashWithdrawal.class,
             AcceptSplitPayment.class,
-            RejectSplitPayment.class
+            RejectSplitPayment.class,
+            AddNewBusinessAssociate.class,
+            ChangeSpendingLimit.class,
+            ChangeDepositLimit.class,
+            BusinessReport.class
     };
 
     static {

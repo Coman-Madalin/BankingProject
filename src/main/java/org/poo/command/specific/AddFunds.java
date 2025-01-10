@@ -1,6 +1,7 @@
 package org.poo.command.specific;
 
 import org.poo.account.BaseAccount;
+import org.poo.account.specific.BusinessAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 
@@ -8,6 +9,7 @@ import org.poo.input.Input;
  * The type Add funds.
  */
 public final class AddFunds extends BaseCommand {
+    private String email;
     private String account;
     private int amount;
 
@@ -21,13 +23,25 @@ public final class AddFunds extends BaseCommand {
         super(command, timestamp);
     }
 
+    public void handleBusinessAccount(BusinessAccount account) {
+        account.makeDeposit(email, amount, getTimestamp());
+    }
+
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        final BaseAccount userAccount = input.getUsers().getAccountByIBAN(account);
+        final BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
 
-        if (userAccount != null) {
-            userAccount.increaseBalance(amount);
+        if (baseAccount == null) {
+            //TODO: account not found
+            return;
         }
+
+        if (baseAccount.getType().equals("business")) {
+            handleBusinessAccount((BusinessAccount) baseAccount);
+            return;
+        }
+
+        baseAccount.increaseBalance(amount);
     }
 }

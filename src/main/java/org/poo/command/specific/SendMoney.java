@@ -38,10 +38,6 @@ public final class SendMoney extends BaseCommand {
         // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
 
-        if (getTimestamp() == 13) {
-            System.out.println("dada");
-        }
-
         if (senderUser == null) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());

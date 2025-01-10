@@ -1,6 +1,7 @@
 package org.poo.command.specific;
 
 import org.poo.account.BaseAccount;
+import org.poo.account.specific.BusinessAccount;
 import org.poo.account.specific.SavingsAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
@@ -47,6 +48,7 @@ public final class AddAccount extends BaseCommand {
         switch (accountType) {
             case "classic" -> account = new BaseAccount(currency, user);
             case "savings" -> account = new SavingsAccount(currency, user, interestRate);
+            case "business" -> account = new BusinessAccount(currency, user);
             default -> System.out.println("UNSUPPORTED ACCOUNT TYPE");
         }
 

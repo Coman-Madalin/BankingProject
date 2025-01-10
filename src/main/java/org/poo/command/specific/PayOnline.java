@@ -2,6 +2,8 @@ package org.poo.command.specific;
 
 import com.google.gson.JsonObject;
 import org.poo.account.BaseAccount;
+import org.poo.account.specific.BusinessAccount;
+import org.poo.business.EmployeeAccount;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
@@ -22,6 +24,9 @@ public final class PayOnline extends BaseCommand {
     private String commerciant;
     private String email;
 
+    private double amountInRON;
+    private double amountInAccountCurrency;
+
     /**
      * Instantiates a new Pay online.
      *
@@ -39,72 +44,78 @@ public final class PayOnline extends BaseCommand {
         this.setOutput(outputJson.toString());
     }
 
-    @Override
-    public void execute() {
-        if (amount == 0) {
-            return;
+    private boolean handleBusinessAccount(BusinessAccount businessAccount, double discount) {
+        EmployeeAccount employeeAccount = businessAccount.getEmployeeByEmailAndRole(email, null);
+        if (employeeAccount == null) {
+            //TODO: Employee was not found
+            return false;
         }
 
-        final Input input = Input.getInstance();
-        final BaseAccount account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
+        double commissionInRON = businessAccount.getUser().getServicePlan()
+                .getCommission(amountInRON);
+        double commission = Input.getInstance().getExchanges()
+                .convertCurrency(commissionInRON, "RON", businessAccount.getCurrency());
 
-        if (account == null) {
-            setOutputAsError();
-            return;
+        double totalAmount = amountInAccountCurrency + commission - discount;
+
+        if (!businessAccount.hasEnoughBalance(totalAmount)) {
+            businessAccount.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
+            return false;
         }
+
+        if (employeeAccount.getRole().equals("employee")
+                && totalAmount > businessAccount.getSpendingLimit()) {
+            //TODO: employee is over spending
+            return false;
+        }
+
+        businessAccount.decreaseBalance(totalAmount);
+        employeeAccount.addSpending(amount, getTimestamp());
+
+        businessAccount.printLog("Payonline", getTimestamp(), totalAmount);
+
+        return true;
+    }
+
+    private boolean handleClassicAccount(BaseAccount account, double discount) {
 
         final Card card = account.getCardByCardNumber(cardNumber);
 
         if (card == null) {
             setOutputAsError();
-            return;
+            return false;
         }
 
         if (card.getStatus().equals("frozen")) {
             account.getTransactionsHistory().add(new BaseTransaction("The card is frozen",
                     getTimestamp()));
-            return;
+            return false;
         }
 
         final User user = account.getUser();
 
-        // TODO: Convert amount in RON
-        final double sameCurrencyAmount = input.getExchanges().convertCurrency(amount,
-                currency, account.getCurrency());
-
-        double amountInRON = input.getExchanges().convertCurrency(amount, currency, "RON");
         double commissionInRON = user.getServicePlan().getCommission(amountInRON);
-        double commission = input.getExchanges().convertCurrency(commissionInRON, "RON", account.getCurrency());
+        double commission = Input.getInstance().getExchanges()
+                .convertCurrency(commissionInRON, "RON", account.getCurrency());
 
-        double totalAmount = sameCurrencyAmount + commission;
+        double totalAmount = amountInAccountCurrency + commission - discount;
 
         if (!account.hasEnoughBalance(totalAmount)) {
-            account.getTransactionsHistory().add(new BaseTransaction(
-                    getTimestamp()
-            ));
-            return;
+            account.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
+            return false;
         }
 
+        return true;
+    }
+
+    private boolean handleCommerciantReceiver(BaseAccount account) {
         Commerciant commerciant1 = Input.getInstance().getCommerciants()
                 .getCommerciantByName(commerciant);
 
         if (commerciant1 == null) {
             System.out.println("NO COMMERCIANT");
             // TODO: there is no commerciant with this name
-            return;
-        }
-
-        double discount = account.getDiscountForTransactionCount(commerciant1.getType());
-        if (discount != 0) {
-            totalAmount = totalAmount - sameCurrencyAmount * discount;
-            account.invalidateCashback();
-        }
-
-        if (commerciant1.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
-            discount = account.getSpendingDiscount(commerciant1, amountInRON);
-            if (discount != 0) {
-                totalAmount = totalAmount - sameCurrencyAmount * discount;
-            }
+            return false;
         }
 
         account.addTransaction(commerciant1, amountInRON);
@@ -116,11 +127,70 @@ public final class PayOnline extends BaseCommand {
         account.getTransactionsHistory().add(new PaymentTransaction(
                 "Card payment",
                 getTimestamp(),
-                sameCurrencyAmount,
+                amountInAccountCurrency,
                 commerciant
         ));
 
-        account.decreaseBalance(totalAmount);
+        return true;
+    }
+
+    public double getTotalDiscountInRON(BaseAccount account) {
+        double totalDiscount = 0;
+        Commerciant commerciant1 = Input.getInstance().getCommerciants()
+                .getCommerciantByName(commerciant);
+        amountInAccountCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(amount, currency, account.getCurrency());
+        amountInRON = Input.getInstance().getExchanges()
+                .convertCurrency(amount, currency, "RON");
+
+        double discount = account.getDiscountForTransactionCount(commerciant1.getType());
+        if (discount != 0) {
+            totalDiscount = totalDiscount + amountInAccountCurrency * discount;
+            account.invalidateCashback();
+        }
+
+        if (commerciant1.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
+            discount = account.getSpendingDiscount(commerciant1, amountInRON);
+            if (discount != 0) {
+                totalDiscount = totalDiscount + amountInAccountCurrency * discount;
+            }
+        }
+
+        return totalDiscount;
+    }
+
+    @Override
+    public void execute() {
+        if (amount == 0) {
+            return;
+        }
+
+        final Input input = Input.getInstance();
+        final BaseAccount account = input.getUsers().getAccountByCardNumber(cardNumber);
+
+        if (account == null) {
+            setOutputAsError();
+            return;
+        }
+
+        boolean success;
+        double discount = getTotalDiscountInRON(account);
+
+        if (account.getType().equals("business")) {
+            success = handleBusinessAccount((BusinessAccount) account, discount);
+            if (!success)
+                return;
+        } else {
+            success = handleClassicAccount(account, discount);
+            if (!success)
+                return;
+        }
+
+        success = handleCommerciantReceiver(account);
+        if (!success)
+            return;
+
+        final Card card = account.getCardByCardNumber(cardNumber);
 
         if (card.isOneTimeCard()) {
             new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute();
