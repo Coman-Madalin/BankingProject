@@ -46,24 +46,16 @@ public class WithdrawSavings extends BaseCommand {
             ));
             return;
         }
-
-        double amountInRON = Input.getInstance().getExchanges()
-                .convertCurrency(amount, currency, "RON");
-        double commissionInRON = senderAccount.getUser().getServicePlan()
-                .getCommission(amountInRON);
-        double commissionInSenderCurrency = Input.getInstance().getExchanges()
-                .convertCurrency(commissionInRON, "RON", senderAccount.getCurrency());
         double amountInSenderCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, senderAccount.getCurrency());
-        double totalAmount = amountInSenderCurrency + commissionInSenderCurrency;
 
-        if (!senderAccount.hasEnoughBalance(totalAmount)) {
-            printLog("WithdrawSavings:NotEnoughBalance", getTimestamp(), totalAmount,
+        if (!senderAccount.hasEnoughBalance(amountInSenderCurrency)) {
+            printLog("WithdrawSavings:NotEnoughBalance", getTimestamp(), amountInSenderCurrency,
                     senderAccount.getBalance(), senderAccount.getIban());
             return;
         }
 
-        senderAccount.decreaseBalance(totalAmount);
+        senderAccount.decreaseBalance(amountInSenderCurrency);
         receiverAccount.increaseBalance(amount);
 
         WithdrawSavingsTransaction transaction = new WithdrawSavingsTransaction(
@@ -73,6 +65,11 @@ public class WithdrawSavings extends BaseCommand {
                 receiverAccount.getIban(),
                 senderAccount.getIban()
         );
+
+        printLog("WithdrawSavings, FROM:", getTimestamp(), amountInSenderCurrency,
+                senderAccount.getBalance(), senderAccount.getIban());
+        printLog("WithdrawSavings, TO:", getTimestamp(), amount,
+                receiverAccount.getBalance(), receiverAccount.getIban());
 
         senderAccount.getTransactionsHistory().add(transaction);
         receiverAccount.getTransactionsHistory().add(transaction);

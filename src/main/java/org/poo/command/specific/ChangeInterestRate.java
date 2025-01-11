@@ -7,6 +7,8 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 
+import static org.poo.input.Input.printLog;
+
 /**
  * The type Change interest rate.
  */
@@ -39,10 +41,14 @@ public final class ChangeInterestRate extends BaseCommand {
 
         SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
 
+        double debugInterestRate = savingsAccount.getInterestRate();
         savingsAccount.setInterestRate(interestRate);
         savingsAccount.getTransactionsHistory().add(new BaseTransaction(
                 String.format("Interest rate of the account changed to %.2f", interestRate),
                 getTimestamp()
         ));
+
+        printLog("ChangeInterestRate", getTimestamp(), interestRate, debugInterestRate,
+                savingsAccount.getIban());
     }
 }

@@ -110,7 +110,7 @@ public final class PayOnline extends BaseCommand {
         account.decreaseBalance(totalAmount);
         account.getUser().increaseNumberOfOver300Payments();
 
-        printLog("PayOnline:business", getTimestamp(), totalAmount, account.getBalance(),
+        printLog("PayOnline:classic", getTimestamp(), totalAmount, account.getBalance(),
                 account.getIban());
 
         return true;
@@ -173,10 +173,6 @@ public final class PayOnline extends BaseCommand {
     public void execute() {
         if (amount == 0) {
             return;
-        }
-
-        if (getTimestamp() == 687 || getTimestamp() == 708) {
-            System.out.println("DDADA");
         }
 
         final Input input = Input.getInstance();

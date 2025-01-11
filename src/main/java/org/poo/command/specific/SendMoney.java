@@ -133,19 +133,10 @@ public final class SendMoney extends BaseCommand {
     }
 
     private void sendToCompany(BaseAccount baseAccount, Commerciant commerciant) {
-        // TODO: Might need to check after applying discounts
-        if (!baseAccount.hasEnoughBalance(amount)) {
-            baseAccount.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
-            return;
-        }
-
         User user = baseAccount.getUser();
         double totalAmount = amount;
-        // TODO: Convert amount in RON
-
         double senderCommission = user.getServicePlan().getCommission(amount);
         totalAmount += senderCommission;
-        baseAccount.decreaseBalance(senderCommission);
 
         double discount = baseAccount.getDiscountForTransactionCount(commerciant.getType());
         if (discount != 0) {
@@ -163,13 +154,21 @@ public final class SendMoney extends BaseCommand {
             }
         }
 
+        if (amountInRON > 300) {
+            user.increaseNumberOfOver300Payments();
+        }
         baseAccount.addTransaction(commerciant, amountInRON);
 
         if (commerciant.getCashback() == CashbackPlans.NR_OF_TRANSACTIONS) {
             baseAccount.updateCashback(commerciant);
         }
 
-        baseAccount.decreaseBalance(amount);
+        if (!baseAccount.hasEnoughBalance(amount)) {
+            baseAccount.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
+            return;
+        }
+
+        baseAccount.decreaseBalance(totalAmount);
 
         baseAccount.getTransactionsHistory().add(new TransferTransaction(
                 description,
