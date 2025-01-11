@@ -9,29 +9,33 @@ import java.util.List;
 
 @Getter
 @Setter
-public class EmployeeAccount {
-    private List<EmployeeTransactions> depositedAmount = new ArrayList<>();
-    private List<EmployeeTransactions> spendAmount = new ArrayList<>();
+public class Employee {
+    private List<EmployeeData> depositedData = new ArrayList<>();
+    private List<EmployeeData> spendData = new ArrayList<>();
 
     private String role;
     private User user;
 
-    public EmployeeAccount(User user, String role) {
+    public Employee(User user, String role) {
         this.user = user;
         this.role = role;
     }
 
     public void addDeposit(double amount, int timestamp) {
-        depositedAmount.add(new EmployeeTransactions(amount, timestamp));
+        depositedData.add(new EmployeeData(amount, timestamp));
     }
 
-    public void addSpending(double amount, int timestamp) {
-        spendAmount.add(new EmployeeTransactions(amount, timestamp));
+    public void addSpending(String commerciant, double amount, int timestamp) {
+        spendData.add(new EmployeeData(commerciant, amount, timestamp));
+    }
+
+    public String getUsername() {
+        return getUser().getLastName() + " " + getUser().getFirstName();
     }
 
     public double getTotalDepositedAmount(int startTimestamp, int endTimestamp) {
         double total = 0;
-        for (EmployeeTransactions deposit : depositedAmount) {
+        for (EmployeeData deposit : depositedData) {
             if (startTimestamp > deposit.getTimestamp()) {
                 continue;
             }
@@ -49,7 +53,7 @@ public class EmployeeAccount {
 
     public double getTotalSpendAmount(int startTimestamp, int endTimestamp) {
         double total = 0;
-        for (EmployeeTransactions spend : spendAmount) {
+        for (EmployeeData spend : spendData) {
             if (startTimestamp > spend.getTimestamp()) {
                 continue;
             }

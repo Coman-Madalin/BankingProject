@@ -3,7 +3,7 @@ package org.poo.command.specific;
 import com.google.gson.JsonObject;
 import org.poo.account.BaseAccount;
 import org.poo.account.specific.BusinessAccount;
-import org.poo.business.EmployeeAccount;
+import org.poo.business.Employee;
 import org.poo.command.BaseCommand;
 import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
@@ -47,8 +47,8 @@ public final class PayOnline extends BaseCommand {
     }
 
     private boolean handleBusinessAccount(BusinessAccount businessAccount, double discount) {
-        EmployeeAccount employeeAccount = businessAccount.getEmployeeByEmailAndRole(email, null);
-        if (employeeAccount == null) {
+        Employee employee = businessAccount.getEmployeeByEmailAndRole(email, null);
+        if (employee == null) {
             //TODO: Employee was not found
             return false;
         }
@@ -65,14 +65,14 @@ public final class PayOnline extends BaseCommand {
             return false;
         }
 
-        if (employeeAccount.getRole().equals("employee")
+        if (employee.getRole().equals("employee")
                 && totalAmount > businessAccount.getSpendingLimit()) {
             //TODO: employee is over spending
             return false;
         }
 
         businessAccount.decreaseBalance(totalAmount);
-        employeeAccount.addSpending(amount, getTimestamp());
+        employee.addSpending(commerciant, amount, getTimestamp());
 
         printLog("Payonline:business", getTimestamp(), totalAmount, businessAccount.getBalance(),
                 businessAccount.getIban());

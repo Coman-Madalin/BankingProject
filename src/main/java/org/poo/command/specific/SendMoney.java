@@ -39,6 +39,10 @@ public final class SendMoney extends BaseCommand {
         // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
 
+        if (getTimestamp() == 248) {
+            System.out.println("DADAD");
+        }
+
         if (senderUser == null) {
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("timestamp", getTimestamp());
@@ -128,46 +132,55 @@ public final class SendMoney extends BaseCommand {
                 receiverAccount.getBalance(), receiverAccount.getIban());
     }
 
-    private void sendToCompany(BaseAccount account, Commerciant commerciant) {
+    private void sendToCompany(BaseAccount baseAccount, Commerciant commerciant) {
         // TODO: Might need to check after applying discounts
-        if (!account.hasEnoughBalance(amount)) {
-            account.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
+        if (!baseAccount.hasEnoughBalance(amount)) {
+            baseAccount.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
             return;
         }
 
-        User user = account.getUser();
+        User user = baseAccount.getUser();
         double totalAmount = amount;
         // TODO: Convert amount in RON
 
         double senderCommission = user.getServicePlan().getCommission(amount);
         totalAmount += senderCommission;
-        account.decreaseBalance(senderCommission);
+        baseAccount.decreaseBalance(senderCommission);
 
-        double discount = account.getDiscountForTransactionCount(commerciant.getType());
+        double discount = baseAccount.getDiscountForTransactionCount(commerciant.getType());
         if (discount != 0) {
             totalAmount = totalAmount - amount * discount;
-            account.invalidateCashback();
+            baseAccount.invalidateCashback();
         }
 
         double amountInRON = Input.getInstance().getExchanges().convertCurrency(amount,
-                account.getCurrency(), "RON");
+                baseAccount.getCurrency(), "RON");
 
         if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
-            discount = account.getSpendingDiscount(commerciant, amountInRON);
+            discount = baseAccount.getSpendingDiscount(commerciant, amountInRON);
             if (discount != 0) {
                 totalAmount = totalAmount - amount * discount;
             }
         }
 
-        account.addTransaction(commerciant, amountInRON);
+        baseAccount.addTransaction(commerciant, amountInRON);
 
         if (commerciant.getCashback() == CashbackPlans.NR_OF_TRANSACTIONS) {
-            account.updateCashback(commerciant);
+            baseAccount.updateCashback(commerciant);
         }
 
-        account.decreaseBalance(amount);
+        baseAccount.decreaseBalance(amount);
 
-        printLog("SendMoney:business", getTimestamp(), totalAmount, account.getBalance(),
-                account.getIban());
+        baseAccount.getTransactionsHistory().add(new TransferTransaction(
+                description,
+                getTimestamp(),
+                account,
+                receiver,
+                String.format("%.1f %s", amount, baseAccount.getCurrency()),
+                "sent"
+        ));
+
+        printLog("SendMoney:business", getTimestamp(), totalAmount, baseAccount.getBalance(),
+                baseAccount.getIban());
     }
 }

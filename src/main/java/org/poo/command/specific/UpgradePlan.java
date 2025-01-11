@@ -40,6 +40,14 @@ public class UpgradePlan extends BaseCommand {
 
         ServicePlans newServicePlan = ServicePlans.parse(newPlanType);
 
+        if (user.getServicePlan() == newServicePlan) {
+            accountUser.getTransactionsHistory().add(new BaseTransaction(
+                    "The user already has the " + newServicePlan.toString().toLowerCase() + " plan.",
+                    getTimestamp()
+            ));
+            return;
+        }
+
         Integer fee = user.getServicePlan().canUpgrade(newServicePlan);
         if (fee == null) {
             System.out.println("Error parsing the new plan");

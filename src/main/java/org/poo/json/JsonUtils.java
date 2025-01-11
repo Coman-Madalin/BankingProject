@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import org.poo.account.BaseAccount;
+import org.poo.account.specific.BusinessAccount;
 import org.poo.account.specific.SavingsAccount;
 import org.poo.command.BaseCommand;
 import org.poo.command.specific.*;
@@ -60,6 +61,7 @@ public class JsonUtils {
                 .registerTypeAdapter(Input.class, new InputDeserializer())
                 .registerTypeAdapter(BaseAccount.class, new BaseAccountSerializer())
                 .registerTypeAdapter(SavingsAccount.class, new BaseAccountSerializer())
+                .registerTypeAdapter(BusinessAccount.class, new BaseAccountSerializer())
                 .registerTypeAdapter(User.class, new UserSerializer())
                 .registerTypeAdapter(Card.class, new CardSerializer())
                 .registerTypeAdapter(CustomSplitTransaction.class, new SplitTransactionSerializer());

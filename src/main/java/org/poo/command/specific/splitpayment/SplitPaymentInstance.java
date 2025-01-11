@@ -19,6 +19,11 @@ public class SplitPaymentInstance {
     public void notify(SplitPaymentParticipant sender, boolean accepted) {
         if (!accepted) {
             // TODO: one user rejected the payment
+            for (SplitPaymentParticipant participant : participants) {
+                participant.invalidatePayment("One user rejected the payment.");
+                participant.getAccount().getUser().removeSplitPayment(participant);
+            }
+
             Input.getInstance().getSplitPaymentInstances().remove(this);
             for (SplitPaymentParticipant subscriber : participants) {
                 subscriber.getAccount().getUser().removeSplitPayment(subscriber);
@@ -38,10 +43,10 @@ public class SplitPaymentInstance {
     }
 
     private void notifyEveryoneInsufficientFunds(String insufficientFundsIban) {
-        for (SplitPaymentParticipant subscriber : participants) {
+        for (SplitPaymentParticipant participant : participants) {
             //TODO: add a transaction log
-            subscriber.invalidatePayment("Account " + insufficientFundsIban + " has insufficient funds for a split payment.");
-            subscriber.getAccount().getUser().removeSplitPayment(subscriber);
+            participant.invalidatePayment("Account " + insufficientFundsIban + " has insufficient funds for a split payment.");
+            participant.getAccount().getUser().removeSplitPayment(participant);
         }
     }
 

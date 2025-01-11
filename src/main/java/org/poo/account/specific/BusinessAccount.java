@@ -3,20 +3,21 @@ package org.poo.account.specific;
 import lombok.Getter;
 import lombok.Setter;
 import org.poo.account.BaseAccount;
-import org.poo.business.EmployeeAccount;
+import org.poo.business.CommerciantReportData;
+import org.poo.business.Employee;
+import org.poo.business.EmployeeData;
 import org.poo.input.Input;
 import org.poo.user.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.poo.input.Input.printLog;
 
 @Setter
 @Getter
 public class BusinessAccount extends BaseAccount {
-    private List<EmployeeAccount> employees = new ArrayList<>();
-    private List<EmployeeAccount> managers = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
+    private List<Employee> managers = new ArrayList<>();
     private double spendingLimit;
     private double depositLimit;
 
@@ -32,8 +33,8 @@ public class BusinessAccount extends BaseAccount {
 
     public void addEmployee(User user, String role) {
         switch (role) {
-            case "employee" -> employees.add(new EmployeeAccount(user, "employee"));
-            case "manager" -> managers.add(new EmployeeAccount(user, "manager"));
+            case "employee" -> employees.add(new Employee(user, "employee"));
+            case "manager" -> managers.add(new Employee(user, "manager"));
         }
 
     }
@@ -41,20 +42,20 @@ public class BusinessAccount extends BaseAccount {
     /**
      * If parameter role is NULL, we will search all available roles for the employee
      */
-    public EmployeeAccount getEmployeeByEmailAndRole(String email, String role) {
+    public Employee getEmployeeByEmailAndRole(String email, String role) {
         if (getUser().getEmail().equals(email)) {
-            return new EmployeeAccount(null, "owner");
+            return new Employee(null, "owner");
         }
 
         if (role == null || role.equals("employee"))
-            for (EmployeeAccount employee : employees) {
+            for (Employee employee : employees) {
                 if (employee.getUser().getEmail().equals(email)) {
                     return employee;
                 }
             }
 
         if (role == null || role.equals("manager"))
-            for (EmployeeAccount manager : managers) {
+            for (Employee manager : managers) {
                 if (manager.getUser().getEmail().equals(email)) {
                     return manager;
                 }
@@ -64,9 +65,9 @@ public class BusinessAccount extends BaseAccount {
     }
 
     public void makeDeposit(String email, double amount, int timestamp) {
-        EmployeeAccount employeeAccount = getEmployeeByEmailAndRole(email, "manager");
+        Employee employee = getEmployeeByEmailAndRole(email, "manager");
 
-        if (employeeAccount == null) {
+        if (employee == null) {
             //TODO: employee not found
             return;
         }
@@ -74,10 +75,67 @@ public class BusinessAccount extends BaseAccount {
         this.increaseBalance(amount);
         printLog("AddFunds:business", timestamp, amount, getBalance(), getIban());
 
-        if (employeeAccount.getUser() == null) {
+        if (employee.getUser() == null) {
             //TODO: The CEO is making this command
             return;
         }
-        employeeAccount.addDeposit(amount, timestamp);
+        employee.addDeposit(amount, timestamp);
+    }
+
+    private Set<String> getAllCommerciants() {
+        Set<String> commerciants = new HashSet<>();
+
+        for (Employee manager : managers) {
+            for (EmployeeData payment : manager.getSpendData()) {
+                commerciants.add(payment.getCommerciant());
+            }
+        }
+
+        for (Employee employee : employees) {
+            for (EmployeeData payment : employee.getSpendData()) {
+                commerciants.add(payment.getCommerciant());
+            }
+        }
+
+        return commerciants;
+    }
+
+    public List<CommerciantReportData> getCommerciantData() {
+        List<CommerciantReportData> commerciantReportDataList = new ArrayList<>();
+        Set<String> commerciants = getAllCommerciants();
+
+        for (String commerciant : commerciants) {
+            CommerciantReportData commerciantReportData = new CommerciantReportData();
+            commerciantReportData.setCommerciant(commerciant);
+
+            //TODO: remove the duplicate code
+            for (Employee manager : managers) {
+                for (EmployeeData payment : manager.getSpendData()) {
+                    if (!payment.getCommerciant().equals(commerciant)) {
+                        continue;
+                    }
+
+                    commerciantReportData.increaseTotalReceived(payment.getAmount());
+                    commerciantReportData.addToList(manager.getUsername(), manager.getRole());
+                }
+            }
+
+            for (Employee employee : employees) {
+                for (EmployeeData payment : employee.getSpendData()) {
+                    if (!payment.getCommerciant().equals(commerciant)) {
+                        continue;
+                    }
+
+                    commerciantReportData.increaseTotalReceived(payment.getAmount());
+                    commerciantReportData.addToList(employee.getUsername(), employee.getRole());
+                }
+            }
+
+            commerciantReportData.postProcessing();
+            commerciantReportDataList.add(commerciantReportData);
+        }
+
+        Collections.sort(commerciantReportDataList);
+        return commerciantReportDataList;
     }
 }

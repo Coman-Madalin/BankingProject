@@ -4,7 +4,10 @@ import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
+import org.poo.transactions.specific.WithdrawSavingsTransaction;
 import org.poo.user.User;
+
+import static org.poo.input.Input.printLog;
 
 public class WithdrawSavings extends BaseCommand {
     private final static short MINIMUM_AGE = 21;
@@ -35,12 +38,43 @@ public class WithdrawSavings extends BaseCommand {
         }
 
         BaseAccount receiverAccount = user.getClassicAccountInCurrency(currency);
+
         if (receiverAccount == null) {
             senderAccount.getTransactionsHistory().add(new BaseTransaction(
                     "You do not have a classic account.",
                     getTimestamp()
             ));
+            return;
         }
 
+        double amountInRON = Input.getInstance().getExchanges()
+                .convertCurrency(amount, currency, "RON");
+        double commissionInRON = senderAccount.getUser().getServicePlan()
+                .getCommission(amountInRON);
+        double commissionInSenderCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(commissionInRON, "RON", senderAccount.getCurrency());
+        double amountInSenderCurrency = Input.getInstance().getExchanges()
+                .convertCurrency(amount, currency, senderAccount.getCurrency());
+        double totalAmount = amountInSenderCurrency + commissionInSenderCurrency;
+
+        if (!senderAccount.hasEnoughBalance(totalAmount)) {
+            printLog("WithdrawSavings:NotEnoughBalance", getTimestamp(), totalAmount,
+                    senderAccount.getBalance(), senderAccount.getIban());
+            return;
+        }
+
+        senderAccount.decreaseBalance(totalAmount);
+        receiverAccount.increaseBalance(amount);
+
+        WithdrawSavingsTransaction transaction = new WithdrawSavingsTransaction(
+                "Savings withdrawal",
+                getTimestamp(),
+                amount,
+                receiverAccount.getIban(),
+                senderAccount.getIban()
+        );
+
+        senderAccount.getTransactionsHistory().add(transaction);
+        receiverAccount.getTransactionsHistory().add(transaction);
     }
 }
