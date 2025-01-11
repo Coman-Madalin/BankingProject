@@ -46,16 +46,23 @@ public final class Input {
         return !account.startsWith("RO");
     }
 
+    public static void printLog(String action, int timestamp, double amount, double balance,
+                                String account) {
+        System.out.printf("%d        %s          %f         %s          %f%n", timestamp, action
+                , amount, account, balance);
+    }
+
     public void run() {
         calculateAgeOfUsers();
         checkForStudents();
         initializeCashbackPlans();
 
         exchanges.makeCommonCurrencyExchange();
+
+        System.out.println("Time            Action                  Amount                    " +
+                "Account                     Balance");
         for (final BaseCommand command : commands) {
             command.execute();
-
-            users.printSpecific(command.getTimestamp(), "RO69POOB6209498372540635");
         }
     }
 

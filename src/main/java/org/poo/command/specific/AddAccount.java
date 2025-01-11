@@ -8,6 +8,8 @@ import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.user.User;
 
+import static org.poo.input.Input.printLog;
+
 /**
  * Add an account command.
  */
@@ -55,6 +57,9 @@ public final class AddAccount extends BaseCommand {
         if (account == null) {
             return;
         }
+
+        printLog("AddAccount:" + accountType, getTimestamp(), 0, 0, account.getIban());
+
 
         user.getAccounts().add(account);
         account.getTransactionsHistory().add(new BaseTransaction("New account created",

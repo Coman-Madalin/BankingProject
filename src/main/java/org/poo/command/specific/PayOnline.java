@@ -13,6 +13,8 @@ import org.poo.transactions.specific.PaymentTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
+import static org.poo.input.Input.printLog;
+
 /**
  * The type Pay online.
  */
@@ -72,13 +74,13 @@ public final class PayOnline extends BaseCommand {
         businessAccount.decreaseBalance(totalAmount);
         employeeAccount.addSpending(amount, getTimestamp());
 
-        businessAccount.printLog("Payonline", getTimestamp(), totalAmount);
+        printLog("Payonline:business", getTimestamp(), totalAmount, businessAccount.getBalance(),
+                businessAccount.getIban());
 
         return true;
     }
 
     private boolean handleClassicAccount(BaseAccount account, double discount) {
-
         final Card card = account.getCardByCardNumber(cardNumber);
 
         if (card == null) {
@@ -105,6 +107,12 @@ public final class PayOnline extends BaseCommand {
             return false;
         }
 
+        account.decreaseBalance(totalAmount);
+        account.getUser().increaseNumberOfOver300Payments();
+
+        printLog("PayOnline:business", getTimestamp(), totalAmount, account.getBalance(),
+                account.getIban());
+
         return true;
     }
 
@@ -130,6 +138,8 @@ public final class PayOnline extends BaseCommand {
                 amountInAccountCurrency,
                 commerciant
         ));
+
+        account.getUser().increaseNumberOfOver300Payments();
 
         return true;
     }
@@ -163,6 +173,10 @@ public final class PayOnline extends BaseCommand {
     public void execute() {
         if (amount == 0) {
             return;
+        }
+
+        if (getTimestamp() == 687 || getTimestamp() == 708) {
+            System.out.println("DDADA");
         }
 
         final Input input = Input.getInstance();

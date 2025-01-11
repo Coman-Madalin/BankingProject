@@ -1,11 +1,15 @@
 package org.poo.command.specific;
 
+import com.google.gson.JsonObject;
 import org.poo.account.BaseAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
+import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.PlanUpgradeTransaction;
 import org.poo.user.ServicePlans;
 import org.poo.user.User;
+
+import static org.poo.input.Input.printLog;
 
 public class UpgradePlan extends BaseCommand {
     private String account;
@@ -27,13 +31,12 @@ public class UpgradePlan extends BaseCommand {
 
         BaseAccount accountUser = Input.getInstance().getUsers().getAccountByIBAN(account);
         if (accountUser == null) {
-            //TODO: account not found
+            JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("description", "Account not found");
+            outputJson.addProperty("timestamp", getTimestamp());
+            setOutput(outputJson.toString());
             return;
         }
-
-        accountUser.getTransactionsHistory().add(new PlanUpgradeTransaction(
-                "Upgrade plan", getTimestamp(), newPlanType, account
-        ));
 
         ServicePlans newServicePlan = ServicePlans.parse(newPlanType);
 
@@ -48,12 +51,22 @@ public class UpgradePlan extends BaseCommand {
                     .convertCurrency(fee, "RON", accountUser.getCurrency());
 
             if (!accountUser.hasEnoughBalance(accountCurrencyAmount)) {
-                // TODO: user doesn't have enough money to upgrade
+                accountUser.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
                 return;
             }
 
             accountUser.decreaseBalance(accountCurrencyAmount);
             user.setServicePlan(newServicePlan);
+            accountUser.getTransactionsHistory().add(new PlanUpgradeTransaction(
+                    "Upgrade plan", getTimestamp(), newPlanType, account
+            ));
+
+            printLog("UpgradePlan:" + newPlanType, getTimestamp(),
+                    accountCurrencyAmount, accountUser.getBalance(), accountUser.getIban());
+
+        } else {
+            System.out.printf("Can't upgrade %s from %s -> %s\n", accountUser.getIban(),
+                    accountUser.getUser().getServicePlan().toString(), newPlanType);
         }
 
     }

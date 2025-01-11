@@ -45,6 +45,7 @@ public class JsonUtils {
             AddInterest.class,
             WithdrawSavings.class,
             CashWithdrawal.class,
+            UpgradePlan.class,
             AcceptSplitPayment.class,
             RejectSplitPayment.class,
             AddNewBusinessAssociate.class,

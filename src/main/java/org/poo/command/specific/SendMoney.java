@@ -11,6 +11,7 @@ import org.poo.transactions.specific.TransferTransaction;
 import org.poo.user.User;
 
 import static org.poo.input.Input.isAlias;
+import static org.poo.input.Input.printLog;
 
 /**
  * The type Send money.
@@ -92,9 +93,7 @@ public final class SendMoney extends BaseCommand {
         double senderTotal = amount + senderCurrencyCommission;
 
         if (!senderAccount.hasEnoughBalance(senderTotal)) {
-            senderAccount.getTransactionsHistory().add(new BaseTransaction(
-                    getTimestamp()
-            ));
+            senderAccount.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
             return;
         }
 
@@ -123,6 +122,10 @@ public final class SendMoney extends BaseCommand {
                 "received"
         ));
 
+        printLog("SendMoney:Classic, FROM:", getTimestamp(), senderTotal,
+                senderAccount.getBalance(), senderAccount.getIban());
+        printLog("SendMoney:Classic, TO:", getTimestamp(), receiverCurrencyAmount,
+                receiverAccount.getBalance(), receiverAccount.getIban());
     }
 
     private void sendToCompany(BaseAccount account, Commerciant commerciant) {
@@ -163,5 +166,8 @@ public final class SendMoney extends BaseCommand {
         }
 
         account.decreaseBalance(amount);
+
+        printLog("SendMoney:business", getTimestamp(), totalAmount, account.getBalance(),
+                account.getIban());
     }
 }

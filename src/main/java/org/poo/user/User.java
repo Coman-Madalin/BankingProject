@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.poo.input.Input.printLog;
+
 /**
  * The type User.
  */
@@ -25,6 +27,7 @@ public final class User {
     private int age;
     @Setter
     private ServicePlans servicePlan = ServicePlans.STANDARD;
+    private int numberOfOver300Payments = 0;
     /**
      * DON'T use this, this is only for deserialization purposes, use age field instead
      */
@@ -43,6 +46,21 @@ public final class User {
             }
         }
         return null;
+    }
+
+    public void increaseNumberOfOver300Payments() {
+        if (servicePlan != ServicePlans.SILVER) {
+            System.out.printf("%s doesn't have silver plan\n", getEmail());
+            return;
+        }
+
+        numberOfOver300Payments++;
+
+
+        if (numberOfOver300Payments == 5) {
+            servicePlan = ServicePlans.GOLD;
+            printLog("UpgradePlan:AUTOMATIC", -1, 0, 0, getEmail());
+        }
     }
 
     /**
