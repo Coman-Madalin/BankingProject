@@ -111,22 +111,22 @@ public class BusinessAccount extends BaseAccount {
             //TODO: remove the duplicate code
             for (Employee manager : managers) {
                 for (EmployeeData payment : manager.getSpendData()) {
-                    if (!payment.getCommerciant().equals(commerciant)) {
+                    if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
                         continue;
                     }
 
-                    commerciantReportData.increaseTotalReceived(payment.getAmount());
+                    commerciantReportData.increaseTotalSpend(payment.getAmount());
                     commerciantReportData.addToList(manager.getUsername(), manager.getRole());
                 }
             }
 
             for (Employee employee : employees) {
                 for (EmployeeData payment : employee.getSpendData()) {
-                    if (!payment.getCommerciant().equals(commerciant)) {
+                    if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
                         continue;
                     }
 
-                    commerciantReportData.increaseTotalReceived(payment.getAmount());
+                    commerciantReportData.increaseTotalSpend(payment.getAmount());
                     commerciantReportData.addToList(employee.getUsername(), employee.getRole());
                 }
             }

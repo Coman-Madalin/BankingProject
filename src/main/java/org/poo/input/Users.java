@@ -266,7 +266,7 @@ public class Users {
         System.out.println("]\n\n");
     }
 
-    public void printSpecific(int time, String IBAN) {
+    public void printSpecificIBAN(int time, String IBAN) {
         BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
         if (account == null)
             return;

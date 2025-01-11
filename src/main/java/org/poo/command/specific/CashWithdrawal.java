@@ -30,6 +30,10 @@ public class CashWithdrawal extends BaseCommand {
         User user = Input.getInstance().getUsers().getUserByEmail(email);
 
         if (user == null) {
+            JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("description", "User not found");
+            outputJson.addProperty("timestamp", getTimestamp());
+            setOutput(outputJson.toString());
             return;
         }
 

@@ -50,6 +50,7 @@ public final class PayOnline extends BaseCommand {
         Employee employee = businessAccount.getEmployeeByEmailAndRole(email, null);
         if (employee == null) {
             //TODO: Employee was not found
+            setOutputAsError();
             return false;
         }
 
@@ -72,7 +73,7 @@ public final class PayOnline extends BaseCommand {
         }
 
         businessAccount.decreaseBalance(totalAmount);
-        employee.addSpending(commerciant, amount, getTimestamp());
+        employee.addSpending(commerciant, amountInAccountCurrency, getTimestamp());
 
         printLog("Payonline:business", getTimestamp(), totalAmount, businessAccount.getBalance(),
                 businessAccount.getIban());

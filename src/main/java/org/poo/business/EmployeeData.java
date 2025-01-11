@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmployeeData {
-
     private String commerciant = null;
     private double amount;
     private int timestamp;

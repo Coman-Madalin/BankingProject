@@ -70,7 +70,7 @@ public class UpgradePlan extends BaseCommand {
             ));
 
             printLog("UpgradePlan:" + newPlanType, getTimestamp(),
-                    accountCurrencyAmount, accountUser.getBalance(), accountUser.getIban());
+                    accountCurrencyAmount, accountUser.getBalance(), accountUser.getUser().getEmail());
 
         } else {
             System.out.printf("Can't upgrade %s from %s -> %s\n", accountUser.getIban(),

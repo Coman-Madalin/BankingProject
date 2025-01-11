@@ -104,7 +104,8 @@ public class BaseAccount {
 
         int[] thresholds = {100, 300, 500};
         for (int i = thresholds.length - 1; i >= 0; i--) {
-            if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount > thresholds[i]) {
+            if (data.getTotalSpend() + amount >= thresholds[i]) {
+//            if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount > thresholds[i]) {
                 return user.getServicePlan().getSpendingDiscount(i);
             }
         }
@@ -112,11 +113,7 @@ public class BaseAccount {
     }
 
     public void addTransaction(Commerciant commerciant, double amount) {
-        Data data = COMMERCIANT_TO_DATA.putIfAbsent(commerciant, new Data(1, amount));
-        if (data == null) {
-            return;
-        }
-
+        Data data = COMMERCIANT_TO_DATA.getOrDefault(commerciant, new Data(0, 0));
         data.addTransaction(amount);
         COMMERCIANT_TO_DATA.put(commerciant, data);
     }

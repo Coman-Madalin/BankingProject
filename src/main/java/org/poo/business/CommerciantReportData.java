@@ -1,9 +1,11 @@
 package org.poo.business;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,12 +14,13 @@ import java.util.List;
 @Setter
 public class CommerciantReportData implements Comparable<CommerciantReportData> {
     private String commerciant;
-    private double totalReceived;
-    private List<String> managers;
-    private List<String> employees;
+    @SerializedName("total received")
+    private double totalSpend;
+    private List<String> managers = new ArrayList<>();
+    private List<String> employees = new ArrayList<>();
 
-    public void increaseTotalReceived(double amount) {
-        totalReceived += amount;
+    public void increaseTotalSpend(double amount) {
+        totalSpend += amount;
     }
 
     public void addToList(String name, String role) {
