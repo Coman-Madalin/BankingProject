@@ -20,6 +20,8 @@ public class Card {
 
     /**
      * Instantiates a new Card.
+     *
+     * @param account the account
      */
     public Card(BaseAccount account) {
         cardNumber = generateCardNumber();
@@ -30,6 +32,7 @@ public class Card {
      * Instantiates a new Card.
      *
      * @param isOneTimeCard the is one time card
+     * @param account       the account
      */
     public Card(final boolean isOneTimeCard, BaseAccount account) {
         cardNumber = generateCardNumber();

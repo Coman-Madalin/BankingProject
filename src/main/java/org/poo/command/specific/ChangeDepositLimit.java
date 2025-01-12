@@ -4,13 +4,16 @@ import org.poo.account.specific.BusinessAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 
+/**
+ * The type Change deposit limit.
+ */
 public class ChangeDepositLimit extends BaseCommand {
     private String email;
     private String account;
     private double amount;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Change deposit limit.
      *
      * @param command   the command
      * @param timestamp the timestamp

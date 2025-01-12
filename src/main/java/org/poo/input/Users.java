@@ -237,6 +237,11 @@ public class Users {
         return null;
     }
 
+    /**
+     * Print all.
+     *
+     * @param time the time
+     */
     public void printAll(int time) {
         System.out.println("[");
         System.out.println("!!!!TIME=" + time + "!!!!");
@@ -266,6 +271,12 @@ public class Users {
         System.out.println("]\n\n");
     }
 
+    /**
+     * Print specific iban.
+     *
+     * @param time the time
+     * @param IBAN the iban
+     */
     public void printSpecificIBAN(int time, String IBAN) {
         BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
         if (account == null)

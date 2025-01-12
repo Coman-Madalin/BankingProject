@@ -8,6 +8,9 @@ import org.poo.transactions.specific.split.BaseSplitTransaction;
 import org.poo.transactions.specific.split.specific.CustomSplitTransaction;
 import org.poo.transactions.specific.split.specific.EqualSplitTransaction;
 
+/**
+ * The type Split payment participant.
+ */
 public class SplitPaymentParticipant {
     @Getter
     private final BaseAccount account;
@@ -17,26 +20,47 @@ public class SplitPaymentParticipant {
     @Setter
     private SplitPaymentInstance mediator;
 
+    /**
+     * Instantiates a new Split payment participant.
+     *
+     * @param account  the account
+     * @param amount   the amount
+     * @param currency the currency
+     */
     public SplitPaymentParticipant(BaseAccount account, double amount, String currency) {
         this.account = account;
         this.amount = amount;
         this.currency = currency;
     }
 
+    /**
+     * Reject payment.
+     */
     public void rejectPayment() {
         mediator.notify(this, false);
     }
 
+    /**
+     * Accept payment.
+     */
     public void acceptPayment() {
         mediator.notify(this, true);
     }
 
+    /**
+     * Check for funds boolean.
+     *
+     * @return the boolean
+     */
     public boolean checkForFunds() {
         double amountInParticipantCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, account.getCurrency());
         return account.hasEnoughBalance(amountInParticipantCurrency);
     }
 
+    /**
+     * Proceed payment.
+     */
     public void proceedPayment() {
         double amountInParticipantCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, account.getCurrency());
@@ -47,6 +71,11 @@ public class SplitPaymentParticipant {
         removePayment();
     }
 
+    /**
+     * Invalidate payment.
+     *
+     * @param errorMessage the error message
+     */
     public void invalidatePayment(String errorMessage) {
         BaseSplitTransaction splitTransaction = createTransactionLog();
         splitTransaction.addError(errorMessage);

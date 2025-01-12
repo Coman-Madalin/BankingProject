@@ -8,13 +8,16 @@ import org.poo.input.Input;
 
 import static org.poo.input.Input.printLog;
 
+/**
+ * The type Change spending limit.
+ */
 public class ChangeSpendingLimit extends BaseCommand {
     private String email;
     private String account;
     private double amount;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Change spending limit.
      *
      * @param command   the command
      * @param timestamp the timestamp

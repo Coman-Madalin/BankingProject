@@ -10,7 +10,7 @@ import org.poo.json.JsonUtils;
 import java.lang.reflect.Type;
 
 /**
- * The type Account serializer.
+ * The type Base account serializer.
  */
 public final class BaseAccountSerializer implements JsonSerializer<BaseAccount> {
     @Override

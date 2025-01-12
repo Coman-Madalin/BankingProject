@@ -9,6 +9,9 @@ import org.poo.user.User;
 
 import static org.poo.input.Input.printLog;
 
+/**
+ * The type Withdraw savings.
+ */
 public class WithdrawSavings extends BaseCommand {
     private final static short MINIMUM_AGE = 21;
 
@@ -17,7 +20,7 @@ public class WithdrawSavings extends BaseCommand {
     private String currency;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Withdraw savings.
      *
      * @param command   the command
      * @param timestamp the timestamp

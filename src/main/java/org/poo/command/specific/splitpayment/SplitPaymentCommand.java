@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Split payment.
+ * The type Split payment command.
  */
 @Getter
 public final class SplitPaymentCommand extends BaseCommand {
@@ -22,7 +22,7 @@ public final class SplitPaymentCommand extends BaseCommand {
     private SplitPaymentInstance splitPaymentInstance;
 
     /**
-     * Instantiates a new Split payment.
+     * Instantiates a new Split payment command.
      *
      * @param command   the command
      * @param timestamp the timestamp

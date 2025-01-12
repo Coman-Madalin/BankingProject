@@ -13,6 +13,9 @@ import java.util.*;
 
 import static org.poo.input.Input.printLog;
 
+/**
+ * The type Business account.
+ */
 @Setter
 @Getter
 public class BusinessAccount extends BaseAccount {
@@ -21,6 +24,12 @@ public class BusinessAccount extends BaseAccount {
     private double spendingLimit;
     private double depositLimit;
 
+    /**
+     * Instantiates a new Business account.
+     *
+     * @param currency the currency
+     * @param user     the user
+     */
     public BusinessAccount(String currency, User user) {
         super(currency, user);
         this.setType("business");
@@ -31,6 +40,12 @@ public class BusinessAccount extends BaseAccount {
         depositLimit = limitsValue;
     }
 
+    /**
+     * Add employee.
+     *
+     * @param user the user
+     * @param role the role
+     */
     public void addEmployee(User user, String role) {
         // TODO: Check that the employee is not already added
         if (getUser().getEmail().equalsIgnoreCase(user.getEmail())) {
@@ -44,7 +59,12 @@ public class BusinessAccount extends BaseAccount {
     }
 
     /**
-     * If parameter role is NULL, we will search all available roles for the employee
+     * Gets employee by email and role.
+     * If the parameter role is NULL, it will search all available roles for the employee.
+     *
+     * @param email the email of the employee
+     * @param role  the role of the employee (can be NULL to search all roles)
+     * @return the employee by email and role, or NULL if not found
      */
     public Employee getEmployeeByEmailAndRole(String email, String role) {
         if (getUser().getEmail().equals(email)) {
@@ -68,6 +88,13 @@ public class BusinessAccount extends BaseAccount {
         return null;
     }
 
+    /**
+     * Make deposit.
+     *
+     * @param email     the email
+     * @param amount    the amount
+     * @param timestamp the timestamp
+     */
     public void makeDeposit(String email, double amount, int timestamp) {
         Employee employee = getEmployeeByEmailAndRole(email, null);
 
@@ -108,6 +135,11 @@ public class BusinessAccount extends BaseAccount {
         return commerciants;
     }
 
+    /**
+     * Gets commerciant data.
+     *
+     * @return the commerciant data
+     */
     public List<CommerciantReportData> getCommerciantData() {
         List<CommerciantReportData> commerciantReportDataList = new ArrayList<>();
         Set<String> commerciants = getAllCommerciants();

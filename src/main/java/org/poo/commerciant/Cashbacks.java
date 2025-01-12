@@ -5,10 +5,26 @@ import lombok.Getter;
 import java.util.AbstractMap;
 import java.util.Map;
 
+/**
+ * The enum Cashback.
+ */
 public enum Cashbacks {
+    /**
+     * Food cashback.
+     */
     FOOD(0.02),
+    /**
+     * Clothes cashback.
+     */
     CLOTHES(0.05),
+    /**
+     * Tech cashback.
+     */
     TECH(0.1),
+    /**
+     * No cashback.
+     * This is a placeholder for cases where no cashback is applicable.
+     */
     NONE(0.0);
 
     private static final Map<Integer, Cashbacks> ORDER_TO_CASHBACK = Map.ofEntries(
@@ -25,6 +41,12 @@ public enum Cashbacks {
         this.discount = discount;
     }
 
+    /**
+     * Update cash back cashbacks.
+     *
+     * @param nrOfTransactions the nr of transactions
+     * @return the cashbacks
+     */
     public Cashbacks updateCashBack(int nrOfTransactions) {
         for (int i = 0; i < threshholds.length; i++) {
             if (threshholds[i] == nrOfTransactions) {

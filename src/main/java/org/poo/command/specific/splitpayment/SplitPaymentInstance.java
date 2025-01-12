@@ -6,16 +6,30 @@ import org.poo.input.Input;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Split payment instance.
+ */
 @Getter
 public class SplitPaymentInstance {
     private final List<SplitPaymentParticipant> participants = new ArrayList<>();
     private final List<SplitPaymentParticipant> acceptedRequests = new ArrayList<>();
     private final SplitPaymentCommand paymentCommand;
 
+    /**
+     * Instantiates a new Split payment instance.
+     *
+     * @param paymentCommand the payment command
+     */
     public SplitPaymentInstance(SplitPaymentCommand paymentCommand) {
         this.paymentCommand = paymentCommand;
     }
 
+    /**
+     * Notify.
+     *
+     * @param sender   the sender
+     * @param accepted the accepted
+     */
     public void notify(SplitPaymentParticipant sender, boolean accepted) {
         if (!accepted) {
             // TODO: one user rejected the payment
@@ -37,6 +51,11 @@ public class SplitPaymentInstance {
         }
     }
 
+    /**
+     * Add.
+     *
+     * @param subscriber the subscriber
+     */
     public void add(SplitPaymentParticipant subscriber) {
         participants.add(subscriber);
         subscriber.setMediator(this);
@@ -50,6 +69,9 @@ public class SplitPaymentInstance {
         }
     }
 
+    /**
+     * Notify everyone.
+     */
     public void notifyEveryone() {
         for (SplitPaymentParticipant participant : participants) {
             boolean enoughFunds = participant.checkForFunds();

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type Commerciant report data.
+ */
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,10 +22,21 @@ public class CommerciantReportData implements Comparable<CommerciantReportData> 
     private List<String> managers = new ArrayList<>();
     private List<String> employees = new ArrayList<>();
 
+    /**
+     * Increase total spend.
+     *
+     * @param amount the amount
+     */
     public void increaseTotalSpend(double amount) {
         totalSpend += amount;
     }
 
+    /**
+     * Add to list.
+     *
+     * @param name the name
+     * @param role the role
+     */
     public void addToList(String name, String role) {
         switch (role) {
             case "manager" -> managers.add(name);
@@ -31,6 +45,9 @@ public class CommerciantReportData implements Comparable<CommerciantReportData> 
         }
     }
 
+    /**
+     * Post processing.
+     */
     public void postProcessing() {
         Collections.sort(managers);
         Collections.sort(employees);

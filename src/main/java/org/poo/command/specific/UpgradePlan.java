@@ -11,12 +11,15 @@ import org.poo.user.User;
 
 import static org.poo.input.Input.printLog;
 
+/**
+ * The type Upgrade plan.
+ */
 public class UpgradePlan extends BaseCommand {
     private String account;
     private String newPlanType;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Upgrade plan.
      *
      * @param command   the command
      * @param timestamp the timestamp

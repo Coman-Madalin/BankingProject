@@ -48,6 +48,11 @@ public final class User {
         return null;
     }
 
+    /**
+     * Increase number of over 300 payments boolean.
+     *
+     * @return the boolean
+     */
     public boolean increaseNumberOfOver300Payments() {
         if (servicePlan != ServicePlans.SILVER) {
             System.out.printf("%s doesn't have silver plan\n", getEmail());
@@ -120,6 +125,12 @@ public final class User {
         return null;
     }
 
+    /**
+     * Gets account by card number.
+     *
+     * @param cardNumber the card number
+     * @return the account by card number
+     */
     public BaseAccount getAccountByCardNumber(final String cardNumber) {
         for (final BaseAccount account : accounts) {
             for (final Card card : account.getCards()) {
@@ -131,6 +142,12 @@ public final class User {
         return null;
     }
 
+    /**
+     * Gets classic account in currency.
+     *
+     * @param currency the currency
+     * @return the classic account in currency
+     */
     public BaseAccount getClassicAccountInCurrency(String currency) {
         for (BaseAccount account : accounts) {
             if (account.getType().equals("classic") && account.getCurrency().equalsIgnoreCase(currency)) {
@@ -140,6 +157,12 @@ public final class User {
         return null;
     }
 
+    /**
+     * Gets first split payment.
+     *
+     * @param type the type
+     * @return the first split payment
+     */
     public SplitPaymentParticipant getFirstSplitPayment(String type) {
         for (SplitPaymentParticipant splitPaymentParticipant : splitPaymentParticipantList) {
             if (splitPaymentParticipant.getMediator().getPaymentCommand().getSplitPaymentType()
@@ -150,6 +173,11 @@ public final class User {
         return null;
     }
 
+    /**
+     * Remove split payment.
+     *
+     * @param splitPayment the split payment
+     */
     public void removeSplitPayment(SplitPaymentParticipant splitPayment) {
         splitPaymentParticipantList.remove(splitPayment);
     }
@@ -171,6 +199,9 @@ public final class User {
         return allTransactions;
     }
 
+    /**
+     * Calculate age.
+     */
     public void calculateAge() {
         LocalDate currentDate = LocalDate.now();
         LocalDate birthDate = LocalDate.parse(getBirthDate());

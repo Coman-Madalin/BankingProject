@@ -32,6 +32,9 @@ public final class Input {
     private Commerciants commerciants;
     private List<SplitPaymentInstance> splitPaymentInstances = new ArrayList<>();
 
+    /**
+     * Instantiates a new Input.
+     */
     public Input() {
         instance = this;
     }
@@ -46,12 +49,24 @@ public final class Input {
         return !account.startsWith("RO");
     }
 
+    /**
+     * Print log.
+     *
+     * @param action    the action
+     * @param timestamp the timestamp
+     * @param amount    the amount
+     * @param balance   the balance
+     * @param account   the account
+     */
     public static void printLog(String action, int timestamp, double amount, double balance,
                                 String account) {
         System.out.printf("%d        %s          %f         %s          %f%n", timestamp, action
                 , amount, account, balance);
     }
 
+    /**
+     * Run.
+     */
     public void run() {
         calculateAgeOfUsers();
         checkForStudents();

@@ -5,13 +5,16 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.user.User;
 
+/**
+ * The type Add new business associate.
+ */
 public class AddNewBusinessAssociate extends BaseCommand {
     private String account;
     private String role;
     private String email;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Add new business associate.
      *
      * @param command   the command
      * @param timestamp the timestamp

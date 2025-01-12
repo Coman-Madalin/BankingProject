@@ -17,7 +17,7 @@ import java.util.List;
 import static org.poo.utils.Utils.generateIBAN;
 
 /**
- * The type Account.
+ * The type Base account.
  */
 @Setter
 @Getter
@@ -39,6 +39,12 @@ public class BaseAccount {
 
     private HashMap<Commerciant, Data> COMMERCIANT_TO_DATA = new HashMap<>();
 
+    /**
+     * Instantiates a new Base account.
+     *
+     * @param currency the currency
+     * @param user     the user
+     */
     public BaseAccount(final String currency, User user) {
         this.user = user;
         this.currency = currency;
@@ -60,7 +66,6 @@ public class BaseAccount {
      * @param amount the amount
      * @return the boolean
      */
-
     public boolean hasEnoughBalance(final double amount) {
         final double oldBalance = balance;
         double balanceCopy = balance - amount;
@@ -99,6 +104,13 @@ public class BaseAccount {
         return null;
     }
 
+    /**
+     * Gets spending discount.
+     *
+     * @param commerciant the commerciant
+     * @param amount      the amount
+     * @return the spending discount
+     */
     public double getSpendingDiscount(Commerciant commerciant, double amount) {
         // TODO: Change COMMERCIANT_TO_DATA to just point to a Double as we don't need total
         //  spend amount per commeciant anymore
@@ -121,6 +133,12 @@ public class BaseAccount {
         return 0;
     }
 
+    /**
+     * Add transaction.
+     *
+     * @param commerciant the commerciant
+     * @param amount      the amount
+     */
     public void addTransaction(Commerciant commerciant, double amount) {
         Data data = COMMERCIANT_TO_DATA.getOrDefault(commerciant, new Data(0, 0));
         data.addTransaction(amount);
@@ -132,6 +150,12 @@ public class BaseAccount {
         }
     }
 
+    /**
+     * Gets discount for transaction count.
+     *
+     * @param commerciantType the commerciant type
+     * @return the discount for transaction count
+     */
     public double getDiscountForTransactionCount(String commerciantType) {
         if (Cashbacks.valueOf(commerciantType.toUpperCase()) == cashbackForTransactionsCount) {
             return cashbackForTransactionsCount.getDiscount();
@@ -139,16 +163,30 @@ public class BaseAccount {
         return 0;
     }
 
+    /**
+     * Update cashback.
+     *
+     * @param commerciant the commerciant
+     */
     public void updateCashback(Commerciant commerciant) {
         Data data = COMMERCIANT_TO_DATA.get(commerciant);
         cashbackForTransactionsCount =
                 cashbackForTransactionsCount.updateCashBack(data.getNrTransactions());
     }
 
+    /**
+     * Invalidate cashback.
+     */
     public void invalidateCashback() {
         cashbackForTransactionsCount = Cashbacks.NONE;
     }
 
+    /**
+     * Is valid email boolean.
+     *
+     * @param email the email
+     * @return the boolean
+     */
     public boolean isValidEmail(String email) {
         return user.getEmail().equalsIgnoreCase(email);
     }

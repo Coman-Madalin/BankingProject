@@ -7,12 +7,15 @@ import org.poo.user.User;
 
 import static org.poo.input.Input.printLog;
 
+/**
+ * The type Accept split payment.
+ */
 public class AcceptSplitPayment extends BaseCommand {
     private String email;
     private String splitPaymentType;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Accept split payment.
      *
      * @param command   the command
      * @param timestamp the timestamp

@@ -172,6 +172,12 @@ public final class PayOnline extends BaseCommand {
         return true;
     }
 
+    /**
+     * Gets total discount in ron.
+     *
+     * @param account the account
+     * @return the total discount in ron
+     */
     public double getTotalDiscountInRON(BaseAccount account) {
         double totalDiscount = 0;
         Commerciant commerciant1 = Input.getInstance().getCommerciants()

@@ -11,7 +11,7 @@ import org.poo.user.User;
 import static org.poo.input.Input.printLog;
 
 /**
- * Add an account command.
+ * The type Add account.
  */
 public final class AddAccount extends BaseCommand {
     private final String email;
@@ -22,11 +22,12 @@ public final class AddAccount extends BaseCommand {
     /**
      * Instantiates a new Add account.
      *
-     * @param command     the command
-     * @param timestamp   the timestamp
-     * @param email       the email
-     * @param currency    the currency
-     * @param accountType the account type
+     * @param command      the command
+     * @param timestamp    the timestamp
+     * @param email        the email
+     * @param currency     the currency
+     * @param accountType  the account type
+     * @param interestRate the interest rate
      */
     public AddAccount(final String command, final int timestamp, final String email,
                       final String currency, final String accountType, double interestRate) {

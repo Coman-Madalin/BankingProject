@@ -11,6 +11,9 @@ import org.poo.user.User;
 
 import static org.poo.input.Input.printLog;
 
+/**
+ * The type Cash withdrawal.
+ */
 public class CashWithdrawal extends BaseCommand {
     private String email;
     private String cardNumber;
@@ -18,7 +21,7 @@ public class CashWithdrawal extends BaseCommand {
     private String location;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Cash withdrawal.
      *
      * @param command   the command
      * @param timestamp the timestamp
@@ -29,10 +32,6 @@ public class CashWithdrawal extends BaseCommand {
 
     @Override
     public void execute() {
-        if(getTimestamp()== 291){
-            System.out.println("DAGFSA");
-        }
-
         User user = Input.getInstance().getUsers().getUserByEmail(email);
 
         if (user == null) {

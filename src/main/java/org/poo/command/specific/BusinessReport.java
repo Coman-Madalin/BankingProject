@@ -11,6 +11,9 @@ import org.poo.json.JsonUtils;
 
 import java.util.List;
 
+/**
+ * The type Business report.
+ */
 public class BusinessReport extends BaseCommand {
     private int startTimestamp;
     private int endTimestamp;
@@ -18,7 +21,7 @@ public class BusinessReport extends BaseCommand {
     private String type;
 
     /**
-     * Instantiates a new Base command.
+     * Instantiates a new Business report.
      *
      * @param command   the command
      * @param timestamp the timestamp
