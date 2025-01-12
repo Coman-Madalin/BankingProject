@@ -5,7 +5,8 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.CardActionTransaction;
 import org.poo.user.Card;
-import org.poo.user.User;
+
+import static org.poo.input.Input.printLog;
 
 /**
  * The type Delete card.
@@ -41,19 +42,31 @@ public final class DeleteCard extends BaseCommand {
 
     @Override
     public void execute() {
-        Input input = Input.getInstance();
-        final User user = input.getUsers().getUserByEmail(email);
-        final BaseAccount account = input.getUsers().getAccountByEmailAndCardNumber(email, cardNumber);
+        final Card card = Input.getInstance().getUsers().getCardByEmailAndCardNumber(email, cardNumber);
 
-        final Card card = user.deleteCardByCardNumber(cardNumber);
-        if (card != null) {
-            account.getTransactionsHistory().add(new CardActionTransaction(
-                    "The card has been destroyed",
-                    getTimestamp(),
-                    account.getIban(),
-                    card.getCardNumber(),
-                    user.getEmail()
-            ));
+        if (card == null) {
+            printLog("DeleteCard:CardNotFound", getTimestamp(), -1, 0, cardNumber);
+            //TODO: Card not found
+            return;
         }
+
+        final BaseAccount account = card.getAccount();
+
+//        if (account.getBalance() != 0) {
+//            printLog("DeleteCard:FoundFunds", getTimestamp(), -1, account.getBalance(), cardNumber);
+//
+//            //TODO: account has funds, so we don't delete card, for some reason
+//            return;
+//        }
+
+        account.getCards().remove(card);
+
+        account.getTransactionsHistory().add(new CardActionTransaction(
+                "The card has been destroyed",
+                getTimestamp(),
+                account.getIban(),
+                card.getCardNumber(),
+                account.getUser().getEmail()
+        ));
     }
 }

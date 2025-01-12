@@ -32,11 +32,15 @@ public class BusinessAccount extends BaseAccount {
     }
 
     public void addEmployee(User user, String role) {
+        // TODO: Check that the employee is not already added
+        if (getUser().getEmail().equalsIgnoreCase(user.getEmail())) {
+            return;
+        }
+
         switch (role) {
             case "employee" -> employees.add(new Employee(user, "employee"));
             case "manager" -> managers.add(new Employee(user, "manager"));
         }
-
     }
 
     /**
@@ -65,10 +69,14 @@ public class BusinessAccount extends BaseAccount {
     }
 
     public void makeDeposit(String email, double amount, int timestamp) {
-        Employee employee = getEmployeeByEmailAndRole(email, "manager");
+        Employee employee = getEmployeeByEmailAndRole(email, null);
 
         if (employee == null) {
             //TODO: employee not found
+            return;
+        }
+
+        if (employee.getRole().equalsIgnoreCase("employee") && amount > depositLimit) {
             return;
         }
 
@@ -137,5 +145,24 @@ public class BusinessAccount extends BaseAccount {
 
         Collections.sort(commerciantReportDataList);
         return commerciantReportDataList;
+    }
+
+    @Override
+    public boolean isValidEmail(String email) {
+        if (getUser().getEmail().equalsIgnoreCase(email))
+            return true;
+
+        for (Employee manager : managers) {
+            if (manager.getUser().getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        for (Employee employee : employees) {
+            if (employee.getUser().getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

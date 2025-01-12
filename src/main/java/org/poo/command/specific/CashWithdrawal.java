@@ -9,6 +9,8 @@ import org.poo.transactions.specific.WithdrawalTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
+import static org.poo.input.Input.printLog;
+
 public class CashWithdrawal extends BaseCommand {
     private String email;
     private String cardNumber;
@@ -27,6 +29,10 @@ public class CashWithdrawal extends BaseCommand {
 
     @Override
     public void execute() {
+        if(getTimestamp()== 291){
+            System.out.println("DAGFSA");
+        }
+
         User user = Input.getInstance().getUsers().getUserByEmail(email);
 
         if (user == null) {
@@ -37,9 +43,11 @@ public class CashWithdrawal extends BaseCommand {
             return;
         }
 
-        BaseAccount account = user.getAccountByCardNumber(cardNumber);
+        Card card = user.getCardByCardNumber(cardNumber);
 
-        if (account == null) {
+        if (card == null) {
+            printLog("CashWithdrawal:CardNotFound", getTimestamp(), 0, 0, cardNumber);
+
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "Card not found");
             outputJson.addProperty("timestamp", this.getTimestamp());
@@ -47,10 +55,8 @@ public class CashWithdrawal extends BaseCommand {
             return;
         }
 
-        Card card = account.getCardByCardNumber(cardNumber);
-        if (card == null) {
-            return;
-        }
+        BaseAccount account = card.getAccount();
+
         double amountAccountCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, "RON", account.getCurrency());
         double commission = user.getServicePlan().getCommission(amount);
@@ -67,5 +73,6 @@ public class CashWithdrawal extends BaseCommand {
 
         account.decreaseBalance(totalAmount);
         account.getTransactionsHistory().add(new WithdrawalTransaction(getTimestamp(), amount));
+        printLog("CashWithdrawal", getTimestamp(), totalAmount, account.getBalance(), account.getIban());
     }
 }

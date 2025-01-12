@@ -31,7 +31,7 @@ public final class CreateCard extends BaseCommand {
         final BaseAccount userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
         if (userAccount != null) {
-            final Card card = new Card();
+            final Card card = new Card(userAccount);
 
             userAccount.getCards().add(card);
             userAccount.getTransactionsHistory().add(new CardActionTransaction(

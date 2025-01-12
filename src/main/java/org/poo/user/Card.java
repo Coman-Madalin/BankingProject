@@ -2,6 +2,7 @@ package org.poo.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.account.BaseAccount;
 
 import static org.poo.utils.Utils.generateCardNumber;
 
@@ -15,11 +16,14 @@ public class Card {
     private String status = "active";
     private boolean isOneTimeCard = false;
 
+    private BaseAccount account;
+
     /**
      * Instantiates a new Card.
      */
-    public Card() {
+    public Card(BaseAccount account) {
         cardNumber = generateCardNumber();
+        this.account = account;
     }
 
     /**
@@ -27,8 +31,9 @@ public class Card {
      *
      * @param isOneTimeCard the is one time card
      */
-    public Card(final boolean isOneTimeCard) {
+    public Card(final boolean isOneTimeCard, BaseAccount account) {
         cardNumber = generateCardNumber();
         this.isOneTimeCard = isOneTimeCard;
+        this.account = account;
     }
 }

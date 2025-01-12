@@ -123,7 +123,7 @@ public final class SendMoney extends BaseCommand {
                 getTimestamp(),
                 account,
                 receiver,
-                String.format("%.1f %s", receiverCurrencyAmount, receiverAccount.getCurrency()),
+                receiverCurrencyAmount + " " + receiverAccount.getCurrency(),
                 "received"
         ));
 

@@ -148,4 +148,8 @@ public class BaseAccount {
     public void invalidateCashback() {
         cashbackForTransactionsCount = Cashbacks.NONE;
     }
+
+    public boolean isValidEmail(String email) {
+        return user.getEmail().equalsIgnoreCase(email);
+    }
 }

@@ -7,6 +7,8 @@ import org.poo.transactions.specific.CardActionTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
+import static org.poo.input.Input.printLog;
+
 /**
  * The type Create one time card.
  */
@@ -42,19 +44,27 @@ public final class CreateOneTimeCard extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        final Card card = new Card(true);
-        final User user = input.getUsers().getUserByEmail(email);
         final BaseAccount userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
-        if (userAccount != null) {
-            userAccount.getCards().add(card);
-            userAccount.getTransactionsHistory().add(new CardActionTransaction(
-                    "New card created",
-                    getTimestamp(),
-                    userAccount.getIban(),
-                    card.getCardNumber(),
-                    user.getEmail()
-            ));
+        if (userAccount == null) {
+            printLog("CreateOneTimeCard:AccountNotFound", getTimestamp(), 0, 0,
+                    account);
+            return;
         }
+
+        final User user = userAccount.getUser();
+        final Card card = new Card(true, userAccount);
+
+        userAccount.getCards().add(card);
+        userAccount.getTransactionsHistory().add(new CardActionTransaction(
+                "New card created",
+                getTimestamp(),
+                userAccount.getIban(),
+                card.getCardNumber(),
+                user.getEmail()
+        ));
+
+        printLog("CreateOneTimeCard:" + card.getCardNumber(), getTimestamp(), -1, -1,
+                userAccount.getIban());
     }
 }

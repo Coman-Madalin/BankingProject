@@ -35,6 +35,7 @@ public class WithdrawSavings extends BaseCommand {
             senderAccount.getTransactionsHistory().add(new BaseTransaction(
                     "You don't have the minimum age required.", getTimestamp()
             ));
+            return;
         }
 
         BaseAccount receiverAccount = user.getClassicAccountInCurrency(currency);

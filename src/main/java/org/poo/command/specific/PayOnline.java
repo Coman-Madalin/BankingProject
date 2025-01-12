@@ -211,8 +211,9 @@ public final class PayOnline extends BaseCommand {
             return;
         }
 
-        if (getTimestamp() == 99) {
-            System.out.println("fasfsa");
+        if (!account.isValidEmail(email)) {
+            setOutputAsError();
+            return;
         }
 
         boolean success;
