@@ -8,7 +8,7 @@ import java.util.List;
  * The type Custom split transaction.
  */
 public class CustomSplitTransaction extends BaseSplitTransaction {
-    private List<Double> amountForUsers;
+    private final List<Double> amountForUsers;
 
     /**
      * Instantiates a new Custom split transaction.
@@ -20,19 +20,11 @@ public class CustomSplitTransaction extends BaseSplitTransaction {
      * @param splitPaymentType the split payment type
      * @param amountForUsers   the amount for users
      */
-    public CustomSplitTransaction(String description, int timestamp, String currency,
-                                  List<String> involvedAccounts, String splitPaymentType,
-                                  List<Double> amountForUsers) {
+    public CustomSplitTransaction(final String description, final int timestamp,
+                                  final String currency, final List<String> involvedAccounts,
+                                  final String splitPaymentType,
+                                  final List<Double> amountForUsers) {
         super(description, timestamp, currency, involvedAccounts, splitPaymentType);
-        this.amountForUsers = amountForUsers;
-    }
-
-    /**
-     * Add amount for users.
-     *
-     * @param amountForUsers the amount for users
-     */
-    public void addAmountForUsers(List<Double> amountForUsers) {
         this.amountForUsers = amountForUsers;
     }
 }

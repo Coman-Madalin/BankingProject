@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CommerciantReportData implements Comparable<CommerciantReportData> {
+public final class CommerciantReportData implements Comparable<CommerciantReportData> {
     private String commerciant;
     @SerializedName("total received")
     private double totalSpend;
@@ -27,7 +27,7 @@ public class CommerciantReportData implements Comparable<CommerciantReportData> 
      *
      * @param amount the amount
      */
-    public void increaseTotalSpend(double amount) {
+    public void increaseTotalSpend(final double amount) {
         totalSpend += amount;
     }
 
@@ -37,7 +37,7 @@ public class CommerciantReportData implements Comparable<CommerciantReportData> 
      * @param name the name
      * @param role the role
      */
-    public void addToList(String name, String role) {
+    public void addToList(final String name, final String role) {
         switch (role) {
             case "manager" -> managers.add(name);
             case "employee" -> employees.add(name);
@@ -54,7 +54,7 @@ public class CommerciantReportData implements Comparable<CommerciantReportData> 
     }
 
     @Override
-    public int compareTo(CommerciantReportData o) {
+    public int compareTo(final CommerciantReportData o) {
         return commerciant.compareTo(o.commerciant);
     }
 }

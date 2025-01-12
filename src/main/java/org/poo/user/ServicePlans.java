@@ -30,13 +30,12 @@ public enum ServicePlans {
             new AbstractMap.SimpleEntry<>(List.of(1, 3), 350),
             new AbstractMap.SimpleEntry<>(List.of(2, 3), 250)
     );
-
-
+    private static final int SILVER_THRESHOLD = 500;
     private final int rank;
     private final double commission;
     private final double[] spendingDiscount;
 
-    ServicePlans(int rank, double commission, double[] spendingDiscount) {
+    ServicePlans(final int rank, final double commission, final double[] spendingDiscount) {
         this.rank = rank;
         this.commission = commission;
         this.spendingDiscount = spendingDiscount;
@@ -48,7 +47,7 @@ public enum ServicePlans {
      * @param input the input
      * @return the service plans
      */
-    public static ServicePlans parse(String input) {
+    public static ServicePlans parse(final String input) {
         if (input == null) {
             throw new IllegalArgumentException("Input cannot be null");
         }
@@ -61,7 +60,7 @@ public enum ServicePlans {
      * @param index the index
      * @return the spending discount
      */
-    public double getSpendingDiscount(int index) {
+    public double getSpendingDiscount(final int index) {
         return spendingDiscount[index];
     }
 
@@ -71,8 +70,8 @@ public enum ServicePlans {
      * @param amount the amount
      * @return the commission
      */
-    public double getCommission(double amount) {
-        if (this == SILVER && amount < 500) {
+    public double getCommission(final double amount) {
+        if (this == SILVER && amount < SILVER_THRESHOLD) {
             return 0;
         }
         return amount * this.commission;
@@ -84,7 +83,7 @@ public enum ServicePlans {
      * @param plan the plan
      * @return the integer
      */
-    public Integer canUpgrade(ServicePlans plan) {
+    public Integer canUpgrade(final ServicePlans plan) {
         if (plan == null) {
             return null;
         }

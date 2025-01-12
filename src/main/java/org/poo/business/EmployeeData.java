@@ -19,7 +19,7 @@ public class EmployeeData {
      * @param amount    the amount
      * @param timestamp the timestamp
      */
-    public EmployeeData(double amount, int timestamp) {
+    public EmployeeData(final double amount, final int timestamp) {
         this.amount = amount;
         this.timestamp = timestamp;
     }
@@ -31,7 +31,7 @@ public class EmployeeData {
      * @param amount      the amount
      * @param timestamp   the timestamp
      */
-    public EmployeeData(String commerciant, double amount, int timestamp) {
+    public EmployeeData(final String commerciant, final double amount, final int timestamp) {
         this.commerciant = commerciant;
         this.amount = amount;
         this.timestamp = timestamp;

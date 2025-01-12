@@ -10,7 +10,7 @@ import static org.poo.input.Input.printLog;
 /**
  * The type Accept split payment.
  */
-public class AcceptSplitPayment extends BaseCommand {
+public final class AcceptSplitPayment extends BaseCommand {
     private String email;
     private String splitPaymentType;
 
@@ -20,16 +20,16 @@ public class AcceptSplitPayment extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public AcceptSplitPayment(String command, int timestamp) {
+    public AcceptSplitPayment(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute() {
-        User user = Input.getInstance().getUsers().getUserByEmail(email);
+        final User user = Input.getInstance().getUsers().getUserByEmail(email);
 
         if (user == null) {
-            JsonObject outputJson = new JsonObject();
+            final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "User not found");
             outputJson.addProperty("timestamp", getTimestamp());
             setOutput(outputJson.toString());
@@ -38,10 +38,10 @@ public class AcceptSplitPayment extends BaseCommand {
             return;
         }
 
-        SplitPaymentParticipant payment = user.getFirstSplitPayment(splitPaymentType);
+        final SplitPaymentParticipant payment = user.getFirstSplitPayment(splitPaymentType);
         if (payment == null) {
-            System.out.println(user.getEmail() + " doesn't have any split payment of type " +
-                    splitPaymentType);
+            System.out.println(user.getEmail() + " doesn't have any split payment of type "
+                    + splitPaymentType);
             return;
         }
 

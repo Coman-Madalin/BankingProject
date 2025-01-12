@@ -17,7 +17,8 @@ public class PlanUpgradeTransaction extends BaseTransaction {
      * @param newPlanType the new plan type
      * @param accountIBAN the account iban
      */
-    public PlanUpgradeTransaction(String description, int timestamp, String newPlanType, String accountIBAN) {
+    public PlanUpgradeTransaction(final String description, final int timestamp,
+                                  final String newPlanType, final String accountIBAN) {
         super(description, timestamp);
         this.newPlanType = newPlanType;
         this.accountIBAN = accountIBAN;

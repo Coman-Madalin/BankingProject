@@ -30,7 +30,7 @@ public final class Report extends BaseCommand {
 
     @Override
     public void execute() {
-        Input input = Input.getInstance();
+        final Input input = Input.getInstance();
         final BaseAccount userAccount = input.getUsers().getAccountByIBAN(account);
 
         final JsonObject outputObject = new JsonObject();

@@ -7,7 +7,7 @@ import org.poo.input.Input;
 /**
  * The type Change deposit limit.
  */
-public class ChangeDepositLimit extends BaseCommand {
+public final class ChangeDepositLimit extends BaseCommand {
     private String email;
     private String account;
     private double amount;
@@ -18,13 +18,13 @@ public class ChangeDepositLimit extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public ChangeDepositLimit(String command, int timestamp) {
+    public ChangeDepositLimit(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute() {
-        BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
+        final BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
                 .getAccountByIBAN(account);
 
         if (!businessAccount.getUser().getEmail().equals(email)) {

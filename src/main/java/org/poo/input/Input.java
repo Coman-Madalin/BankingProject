@@ -58,10 +58,10 @@ public final class Input {
      * @param balance   the balance
      * @param account   the account
      */
-    public static void printLog(String action, int timestamp, double amount, double balance,
-                                String account) {
-        System.out.printf("%d        %s          %f         %s          %f%n", timestamp, action
-                , amount, account, balance);
+    public static void printLog(final String action, final int timestamp, final double amount,
+                                final double balance, final String account) {
+        System.out.printf("%d        %s          %f         %s          %f%n", timestamp, action,
+                amount, account, balance);
     }
 
     /**
@@ -74,8 +74,8 @@ public final class Input {
 
         exchanges.makeCommonCurrencyExchange();
 
-        System.out.println("Time            Action                  Amount                    " +
-                "Account                     Balance");
+        System.out.println("Time            Action                  Amount                    "
+                + "Account                     Balance");
         for (final BaseCommand command : commands) {
             command.execute();
         }
@@ -95,13 +95,13 @@ public final class Input {
     }
 
     private void calculateAgeOfUsers() {
-        for (User user : getUsers().getUsers()) {
+        for (final User user : getUsers().getUsers()) {
             user.calculateAge();
         }
     }
 
     private void checkForStudents() {
-        for (User user : getUsers().getUsers()) {
+        for (final User user : getUsers().getUsers()) {
             if (user.getOccupation().equalsIgnoreCase("student")) {
                 user.setServicePlan(ServicePlans.STUDENT);
             }
@@ -109,7 +109,7 @@ public final class Input {
     }
 
     private void initializeCashbackPlans() {
-        for (Commerciant commerciant : commerciants.getCommerciants()) {
+        for (final Commerciant commerciant : commerciants.getCommerciants()) {
             commerciant.setCashback(CashbackPlans.parse(commerciant.getCashbackStrategy()));
         }
     }

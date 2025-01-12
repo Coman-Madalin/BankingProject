@@ -47,20 +47,21 @@ public final class PayOnline extends BaseCommand {
         this.setOutput(outputJson.toString());
     }
 
-    private boolean handleBusinessAccount(BusinessAccount businessAccount, double discount) {
-        Employee employee = businessAccount.getEmployeeByEmailAndRole(email, null);
+    private boolean handleBusinessAccount(final BusinessAccount businessAccount,
+                                          final double discount) {
+        final Employee employee = businessAccount.getEmployeeByEmailAndRole(email, null);
         if (employee == null) {
             //TODO: Employee was not found
             setOutputAsError();
             return false;
         }
 
-        double commissionInRON = businessAccount.getUser().getServicePlan()
+        final double commissionInRON = businessAccount.getUser().getServicePlan()
                 .getCommission(amountInRON);
-        double commission = Input.getInstance().getExchanges()
+        final double commission = Input.getInstance().getExchanges()
                 .convertCurrency(commissionInRON, "RON", businessAccount.getCurrency());
 
-        double totalAmount = amountInAccountCurrency + commission - discount;
+        final double totalAmount = amountInAccountCurrency + commission - discount;
 
         if (!businessAccount.hasEnoughBalance(totalAmount)) {
             businessAccount.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
@@ -92,7 +93,7 @@ public final class PayOnline extends BaseCommand {
         return true;
     }
 
-    private boolean handleClassicAccount(BaseAccount account, double discount) {
+    private boolean handleClassicAccount(final BaseAccount account, final double discount) {
         final Card card = account.getCardByCardNumber(cardNumber);
 
         if (card == null) {
@@ -108,11 +109,11 @@ public final class PayOnline extends BaseCommand {
 
         final User user = account.getUser();
 
-        double commissionInRON = user.getServicePlan().getCommission(amountInRON);
-        double commission = Input.getInstance().getExchanges()
+        final double commissionInRON = user.getServicePlan().getCommission(amountInRON);
+        final double commission = Input.getInstance().getExchanges()
                 .convertCurrency(commissionInRON, "RON", account.getCurrency());
 
-        double totalAmount = amountInAccountCurrency + commission - discount;
+        final double totalAmount = amountInAccountCurrency + commission - discount;
 
         if (!account.hasEnoughBalance(totalAmount)) {
             account.getTransactionsHistory().add(new BaseTransaction(getTimestamp()));
@@ -137,8 +138,8 @@ public final class PayOnline extends BaseCommand {
         return true;
     }
 
-    private boolean handleCommerciantReceiver(BaseAccount account) {
-        Commerciant commerciant1 = Input.getInstance().getCommerciants()
+    private boolean handleCommerciantReceiver(final BaseAccount account) {
+        final Commerciant commerciant1 = Input.getInstance().getCommerciants()
                 .getCommerciantByName(commerciant);
 
         if (commerciant1 == null) {
@@ -161,7 +162,7 @@ public final class PayOnline extends BaseCommand {
         ));
 
         if (amountInRON > 300) {
-            boolean result = account.getUser().increaseNumberOfOver300Payments();
+            final boolean result = account.getUser().increaseNumberOfOver300Payments();
             if (result) {
                 account.getTransactionsHistory().add(new PlanUpgradeTransaction(
                         "Upgrade plan", getTimestamp(), "gold", account.getIban()
@@ -178,9 +179,9 @@ public final class PayOnline extends BaseCommand {
      * @param account the account
      * @return the total discount in ron
      */
-    public double getTotalDiscountInRON(BaseAccount account) {
+    public double getTotalDiscountInRON(final BaseAccount account) {
         double totalDiscount = 0;
-        Commerciant commerciant1 = Input.getInstance().getCommerciants()
+        final Commerciant commerciant1 = Input.getInstance().getCommerciants()
                 .getCommerciantByName(commerciant);
         amountInAccountCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, account.getCurrency());
@@ -223,22 +224,24 @@ public final class PayOnline extends BaseCommand {
         }
 
         boolean success;
-        double discount = getTotalDiscountInRON(account);
+        final double discount = getTotalDiscountInRON(account);
 
         if (account.getType().equals("business")) {
             success = handleBusinessAccount((BusinessAccount) account, discount);
-            if (!success)
+            if (!success) {
                 return;
+            }
         } else {
             success = handleClassicAccount(account, discount);
-            if (!success)
+            if (!success) {
                 return;
+            }
         }
 
         success = handleCommerciantReceiver(account);
-        if (!success)
+        if (!success) {
             return;
-
+        }
         final Card card = account.getCardByCardNumber(cardNumber);
 
         if (card.isOneTimeCard()) {

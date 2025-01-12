@@ -39,9 +39,9 @@ public final class ChangeInterestRate extends BaseCommand {
             return;
         }
 
-        SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
+        final SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
 
-        double debugInterestRate = savingsAccount.getInterestRate();
+        final double debugInterestRate = savingsAccount.getInterestRate();
         savingsAccount.setInterestRate(interestRate);
         savingsAccount.getTransactionsHistory().add(new BaseTransaction(
                 String.format("Interest rate of the account changed to %.2f", interestRate),

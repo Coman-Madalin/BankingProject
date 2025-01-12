@@ -242,24 +242,28 @@ public class Users {
      *
      * @param time the time
      */
-    public void printAll(int time) {
+    public void printAll(final int time) {
         System.out.println("[");
         System.out.println("!!!!TIME=" + time + "!!!!");
-        for (User user : users) {
+        for (final User user : users) {
             System.out.println("    {");
             System.out.println("    email: " + user.getEmail());
             System.out.println("    plan: " + user.getServicePlan());
             System.out.println("    Accounts: [");
-            for (BaseAccount account : user.getAccounts()) {
+            for (final BaseAccount account : user.getAccounts()) {
                 System.out.println("        Iban: " + account.getIban());
                 System.out.println("        Balance: " + account.getBalance());
                 System.out.println("        Currency: " + account.getCurrency());
                 System.out.println("        Commerciants data: [");
-                for (Map.Entry<Commerciant, Data> commerciantDataEntry : account.getCOMMERCIANT_TO_DATA().entrySet()) {
+                for (final Map.Entry<Commerciant, Data> commerciantDataEntry
+                        : account.getCOMMERCIANT_TO_DATA().entrySet()) {
                     System.out.println("            {");
-                    System.out.println("            Commerciant name = " + commerciantDataEntry.getKey().getCommerciant());
-                    System.out.println("            Spend = " + commerciantDataEntry.getValue().getTotalSpend());
-                    System.out.println("            Transactions = " + commerciantDataEntry.getValue().getNrTransactions());
+                    System.out.println("            Commerciant name = "
+                            + commerciantDataEntry.getKey().getCommerciant());
+                    System.out.println("            Spend = "
+                            + commerciantDataEntry.getValue().getTotalSpend());
+                    System.out.println("            Transactions = "
+                            + commerciantDataEntry.getValue().getNrTransactions());
 
                     System.out.println("            }");
                 }
@@ -275,24 +279,29 @@ public class Users {
      * Print specific iban.
      *
      * @param time the time
-     * @param IBAN the iban
+     * @param iban the iban
      */
-    public void printSpecificIBAN(int time, String IBAN) {
-        BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(IBAN);
-        if (account == null)
+    public void printSpecificIBAN(final int time, final String iban) {
+        final BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(iban);
+        if (account == null) {
             return;
+        }
 
         System.out.println("!!!!TIME=" + time + "!!!!");
         System.out.println("Iban: " + account.getIban());
         System.out.println("Balance: " + account.getBalance() + " " + account.getCurrency());
         System.out.println("Commerciants data: [");
-        for (Map.Entry<Commerciant, Data> commerciantDataEntry : account.getCOMMERCIANT_TO_DATA().entrySet()) {
+        for (final Map.Entry<Commerciant, Data> commerciantDataEntry
+                : account.getCOMMERCIANT_TO_DATA().entrySet()) {
             System.out.println("    {");
-            System.out.println("    Commerciant name = " + commerciantDataEntry.getKey().getCommerciant());
-            System.out.println("    Commerciant cashback = " + commerciantDataEntry.getKey().getCashback());
+            System.out.println("    Commerciant name = "
+                    + commerciantDataEntry.getKey().getCommerciant());
+            System.out.println("    Commerciant cashback = "
+                    + commerciantDataEntry.getKey().getCashback());
 
             System.out.println("    Spend = " + commerciantDataEntry.getValue().getTotalSpend());
-            System.out.println("    Transactions = " + commerciantDataEntry.getValue().getNrTransactions());
+            System.out.println("    Transactions = "
+                    + commerciantDataEntry.getValue().getNrTransactions());
             System.out.println("    }");
         }
         System.out.println("]");

@@ -18,7 +18,7 @@ import static org.poo.input.Input.printLog;
  */
 @Setter
 @Getter
-public class BusinessAccount extends BaseAccount {
+public final class BusinessAccount extends BaseAccount {
     private List<Employee> employees = new ArrayList<>();
     private List<Employee> managers = new ArrayList<>();
     private double spendingLimit;
@@ -30,10 +30,10 @@ public class BusinessAccount extends BaseAccount {
      * @param currency the currency
      * @param user     the user
      */
-    public BusinessAccount(String currency, User user) {
+    public BusinessAccount(final String currency, final User user) {
         super(currency, user);
         this.setType("business");
-        double limitsValue = Input.getInstance().getExchanges().convertCurrency(500, "RON",
+        final double limitsValue = Input.getInstance().getExchanges().convertCurrency(500, "RON",
                 currency);
 
         spendingLimit = limitsValue;
@@ -46,7 +46,7 @@ public class BusinessAccount extends BaseAccount {
      * @param user the user
      * @param role the role
      */
-    public void addEmployee(User user, String role) {
+    public void addEmployee(final User user, final String role) {
         // TODO: Check that the employee is not already added
         if (getUser().getEmail().equalsIgnoreCase(user.getEmail())) {
             return;
@@ -55,6 +55,7 @@ public class BusinessAccount extends BaseAccount {
         switch (role) {
             case "employee" -> employees.add(new Employee(user, "employee"));
             case "manager" -> managers.add(new Employee(user, "manager"));
+            default -> throw new RuntimeException("ROLE NOT FOUND FOR NEW EMPLOYEE");
         }
     }
 
@@ -66,24 +67,26 @@ public class BusinessAccount extends BaseAccount {
      * @param role  the role of the employee (can be NULL to search all roles)
      * @return the employee by email and role, or NULL if not found
      */
-    public Employee getEmployeeByEmailAndRole(String email, String role) {
+    public Employee getEmployeeByEmailAndRole(final String email, final String role) {
         if (getUser().getEmail().equals(email)) {
             return new Employee(null, "owner");
         }
 
-        if (role == null || role.equals("employee"))
-            for (Employee employee : employees) {
+        if (role == null || role.equals("employee")) {
+            for (final Employee employee : employees) {
                 if (employee.getUser().getEmail().equals(email)) {
                     return employee;
                 }
             }
+        }
 
-        if (role == null || role.equals("manager"))
-            for (Employee manager : managers) {
+        if (role == null || role.equals("manager")) {
+            for (final Employee manager : managers) {
                 if (manager.getUser().getEmail().equals(email)) {
                     return manager;
                 }
             }
+        }
 
         return null;
     }
@@ -95,8 +98,8 @@ public class BusinessAccount extends BaseAccount {
      * @param amount    the amount
      * @param timestamp the timestamp
      */
-    public void makeDeposit(String email, double amount, int timestamp) {
-        Employee employee = getEmployeeByEmailAndRole(email, null);
+    public void makeDeposit(final String email, final double amount, final int timestamp) {
+        final Employee employee = getEmployeeByEmailAndRole(email, null);
 
         if (employee == null) {
             //TODO: employee not found
@@ -118,16 +121,16 @@ public class BusinessAccount extends BaseAccount {
     }
 
     private Set<String> getAllCommerciants() {
-        Set<String> commerciants = new HashSet<>();
+        final Set<String> commerciants = new HashSet<>();
 
-        for (Employee manager : managers) {
-            for (EmployeeData payment : manager.getSpendData()) {
+        for (final Employee manager : managers) {
+            for (final EmployeeData payment : manager.getSpendData()) {
                 commerciants.add(payment.getCommerciant());
             }
         }
 
-        for (Employee employee : employees) {
-            for (EmployeeData payment : employee.getSpendData()) {
+        for (final Employee employee : employees) {
+            for (final EmployeeData payment : employee.getSpendData()) {
                 commerciants.add(payment.getCommerciant());
             }
         }
@@ -141,16 +144,16 @@ public class BusinessAccount extends BaseAccount {
      * @return the commerciant data
      */
     public List<CommerciantReportData> getCommerciantData() {
-        List<CommerciantReportData> commerciantReportDataList = new ArrayList<>();
-        Set<String> commerciants = getAllCommerciants();
+        final List<CommerciantReportData> commerciantReportDataList = new ArrayList<>();
+        final Set<String> commerciants = getAllCommerciants();
 
-        for (String commerciant : commerciants) {
-            CommerciantReportData commerciantReportData = new CommerciantReportData();
+        for (final String commerciant : commerciants) {
+            final CommerciantReportData commerciantReportData = new CommerciantReportData();
             commerciantReportData.setCommerciant(commerciant);
 
             //TODO: remove the duplicate code
-            for (Employee manager : managers) {
-                for (EmployeeData payment : manager.getSpendData()) {
+            for (final Employee manager : managers) {
+                for (final EmployeeData payment : manager.getSpendData()) {
                     if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
                         continue;
                     }
@@ -160,8 +163,8 @@ public class BusinessAccount extends BaseAccount {
                 }
             }
 
-            for (Employee employee : employees) {
-                for (EmployeeData payment : employee.getSpendData()) {
+            for (final Employee employee : employees) {
+                for (final EmployeeData payment : employee.getSpendData()) {
                     if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
                         continue;
                     }
@@ -180,16 +183,17 @@ public class BusinessAccount extends BaseAccount {
     }
 
     @Override
-    public boolean isValidEmail(String email) {
-        if (getUser().getEmail().equalsIgnoreCase(email))
+    public boolean isValidEmail(final String email) {
+        if (getUser().getEmail().equalsIgnoreCase(email)) {
             return true;
+        }
 
-        for (Employee manager : managers) {
+        for (final Employee manager : managers) {
             if (manager.getUser().getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }
-        for (Employee employee : employees) {
+        for (final Employee employee : employees) {
             if (employee.getUser().getEmail().equalsIgnoreCase(email)) {
                 return true;
             }

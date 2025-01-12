@@ -11,7 +11,7 @@ import static org.poo.input.Input.printLog;
 /**
  * The type Change spending limit.
  */
-public class ChangeSpendingLimit extends BaseCommand {
+public final class ChangeSpendingLimit extends BaseCommand {
     private String email;
     private String account;
     private double amount;
@@ -22,13 +22,13 @@ public class ChangeSpendingLimit extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public ChangeSpendingLimit(String command, int timestamp) {
+    public ChangeSpendingLimit(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute() {
-        BaseAccount baseAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
+        final BaseAccount baseAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
         if (baseAccount == null) {
             printLog("ChangeSpendingLimit:AccountNotFound", getTimestamp(), -1, -1, account);
             return;
@@ -40,7 +40,7 @@ public class ChangeSpendingLimit extends BaseCommand {
 //                    "This is not a business account",
 //                    getTimestamp()
 //            ));
-            JsonObject outputJson = new JsonObject();
+            final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "This is not a business account");
             outputJson.addProperty("timestamp", getTimestamp());
             setOutput(outputJson.toString());
@@ -48,10 +48,10 @@ public class ChangeSpendingLimit extends BaseCommand {
             return;
         }
 
-        BusinessAccount businessAccount = (BusinessAccount) baseAccount;
+        final BusinessAccount businessAccount = (BusinessAccount) baseAccount;
 
         if (!businessAccount.getUser().getEmail().equals(email)) {
-            JsonObject outputJson = new JsonObject();
+            final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description",
                     "You must be owner in order to change spending limit.");
             outputJson.addProperty("timestamp", getTimestamp());

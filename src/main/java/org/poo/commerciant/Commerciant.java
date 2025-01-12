@@ -18,6 +18,4 @@ public final class Commerciant {
      */
     private String cashbackStrategy;
     private CashbackPlans cashback;
-
-
 }

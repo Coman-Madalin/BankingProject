@@ -38,15 +38,16 @@ public final class SplitPaymentCommand extends BaseCommand {
         amountForUsers = new ArrayList<>();
         amountForUsers.add(amountPerPerson);
 
-        for (String accountIban : accounts) {
-            BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(accountIban);
+        for (final String accountIban : accounts) {
+            final BaseAccount account = Input.getInstance().getUsers()
+                    .getAccountByIBAN(accountIban);
 
             if (account == null) {
                 System.out.println("ERROR: ACCOUNT NOT FOUND IN EQUAL SPLIT PAYMENT");
                 return;
             }
 
-            SplitPaymentParticipant splitPaymentParticipant = new SplitPaymentParticipant(
+            final SplitPaymentParticipant splitPaymentParticipant = new SplitPaymentParticipant(
                     account,
                     amountPerPerson,
                     currency);
@@ -59,14 +60,15 @@ public final class SplitPaymentCommand extends BaseCommand {
         splitPaymentInstance = new SplitPaymentInstance(this);
 
         for (int i = 0; i < accounts.size(); i++) {
-            BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(accounts.get(i));
+            final BaseAccount account = Input.getInstance().getUsers()
+                    .getAccountByIBAN(accounts.get(i));
 
             if (account == null) {
                 System.out.println("ERROR: ACCOUNT NOT FOUND IN CUSTOM SPLIT PAYMENT");
                 return;
             }
 
-            SplitPaymentParticipant splitPaymentParticipant = new SplitPaymentParticipant(
+            final SplitPaymentParticipant splitPaymentParticipant = new SplitPaymentParticipant(
                     account,
                     amountForUsers.get(i),
                     currency);

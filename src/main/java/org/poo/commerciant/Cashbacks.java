@@ -33,11 +33,11 @@ public enum Cashbacks {
             new AbstractMap.SimpleEntry<>(2, Cashbacks.TECH)
     );
 
-    private static final int[] threshholds = {2, 5, 10};
+    private static final int[] THRESHOLDS = {2, 5, 10};
     @Getter
     private final double discount;
 
-    Cashbacks(double discount) {
+    Cashbacks(final double discount) {
         this.discount = discount;
     }
 
@@ -47,9 +47,9 @@ public enum Cashbacks {
      * @param nrOfTransactions the nr of transactions
      * @return the cashbacks
      */
-    public Cashbacks updateCashBack(int nrOfTransactions) {
-        for (int i = 0; i < threshholds.length; i++) {
-            if (threshholds[i] == nrOfTransactions) {
+    public Cashbacks updateCashBack(final int nrOfTransactions) {
+        for (int i = 0; i < THRESHOLDS.length; i++) {
+            if (THRESHOLDS[i] == nrOfTransactions) {
                 return ORDER_TO_CASHBACK.get(i);
             }
         }

@@ -30,7 +30,7 @@ public final class AddAccount extends BaseCommand {
      * @param interestRate the interest rate
      */
     public AddAccount(final String command, final int timestamp, final String email,
-                      final String currency, final String accountType, double interestRate) {
+                      final String currency, final String accountType, final double interestRate) {
         super(command, timestamp);
         this.email = email;
         this.currency = currency;

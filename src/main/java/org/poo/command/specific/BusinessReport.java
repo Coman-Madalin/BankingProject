@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * The type Business report.
  */
-public class BusinessReport extends BaseCommand {
+public final class BusinessReport extends BaseCommand {
     private int startTimestamp;
     private int endTimestamp;
     private String account;
@@ -26,7 +26,7 @@ public class BusinessReport extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public BusinessReport(String command, int timestamp) {
+    public BusinessReport(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
@@ -40,7 +40,7 @@ public class BusinessReport extends BaseCommand {
     }
 
     private void generateCommerciantReport() {
-        BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
+        final BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
                 .getAccountByIBAN(account);
 
         if (businessAccount == null) {
@@ -56,7 +56,7 @@ public class BusinessReport extends BaseCommand {
         outputJson.addProperty("deposit limit", businessAccount.getDepositLimit());
         outputJson.addProperty("statistics type", type);
 
-        List<CommerciantReportData> commerciantReportDataList =
+        final List<CommerciantReportData> commerciantReportDataList =
                 businessAccount.getCommerciantData();
 
         outputJson.add("commerciants", JsonUtils.getGSON().toJsonTree(commerciantReportDataList));
@@ -65,7 +65,7 @@ public class BusinessReport extends BaseCommand {
     }
 
     private void generateTransactionReport() {
-        BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
+        final BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
                 .getAccountByIBAN(account);
 
         if (businessAccount == null) {
@@ -84,13 +84,13 @@ public class BusinessReport extends BaseCommand {
         double totalSpend = 0;
         double totalDeposited = 0;
 
-        JsonArray jsonManagers = new JsonArray();
-        for (Employee manager : businessAccount.getManagers()) {
-            JsonObject jsonManager = new JsonObject();
+        final JsonArray jsonManagers = new JsonArray();
+        for (final Employee manager : businessAccount.getManagers()) {
+            final JsonObject jsonManager = new JsonObject();
             jsonManager.addProperty("username",
                     manager.getUser().getLastName() + " " + manager.getUser().getFirstName());
-            double spend = manager.getTotalSpendAmount(startTimestamp, endTimestamp);
-            double deposited = manager.getTotalDepositedAmount(startTimestamp, endTimestamp);
+            final double spend = manager.getTotalSpendAmount(startTimestamp, endTimestamp);
+            final double deposited = manager.getTotalDepositedAmount(startTimestamp, endTimestamp);
 
             jsonManager.addProperty("spent", spend);
             jsonManager.addProperty("deposited", deposited);
@@ -102,14 +102,14 @@ public class BusinessReport extends BaseCommand {
 
         outputJson.add("managers", jsonManagers);
 
-        JsonArray jsonEmployees = new JsonArray();
+        final JsonArray jsonEmployees = new JsonArray();
 
-        for (Employee employee : businessAccount.getEmployees()) {
-            JsonObject jsonEmployee = new JsonObject();
+        for (final Employee employee : businessAccount.getEmployees()) {
+            final JsonObject jsonEmployee = new JsonObject();
             jsonEmployee.addProperty("username",
                     employee.getUser().getLastName() + " " + employee.getUser().getFirstName());
-            double spend = employee.getTotalSpendAmount(startTimestamp, endTimestamp);
-            double deposited = employee.getTotalDepositedAmount(startTimestamp, endTimestamp);
+            final double spend = employee.getTotalSpendAmount(startTimestamp, endTimestamp);
+            final double deposited = employee.getTotalDepositedAmount(startTimestamp, endTimestamp);
 
             jsonEmployee.addProperty("spent", spend);
             jsonEmployee.addProperty("deposited", deposited);

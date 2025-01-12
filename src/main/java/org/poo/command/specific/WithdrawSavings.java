@@ -12,8 +12,8 @@ import static org.poo.input.Input.printLog;
 /**
  * The type Withdraw savings.
  */
-public class WithdrawSavings extends BaseCommand {
-    private final static short MINIMUM_AGE = 21;
+public final class WithdrawSavings extends BaseCommand {
+    private static final short MINIMUM_AGE = 21;
 
     private String account;
     private double amount;
@@ -25,14 +25,14 @@ public class WithdrawSavings extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public WithdrawSavings(String command, int timestamp) {
+    public WithdrawSavings(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute() {
-        BaseAccount senderAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
-        User user = senderAccount.getUser();
+        final BaseAccount senderAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
+        final User user = senderAccount.getUser();
 
         if (user.getAge() < MINIMUM_AGE) {
             senderAccount.getTransactionsHistory().add(new BaseTransaction(
@@ -41,7 +41,7 @@ public class WithdrawSavings extends BaseCommand {
             return;
         }
 
-        BaseAccount receiverAccount = user.getClassicAccountInCurrency(currency);
+        final BaseAccount receiverAccount = user.getClassicAccountInCurrency(currency);
 
         if (receiverAccount == null) {
             senderAccount.getTransactionsHistory().add(new BaseTransaction(
@@ -50,7 +50,7 @@ public class WithdrawSavings extends BaseCommand {
             ));
             return;
         }
-        double amountInSenderCurrency = Input.getInstance().getExchanges()
+        final double amountInSenderCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, senderAccount.getCurrency());
 
         if (!senderAccount.hasEnoughBalance(amountInSenderCurrency)) {
@@ -62,7 +62,7 @@ public class WithdrawSavings extends BaseCommand {
         senderAccount.decreaseBalance(amountInSenderCurrency);
         receiverAccount.increaseBalance(amount);
 
-        WithdrawSavingsTransaction transaction = new WithdrawSavingsTransaction(
+        final WithdrawSavingsTransaction transaction = new WithdrawSavingsTransaction(
                 "Savings withdrawal",
                 getTimestamp(),
                 amount,

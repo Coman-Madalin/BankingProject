@@ -9,7 +9,7 @@ public class WithdrawalTransaction extends BaseTransaction {
     /**
      * The Amount.
      */
-    double amount;
+    private final double amount;
 
     /**
      * Instantiates a new Withdrawal transaction.
@@ -18,7 +18,8 @@ public class WithdrawalTransaction extends BaseTransaction {
      * @param timestamp   the timestamp
      * @param amount      the amount
      */
-    public WithdrawalTransaction(String description, int timestamp, double amount) {
+    public WithdrawalTransaction(final String description, final int timestamp,
+                                 final double amount) {
         super(description, timestamp);
         this.amount = amount;
     }
@@ -29,7 +30,7 @@ public class WithdrawalTransaction extends BaseTransaction {
      * @param timestamp the timestamp
      * @param amount    the amount
      */
-    public WithdrawalTransaction(int timestamp, double amount) {
+    public WithdrawalTransaction(final int timestamp, final double amount) {
         super("Cash withdrawal of " + amount, timestamp);
         this.amount = amount;
     }

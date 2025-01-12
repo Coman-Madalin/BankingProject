@@ -26,20 +26,21 @@ public class BaseSplitTransaction extends BaseTransaction {
      * @param involvedAccounts the involved accounts
      * @param splitPaymentType the split payment type
      */
-    public BaseSplitTransaction(String description, int timestamp, String currency, List<String> involvedAccounts, String splitPaymentType) {
+    public BaseSplitTransaction(final String description, final int timestamp,
+                                final String currency, final List<String> involvedAccounts,
+                                final String splitPaymentType) {
         super(description, timestamp);
         this.currency = currency;
         this.involvedAccounts = involvedAccounts;
         this.splitPaymentType = splitPaymentType;
     }
 
-
     /**
-     * Add error.
+     * Add errorMessage.
      *
-     * @param error the error
+     * @param errorMessage the errorMessage
      */
-    public final void addError(String error) {
-        this.error = error;
+    public final void addError(final String errorMessage) {
+        this.error = errorMessage;
     }
 }

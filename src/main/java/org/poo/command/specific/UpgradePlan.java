@@ -14,7 +14,7 @@ import static org.poo.input.Input.printLog;
 /**
  * The type Upgrade plan.
  */
-public class UpgradePlan extends BaseCommand {
+public final class UpgradePlan extends BaseCommand {
     private String account;
     private String newPlanType;
 
@@ -24,34 +24,35 @@ public class UpgradePlan extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public UpgradePlan(String command, int timestamp) {
+    public UpgradePlan(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute() {
-        User user = Input.getInstance().getUsers().getUserByIBAN(account);
+        final User user = Input.getInstance().getUsers().getUserByIBAN(account);
 
-        BaseAccount accountUser = Input.getInstance().getUsers().getAccountByIBAN(account);
+        final BaseAccount accountUser = Input.getInstance().getUsers().getAccountByIBAN(account);
         if (accountUser == null) {
-            JsonObject outputJson = new JsonObject();
+            final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "Account not found");
             outputJson.addProperty("timestamp", getTimestamp());
             setOutput(outputJson.toString());
             return;
         }
 
-        ServicePlans newServicePlan = ServicePlans.parse(newPlanType);
+        final ServicePlans newServicePlan = ServicePlans.parse(newPlanType);
 
         if (user.getServicePlan() == newServicePlan) {
             accountUser.getTransactionsHistory().add(new BaseTransaction(
-                    "The user already has the " + newServicePlan.toString().toLowerCase() + " plan.",
+                    "The user already has the " + newServicePlan.toString().toLowerCase()
+                            + " plan.",
                     getTimestamp()
             ));
             return;
         }
 
-        Integer fee = user.getServicePlan().canUpgrade(newServicePlan);
+        final Integer fee = user.getServicePlan().canUpgrade(newServicePlan);
         if (fee == null) {
             System.out.println("Error parsing the new plan");
             return;
@@ -72,8 +73,8 @@ public class UpgradePlan extends BaseCommand {
                     "Upgrade plan", getTimestamp(), newPlanType, account
             ));
 
-            printLog("UpgradePlan:" + newPlanType, getTimestamp(),
-                    accountCurrencyAmount, accountUser.getBalance(), accountUser.getUser().getEmail());
+            printLog("UpgradePlan:" + newPlanType, getTimestamp(), accountCurrencyAmount,
+                    accountUser.getBalance(), accountUser.getUser().getEmail());
 
         } else {
             System.out.printf("Can't upgrade %s from %s -> %s\n", accountUser.getIban(),

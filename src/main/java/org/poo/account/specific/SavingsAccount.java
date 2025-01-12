@@ -20,7 +20,7 @@ public class SavingsAccount extends BaseAccount {
      * @param user         the user
      * @param interestRate the interest rate
      */
-    public SavingsAccount(String currency, User user, double interestRate) {
+    public SavingsAccount(final String currency, final User user, final double interestRate) {
         super(currency, user);
         this.interestRate = interestRate;
         this.setType("savings");

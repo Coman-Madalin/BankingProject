@@ -14,7 +14,7 @@ import static org.poo.input.Input.printLog;
 /**
  * The type Cash withdrawal.
  */
-public class CashWithdrawal extends BaseCommand {
+public final class CashWithdrawal extends BaseCommand {
     private String email;
     private String cardNumber;
     private double amount;
@@ -26,23 +26,23 @@ public class CashWithdrawal extends BaseCommand {
      * @param command   the command
      * @param timestamp the timestamp
      */
-    public CashWithdrawal(String command, int timestamp) {
+    public CashWithdrawal(final String command, final int timestamp) {
         super(command, timestamp);
     }
 
     @Override
     public void execute() {
-        User user = Input.getInstance().getUsers().getUserByEmail(email);
+        final User user = Input.getInstance().getUsers().getUserByEmail(email);
 
         if (user == null) {
-            JsonObject outputJson = new JsonObject();
+            final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "User not found");
             outputJson.addProperty("timestamp", getTimestamp());
             setOutput(outputJson.toString());
             return;
         }
 
-        Card card = user.getCardByCardNumber(cardNumber);
+        final Card card = user.getCardByCardNumber(cardNumber);
 
         if (card == null) {
             printLog("CashWithdrawal:CardNotFound", getTimestamp(), 0, 0, cardNumber);
@@ -54,14 +54,14 @@ public class CashWithdrawal extends BaseCommand {
             return;
         }
 
-        BaseAccount account = card.getAccount();
+        final BaseAccount account = card.getAccount();
 
-        double amountAccountCurrency = Input.getInstance().getExchanges()
+        final double amountAccountCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, "RON", account.getCurrency());
-        double commission = user.getServicePlan().getCommission(amount);
-        double commissionAccountCurrency = Input.getInstance().getExchanges()
+        final double commission = user.getServicePlan().getCommission(amount);
+        final double commissionAccountCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(commission, "RON", account.getCurrency());
-        double totalAmount = amountAccountCurrency + commissionAccountCurrency;
+        final double totalAmount = amountAccountCurrency + commissionAccountCurrency;
 
         if (!account.hasEnoughBalance(totalAmount)) {
             account.getTransactionsHistory().add(new BaseTransaction(
@@ -72,6 +72,7 @@ public class CashWithdrawal extends BaseCommand {
 
         account.decreaseBalance(totalAmount);
         account.getTransactionsHistory().add(new WithdrawalTransaction(getTimestamp(), amount));
-        printLog("CashWithdrawal", getTimestamp(), totalAmount, account.getBalance(), account.getIban());
+        printLog("CashWithdrawal", getTimestamp(), totalAmount, account.getBalance(),
+                account.getIban());
     }
 }

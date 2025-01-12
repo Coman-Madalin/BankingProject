@@ -19,8 +19,9 @@ public class WithdrawSavingsTransaction extends BaseTransaction {
      * @param classicAccountIBAN the classic account iban
      * @param savingsAccountIBAN the savings account iban
      */
-    public WithdrawSavingsTransaction(String description, int timestamp, double amount,
-                                      String classicAccountIBAN, String savingsAccountIBAN) {
+    public WithdrawSavingsTransaction(final String description, final int timestamp,
+                                      final double amount, final String classicAccountIBAN,
+                                      final String savingsAccountIBAN) {
         super(description, timestamp);
         this.amount = amount;
         this.classicAccountIBAN = classicAccountIBAN;

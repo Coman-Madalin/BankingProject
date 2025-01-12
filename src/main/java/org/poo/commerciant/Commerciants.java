@@ -17,8 +17,8 @@ public class Commerciants {
      * @param name the name
      * @return the commerciant by name
      */
-    public Commerciant getCommerciantByName(String name) {
-        for (Commerciant commerciant : commerciants) {
+    public Commerciant getCommerciantByName(final String name) {
+        for (final Commerciant commerciant : commerciants) {
             if (commerciant.getCommerciant().equals(name)) {
                 return commerciant;
             }
@@ -33,8 +33,8 @@ public class Commerciants {
      * @param iban the iban
      * @return the commerciant by iban
      */
-    public Commerciant getCommerciantByIBAN(String iban) {
-        for (Commerciant commerciant : commerciants) {
+    public Commerciant getCommerciantByIBAN(final String iban) {
+        for (final Commerciant commerciant : commerciants) {
             if (commerciant.getAccount().equals(iban)) {
                 return commerciant;
             }

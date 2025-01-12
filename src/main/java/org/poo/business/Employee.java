@@ -25,7 +25,7 @@ public class Employee {
      * @param user the user
      * @param role the role
      */
-    public Employee(User user, String role) {
+    public Employee(final User user, final String role) {
         this.user = user;
         this.role = role;
     }
@@ -36,7 +36,7 @@ public class Employee {
      * @param amount    the amount
      * @param timestamp the timestamp
      */
-    public void addDeposit(double amount, int timestamp) {
+    public void addDeposit(final double amount, final int timestamp) {
         depositedData.add(new EmployeeData(amount, timestamp));
     }
 
@@ -47,7 +47,7 @@ public class Employee {
      * @param amount      the amount
      * @param timestamp   the timestamp
      */
-    public void addSpending(String commerciant, double amount, int timestamp) {
+    public void addSpending(final String commerciant, final double amount, final int timestamp) {
         spendData.add(new EmployeeData(commerciant, amount, timestamp));
     }
 
@@ -67,9 +67,9 @@ public class Employee {
      * @param endTimestamp   the end timestamp
      * @return the total deposited amount
      */
-    public double getTotalDepositedAmount(int startTimestamp, int endTimestamp) {
+    public double getTotalDepositedAmount(final int startTimestamp, final int endTimestamp) {
         double total = 0;
-        for (EmployeeData deposit : depositedData) {
+        for (final EmployeeData deposit : depositedData) {
             if (startTimestamp > deposit.getTimestamp()) {
                 continue;
             }
@@ -92,9 +92,9 @@ public class Employee {
      * @param endTimestamp   the end timestamp
      * @return the total spend amount
      */
-    public double getTotalSpendAmount(int startTimestamp, int endTimestamp) {
+    public double getTotalSpendAmount(final int startTimestamp, final int endTimestamp) {
         double total = 0;
-        for (EmployeeData spend : spendData) {
+        for (final EmployeeData spend : spendData) {
             if (startTimestamp > spend.getTimestamp()) {
                 continue;
             }

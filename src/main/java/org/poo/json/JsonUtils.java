@@ -64,7 +64,8 @@ public class JsonUtils {
                 .registerTypeAdapter(BusinessAccount.class, new BaseAccountSerializer())
                 .registerTypeAdapter(User.class, new UserSerializer())
                 .registerTypeAdapter(Card.class, new CardSerializer())
-                .registerTypeAdapter(CustomSplitTransaction.class, new SplitTransactionSerializer());
+                .registerTypeAdapter(CustomSplitTransaction.class,
+                        new SplitTransactionSerializer());
 
         for (final Class<?> subclass : COMMAND_SUBCLASSES) {
             gsonBuilder.registerTypeAdapter(subclass, new BaseCommandTypeAdapter());

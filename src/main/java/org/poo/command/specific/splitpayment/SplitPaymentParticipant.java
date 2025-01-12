@@ -11,7 +11,7 @@ import org.poo.transactions.specific.split.specific.EqualSplitTransaction;
 /**
  * The type Split payment participant.
  */
-public class SplitPaymentParticipant {
+public final class SplitPaymentParticipant {
     @Getter
     private final BaseAccount account;
     private final double amount;
@@ -27,7 +27,8 @@ public class SplitPaymentParticipant {
      * @param amount   the amount
      * @param currency the currency
      */
-    public SplitPaymentParticipant(BaseAccount account, double amount, String currency) {
+    public SplitPaymentParticipant(final BaseAccount account, final double amount,
+                                   final String currency) {
         this.account = account;
         this.amount = amount;
         this.currency = currency;
@@ -53,7 +54,7 @@ public class SplitPaymentParticipant {
      * @return the boolean
      */
     public boolean checkForFunds() {
-        double amountInParticipantCurrency = Input.getInstance().getExchanges()
+        final double amountInParticipantCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, account.getCurrency());
         return account.hasEnoughBalance(amountInParticipantCurrency);
     }
@@ -62,10 +63,10 @@ public class SplitPaymentParticipant {
      * Proceed payment.
      */
     public void proceedPayment() {
-        double amountInParticipantCurrency = Input.getInstance().getExchanges()
+        final double amountInParticipantCurrency = Input.getInstance().getExchanges()
                 .convertCurrency(amount, currency, account.getCurrency());
         account.decreaseBalance(amountInParticipantCurrency);
-        BaseSplitTransaction splitTransaction = createTransactionLog();
+        final BaseSplitTransaction splitTransaction = createTransactionLog();
         account.getTransactionsHistory().add(splitTransaction);
 
         removePayment();
@@ -76,8 +77,8 @@ public class SplitPaymentParticipant {
      *
      * @param errorMessage the error message
      */
-    public void invalidatePayment(String errorMessage) {
-        BaseSplitTransaction splitTransaction = createTransactionLog();
+    public void invalidatePayment(final String errorMessage) {
+        final BaseSplitTransaction splitTransaction = createTransactionLog();
         splitTransaction.addError(errorMessage);
         account.getTransactionsHistory().add(splitTransaction);
 

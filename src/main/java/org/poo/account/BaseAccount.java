@@ -45,11 +45,12 @@ public class BaseAccount {
      * @param currency the currency
      * @param user     the user
      */
-    public BaseAccount(final String currency, User user) {
+    public BaseAccount(final String currency, final User user) {
         this.user = user;
         this.currency = currency;
         this.iban = generateIBAN();
     }
+
 
     /**
      * Increase balance.
@@ -111,7 +112,7 @@ public class BaseAccount {
      * @param amount      the amount
      * @return the spending discount
      */
-    public double getSpendingDiscount(Commerciant commerciant, double amount) {
+    public double getSpendingDiscount(final Commerciant commerciant, final double amount) {
         // TODO: Change COMMERCIANT_TO_DATA to just point to a Double as we don't need total
         //  spend amount per commeciant anymore
         Data data = COMMERCIANT_TO_DATA.get(commerciant);
@@ -121,12 +122,10 @@ public class BaseAccount {
         System.out.printf("prev: %f, curr: %f, total: %f\n",
                 totalPaidToToCommerciantOfSpendCashback, amount,
                 totalPaidToToCommerciantOfSpendCashback + amount);
-        int[] thresholds = {100, 300, 500};
+        final int[] thresholds = {100, 300, 500};
         for (int i = thresholds.length - 1; i >= 0; i--) {
 
             if (totalPaidToToCommerciantOfSpendCashback + amount >= thresholds[i]) {
-//            if (data.getTotalSpend() + amount >= thresholds[i]) {
-//            if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount >= thresholds[i]) {
                 return user.getServicePlan().getSpendingDiscount(i);
             }
         }
@@ -139,8 +138,8 @@ public class BaseAccount {
      * @param commerciant the commerciant
      * @param amount      the amount
      */
-    public void addTransaction(Commerciant commerciant, double amount) {
-        Data data = COMMERCIANT_TO_DATA.getOrDefault(commerciant, new Data(0, 0));
+    public void addTransaction(final Commerciant commerciant, final double amount) {
+        final Data data = COMMERCIANT_TO_DATA.getOrDefault(commerciant, new Data(0, 0));
         data.addTransaction(amount);
         COMMERCIANT_TO_DATA.put(commerciant, data);
 
@@ -156,7 +155,7 @@ public class BaseAccount {
      * @param commerciantType the commerciant type
      * @return the discount for transaction count
      */
-    public double getDiscountForTransactionCount(String commerciantType) {
+    public double getDiscountForTransactionCount(final String commerciantType) {
         if (Cashbacks.valueOf(commerciantType.toUpperCase()) == cashbackForTransactionsCount) {
             return cashbackForTransactionsCount.getDiscount();
         }
@@ -168,8 +167,8 @@ public class BaseAccount {
      *
      * @param commerciant the commerciant
      */
-    public void updateCashback(Commerciant commerciant) {
-        Data data = COMMERCIANT_TO_DATA.get(commerciant);
+    public void updateCashback(final Commerciant commerciant) {
+        final Data data = COMMERCIANT_TO_DATA.get(commerciant);
         cashbackForTransactionsCount =
                 cashbackForTransactionsCount.updateCashBack(data.getNrTransactions());
     }
@@ -187,7 +186,7 @@ public class BaseAccount {
      * @param email the email
      * @return the boolean
      */
-    public boolean isValidEmail(String email) {
+    public boolean isValidEmail(final String email) {
         return user.getEmail().equalsIgnoreCase(email);
     }
 }

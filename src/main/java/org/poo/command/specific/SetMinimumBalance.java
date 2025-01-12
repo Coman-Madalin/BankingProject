@@ -23,7 +23,7 @@ public final class SetMinimumBalance extends BaseCommand {
 
     @Override
     public void execute() {
-        Input input = Input.getInstance();
+        final Input input = Input.getInstance();
         final BaseAccount userAccount = input.getUsers().getAccountByIBAN(account);
 
         if (userAccount == null) {

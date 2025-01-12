@@ -23,7 +23,7 @@ public class Data {
      * @param nrTransactions the nr transactions
      * @param totalSpend     the total spend
      */
-    public Data(int nrTransactions, double totalSpend) {
+    public Data(final int nrTransactions, final double totalSpend) {
         this.nrTransactions = nrTransactions;
         this.totalSpend = totalSpend;
     }
@@ -35,7 +35,7 @@ public class Data {
      * @param nrTransactions the nr transactions
      * @param totalSpend     the total spend
      */
-    public Data(String type, int nrTransactions, double totalSpend) {
+    public Data(final String type, final int nrTransactions, final double totalSpend) {
         this.nrTransactions = nrTransactions;
         this.totalSpend = totalSpend;
         this.type = type;
@@ -46,7 +46,7 @@ public class Data {
      *
      * @param amount the amount
      */
-    public void addTransaction(double amount) {
+    public void addTransaction(final double amount) {
         this.nrTransactions++;
         this.totalSpend += amount;
     }
@@ -63,7 +63,7 @@ public class Data {
      *
      * @param amount the amount
      */
-    public void increaseAmount(double amount) {
+    public void increaseAmount(final double amount) {
         this.totalSpend += amount;
     }
 }

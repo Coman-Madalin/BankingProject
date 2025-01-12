@@ -42,7 +42,8 @@ public final class DeleteCard extends BaseCommand {
 
     @Override
     public void execute() {
-        final Card card = Input.getInstance().getUsers().getCardByEmailAndCardNumber(email, cardNumber);
+        final Card card = Input.getInstance().getUsers()
+                .getCardByEmailAndCardNumber(email, cardNumber);
 
         if (card == null) {
             printLog("DeleteCard:CardNotFound", getTimestamp(), -1, 0, cardNumber);
@@ -53,7 +54,8 @@ public final class DeleteCard extends BaseCommand {
         final BaseAccount account = card.getAccount();
 
 //        if (account.getBalance() != 0) {
-//            printLog("DeleteCard:FoundFunds", getTimestamp(), -1, account.getBalance(), cardNumber);
+//            printLog("DeleteCard:FoundFunds", getTimestamp(), -1, account.getBalance(),
+//            cardNumber);
 //
 //            //TODO: account has funds, so we don't delete card, for some reason
 //            return;

@@ -23,7 +23,7 @@ public class Card {
      *
      * @param account the account
      */
-    public Card(BaseAccount account) {
+    public Card(final BaseAccount account) {
         cardNumber = generateCardNumber();
         this.account = account;
     }
@@ -34,7 +34,7 @@ public class Card {
      * @param isOneTimeCard the is one time card
      * @param account       the account
      */
-    public Card(final boolean isOneTimeCard, BaseAccount account) {
+    public Card(final boolean isOneTimeCard, final BaseAccount account) {
         cardNumber = generateCardNumber();
         this.isOneTimeCard = isOneTimeCard;
         this.account = account;

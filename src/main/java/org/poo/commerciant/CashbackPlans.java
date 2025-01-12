@@ -24,7 +24,7 @@ public enum CashbackPlans {
      * @param name the name
      * @return the cashback plans
      */
-    public static CashbackPlans parse(String name) {
+    public static CashbackPlans parse(final String name) {
         if (name.equalsIgnoreCase("spendingThreshold")) {
             return SPENDING_THRESHOLD;
         } else if (name.equalsIgnoreCase("nrOfTransactions")) {

@@ -21,7 +21,7 @@ public final class PrintUsers extends BaseCommand {
 
     @Override
     public void execute() {
-        Input input = Input.getInstance();
+        final Input input = Input.getInstance();
         final Gson gson = JsonUtils.getGSON();
 
         this.setOutput(gson.toJson(input.getUsers().getUsers()));

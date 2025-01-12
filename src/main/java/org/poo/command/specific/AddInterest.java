@@ -28,7 +28,7 @@ public final class AddInterest extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
+        final BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
 
         if (!baseAccount.getType().equals("savings")) {
             final JsonObject outputJson = new JsonObject();
@@ -38,9 +38,9 @@ public final class AddInterest extends BaseCommand {
             return;
         }
 
-        SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
+        final SavingsAccount savingsAccount = (SavingsAccount) baseAccount;
 
-        double amountToAdd = savingsAccount.getBalance() * savingsAccount.getInterestRate();
+        final double amountToAdd = savingsAccount.getBalance() * savingsAccount.getInterestRate();
         savingsAccount.increaseBalance(amountToAdd);
         savingsAccount.getTransactionsHistory().add(new InterestTransaction(
                 getTimestamp(),

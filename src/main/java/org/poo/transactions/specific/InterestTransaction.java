@@ -17,7 +17,8 @@ public class InterestTransaction extends BaseTransaction {
      * @param amount      the amount
      * @param currency    the currency
      */
-    public InterestTransaction(String description, int timestamp, double amount, String currency) {
+    public InterestTransaction(final String description, final int timestamp, final double amount,
+                               final String currency) {
         super(description, timestamp);
         this.amount = amount;
         this.currency = currency;
@@ -30,7 +31,7 @@ public class InterestTransaction extends BaseTransaction {
      * @param amount    the amount
      * @param currency  the currency
      */
-    public InterestTransaction(int timestamp, double amount, String currency) {
+    public InterestTransaction(final int timestamp, final double amount, final String currency) {
         super("Interest rate income", timestamp);
         this.amount = amount;
         this.currency = currency;

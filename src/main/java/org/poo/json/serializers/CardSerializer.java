@@ -20,6 +20,5 @@ public final class CardSerializer implements JsonSerializer<Card> {
         jsonObject.addProperty("status", src.getStatus());
 
         return jsonObject;
-
     }
 }

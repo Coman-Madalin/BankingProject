@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * The type Equal split transaction.
  */
-public class EqualSplitTransaction extends BaseSplitTransaction {
+public final class EqualSplitTransaction extends BaseSplitTransaction {
     private final double amount;
 
     /**
@@ -20,9 +20,9 @@ public class EqualSplitTransaction extends BaseSplitTransaction {
      * @param splitPaymentType the split payment type
      * @param amount           the amount
      */
-    public EqualSplitTransaction(String description, int timestamp, String currency,
-                                 List<String> involvedAccounts, String splitPaymentType,
-                                 double amount) {
+    public EqualSplitTransaction(final String description, final int timestamp,
+                                 final String currency, final List<String> involvedAccounts,
+                                 final String splitPaymentType, final double amount) {
         super(description, timestamp, currency, involvedAccounts, splitPaymentType);
         this.amount = amount;
     }

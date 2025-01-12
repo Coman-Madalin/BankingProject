@@ -30,16 +30,12 @@ public final class AddFunds extends BaseCommand {
      *
      * @param account the account
      */
-    public void handleBusinessAccount(BusinessAccount account) {
-        account.makeDeposit(email, amount, getTimestamp());
+    public void handleBusinessAccount(final BusinessAccount businessAccount) {
+        businessAccount.makeDeposit(email, amount, getTimestamp());
     }
 
     @Override
     public void execute() {
-        if (getTimestamp() == 593) {
-            System.out.println("DADAD");
-        }
-
         final Input input = Input.getInstance();
         final BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
 
