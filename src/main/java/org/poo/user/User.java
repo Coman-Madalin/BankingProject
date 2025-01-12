@@ -48,10 +48,10 @@ public final class User {
         return null;
     }
 
-    public void increaseNumberOfOver300Payments() {
+    public boolean increaseNumberOfOver300Payments() {
         if (servicePlan != ServicePlans.SILVER) {
             System.out.printf("%s doesn't have silver plan\n", getEmail());
-            return;
+            return false;
         }
 
         numberOfOver300Payments++;
@@ -60,7 +60,9 @@ public final class User {
         if (numberOfOver300Payments == 5) {
             servicePlan = ServicePlans.GOLD;
             printLog("UpgradePlan:AUTOMATIC", -1, 0, 0, getEmail());
+            return true;
         }
+        return false;
     }
 
     /**

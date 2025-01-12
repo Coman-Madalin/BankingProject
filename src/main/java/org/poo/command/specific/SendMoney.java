@@ -7,6 +7,7 @@ import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Commerciant;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
+import org.poo.transactions.specific.PlanUpgradeTransaction;
 import org.poo.transactions.specific.TransferTransaction;
 import org.poo.user.User;
 
@@ -154,9 +155,6 @@ public final class SendMoney extends BaseCommand {
             }
         }
 
-        if (amountInRON > 300) {
-            user.increaseNumberOfOver300Payments();
-        }
         baseAccount.addTransaction(commerciant, amountInRON);
 
         if (commerciant.getCashback() == CashbackPlans.NR_OF_TRANSACTIONS) {
@@ -178,6 +176,16 @@ public final class SendMoney extends BaseCommand {
                 String.format("%.1f %s", amount, baseAccount.getCurrency()),
                 "sent"
         ));
+
+        if (amountInRON > 300) {
+            boolean result = user.increaseNumberOfOver300Payments();
+            if (result) {
+                baseAccount.getTransactionsHistory().add(new PlanUpgradeTransaction(
+                        "Upgrade plan", getTimestamp(), "gold", account
+                ));
+            }
+
+        }
 
         printLog("SendMoney:business", getTimestamp(), totalAmount, baseAccount.getBalance(),
                 baseAccount.getIban());

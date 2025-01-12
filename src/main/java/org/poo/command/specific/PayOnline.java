@@ -10,6 +10,7 @@ import org.poo.commerciant.Commerciant;
 import org.poo.input.Input;
 import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.PaymentTransaction;
+import org.poo.transactions.specific.PlanUpgradeTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
@@ -73,6 +74,16 @@ public final class PayOnline extends BaseCommand {
         }
 
         businessAccount.decreaseBalance(totalAmount);
+
+//        if (amountInRON > 300) {
+//            boolean result = businessAccount.getUser().increaseNumberOfOver300Payments();
+//            if (result) {
+//                businessAccount.getTransactionsHistory().add(new PlanUpgradeTransaction(
+//                        "Upgrade plan", getTimestamp(), "gold", businessAccount.getIban()
+//                ));
+//            }
+//        }
+
         employee.addSpending(commerciant, amountInAccountCurrency, getTimestamp());
 
         printLog("Payonline:business", getTimestamp(), totalAmount, businessAccount.getBalance(),
@@ -109,7 +120,16 @@ public final class PayOnline extends BaseCommand {
         }
 
         account.decreaseBalance(totalAmount);
-        account.getUser().increaseNumberOfOver300Payments();
+
+//        if (amountInRON > 300) {
+//            boolean result = account.getUser().increaseNumberOfOver300Payments();
+//
+//            if (result) {
+//                account.getTransactionsHistory().add(new PlanUpgradeTransaction(
+//                        "Upgrade plan", getTimestamp(), "gold", account.getIban()
+//                ));
+//            }
+//        }
 
         printLog("PayOnline:classic", getTimestamp(), totalAmount, account.getBalance(),
                 account.getIban());
@@ -140,7 +160,14 @@ public final class PayOnline extends BaseCommand {
                 commerciant
         ));
 
-        account.getUser().increaseNumberOfOver300Payments();
+        if (amountInRON > 300) {
+            boolean result = account.getUser().increaseNumberOfOver300Payments();
+            if (result) {
+                account.getTransactionsHistory().add(new PlanUpgradeTransaction(
+                        "Upgrade plan", getTimestamp(), "gold", account.getIban()
+                ));
+            }
+        }
 
         return true;
     }
@@ -182,6 +209,10 @@ public final class PayOnline extends BaseCommand {
         if (account == null) {
             setOutputAsError();
             return;
+        }
+
+        if (getTimestamp() == 99) {
+            System.out.println("fasfsa");
         }
 
         boolean success;

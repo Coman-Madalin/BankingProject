@@ -2,6 +2,7 @@ package org.poo.account;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.commerciant.CashbackPlans;
 import org.poo.commerciant.Cashbacks;
 import org.poo.commerciant.Commerciant;
 import org.poo.transactions.BaseTransaction;
@@ -33,6 +34,8 @@ public class BaseAccount {
 
     @Setter
     private Cashbacks cashbackForTransactionsCount = Cashbacks.NONE;
+
+    private double totalPaidToToCommerciantOfSpendCashback = 0;
 
     private HashMap<Commerciant, Data> COMMERCIANT_TO_DATA = new HashMap<>();
 
@@ -97,15 +100,21 @@ public class BaseAccount {
     }
 
     public double getSpendingDiscount(Commerciant commerciant, double amount) {
+        // TODO: Change COMMERCIANT_TO_DATA to just point to a Double as we don't need total
+        //  spend amount per commeciant anymore
         Data data = COMMERCIANT_TO_DATA.get(commerciant);
         if (data == null) {
             data = new Data(0, 0);
         }
-
+        System.out.printf("prev: %f, curr: %f, total: %f\n",
+                totalPaidToToCommerciantOfSpendCashback, amount,
+                totalPaidToToCommerciantOfSpendCashback + amount);
         int[] thresholds = {100, 300, 500};
         for (int i = thresholds.length - 1; i >= 0; i--) {
-            if (data.getTotalSpend() + amount >= thresholds[i]) {
-//            if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount > thresholds[i]) {
+
+            if (totalPaidToToCommerciantOfSpendCashback + amount >= thresholds[i]) {
+//            if (data.getTotalSpend() + amount >= thresholds[i]) {
+//            if (data.getTotalSpend() < thresholds[i] && data.getTotalSpend() + amount >= thresholds[i]) {
                 return user.getServicePlan().getSpendingDiscount(i);
             }
         }
@@ -116,6 +125,11 @@ public class BaseAccount {
         Data data = COMMERCIANT_TO_DATA.getOrDefault(commerciant, new Data(0, 0));
         data.addTransaction(amount);
         COMMERCIANT_TO_DATA.put(commerciant, data);
+
+        if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
+            totalPaidToToCommerciantOfSpendCashback += amount;
+            System.out.println("^^^^^^^^^^^^^^^^VALID SPENDING UPDATE^^^^^^^^^^^^^");
+        }
     }
 
     public double getDiscountForTransactionCount(String commerciantType) {
