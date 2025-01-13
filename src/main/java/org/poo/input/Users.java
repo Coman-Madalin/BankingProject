@@ -287,24 +287,20 @@ public class Users {
             return;
         }
 
+        System.out.println("\n\n");
+
         System.out.println("!!!!TIME=" + time + "!!!!");
         System.out.println("Iban: " + account.getIban());
         System.out.println("Balance: " + account.getBalance() + " " + account.getCurrency());
-        System.out.println("Commerciants data: [");
-        for (final Map.Entry<Commerciant, Data> commerciantDataEntry
-                : account.getCOMMERCIANT_TO_DATA().entrySet()) {
+        System.out.println("Cards: [");
+        for (Card card : account.getCards()) {
             System.out.println("    {");
-            System.out.println("    Commerciant name = "
-                    + commerciantDataEntry.getKey().getCommerciant());
-            System.out.println("    Commerciant cashback = "
-                    + commerciantDataEntry.getKey().getCashback());
-
-            System.out.println("    Spend = " + commerciantDataEntry.getValue().getTotalSpend());
-            System.out.println("    Transactions = "
-                    + commerciantDataEntry.getValue().getNrTransactions());
+            System.out.println("    cardNumber: " + card.getCardNumber());
+            System.out.println("    isOneTime: " + card.isOneTimeCard());
             System.out.println("    }");
         }
         System.out.println("]");
-        System.out.println("\n");
+        System.out.println("\n\n");
+
     }
 }

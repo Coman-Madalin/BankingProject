@@ -74,5 +74,11 @@ public final class CashWithdrawal extends BaseCommand {
         account.getTransactionsHistory().add(new WithdrawalTransaction(getTimestamp(), amount));
         printLog("CashWithdrawal", getTimestamp(), totalAmount, account.getBalance(),
                 account.getIban());
+
+//        if (card.isOneTimeCard()) {
+//            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).forceExecute();
+//            new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIban(), email)
+//                    .execute();
+//        }
     }
 }

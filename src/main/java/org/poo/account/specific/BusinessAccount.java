@@ -40,6 +40,26 @@ public final class BusinessAccount extends BaseAccount {
         depositLimit = limitsValue;
     }
 
+    private boolean employeeAlreadyExists(String email) {
+        if (getUser().getEmail().equalsIgnoreCase(email)) {
+            return true;
+        }
+
+        for (Employee manager : managers) {
+            if (manager.getUser().getEmail().equals(email)) {
+                return true;
+            }
+        }
+
+        for (Employee employee : employees) {
+            if (employee.getUser().getEmail().equals(email)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Add employee.
      *
@@ -52,9 +72,18 @@ public final class BusinessAccount extends BaseAccount {
             return;
         }
 
+        if (user.getEmail().equals("Iris_Sanders-Kramer@outlook.nl")) {
+            System.out.println("AQE");
+        }
+
+
+        if (employeeAlreadyExists(user.getEmail())) {
+            return;
+        }
+
         switch (role) {
-            case "employee" -> employees.add(new Employee(user, "employee"));
-            case "manager" -> managers.add(new Employee(user, "manager"));
+            case "employee" -> employees.add(new Employee(user, role));
+            case "manager" -> managers.add(new Employee(user, role));
             default -> throw new RuntimeException("ROLE NOT FOUND FOR NEW EMPLOYEE");
         }
     }
@@ -183,6 +212,7 @@ public final class BusinessAccount extends BaseAccount {
     }
 
     @Override
+    // TODO: Use getEmployeeRole instead
     public boolean isValidEmail(final String email) {
         if (getUser().getEmail().equalsIgnoreCase(email)) {
             return true;
@@ -200,5 +230,24 @@ public final class BusinessAccount extends BaseAccount {
         }
 
         return false;
+    }
+
+    public String getEmployeeRole(final String email) {
+        if (getUser().getEmail().equalsIgnoreCase(email)) {
+            return "owner";
+        }
+
+        for (final Employee manager : managers) {
+            if (manager.getUser().getEmail().equalsIgnoreCase(email)) {
+                return manager.getRole();
+            }
+        }
+        for (final Employee employee : employees) {
+            if (employee.getUser().getEmail().equalsIgnoreCase(email)) {
+                return employee.getRole();
+            }
+        }
+
+        return null;
     }
 }

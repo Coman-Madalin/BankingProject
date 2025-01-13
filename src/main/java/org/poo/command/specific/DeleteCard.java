@@ -1,6 +1,7 @@
 package org.poo.command.specific;
 
 import org.poo.account.BaseAccount;
+import org.poo.account.specific.BusinessAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.CardActionTransaction;
@@ -40,10 +41,22 @@ public final class DeleteCard extends BaseCommand {
         this.cardNumber = cardNumber;
     }
 
+    private void handleBusiness(BusinessAccount account, Card card) {
+        String role = account.getEmployeeRole(email);
+        switch (role) {
+            case "owner", "manager" -> account.getCards().remove(card);
+
+            case null -> System.out.println("Employee not found!");
+
+            default ->
+                    System.out.println("This employee doesn't have permisssion to delete the card!");
+        }
+    }
+
     @Override
     public void execute() {
-        final Card card = Input.getInstance().getUsers()
-                .getCardByEmailAndCardNumber(email, cardNumber);
+        // TODO: managers can delete a card too
+        final Card card = Input.getInstance().getUsers().getCardByCardNumber(cardNumber);
 
         if (card == null) {
             printLog("DeleteCard:CardNotFound", getTimestamp(), -1, 0, cardNumber);
@@ -53,13 +66,38 @@ public final class DeleteCard extends BaseCommand {
 
         final BaseAccount account = card.getAccount();
 
-//        if (account.getBalance() != 0) {
-//            printLog("DeleteCard:FoundFunds", getTimestamp(), -1, account.getBalance(),
-//            cardNumber);
-//
-//            //TODO: account has funds, so we don't delete card, for some reason
-//            return;
-//        }
+        if (account.getType().equals("business")) {
+            handleBusiness((BusinessAccount) account, card);
+            return;
+        }
+
+        if (account.getBalance() != 0) {
+            printLog("DeleteCard:FoundFunds", getTimestamp(), -1, account.getBalance(),
+                    cardNumber);
+
+            //TODO: account has funds, so we don't delete card, for some reason
+            return;
+        }
+
+        if (!account.isValidEmail(email)) {
+            System.out.println("Invalid email!");
+            return;
+        }
+
+        account.getCards().remove(card);
+
+        account.getTransactionsHistory().add(new CardActionTransaction(
+                "The card has been destroyed",
+                getTimestamp(),
+                account.getIban(),
+                card.getCardNumber(),
+                account.getUser().getEmail()
+        ));
+    }
+
+    public void forceExecute() {
+        final Card card = Input.getInstance().getUsers().getCardByCardNumber(cardNumber);
+        final BaseAccount account = card.getAccount();
 
         account.getCards().remove(card);
 

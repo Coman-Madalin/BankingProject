@@ -28,7 +28,7 @@ public final class AddFunds extends BaseCommand {
     /**
      * Handle business account.
      *
-     * @param account the account
+     * @param businessAccount the account
      */
     public void handleBusinessAccount(final BusinessAccount businessAccount) {
         businessAccount.makeDeposit(email, amount, getTimestamp());

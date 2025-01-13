@@ -242,12 +242,13 @@ public final class PayOnline extends BaseCommand {
         if (!success) {
             return;
         }
-        final Card card = account.getCardByCardNumber(cardNumber);
+        Card card = account.getCardByCardNumber(cardNumber);
 
         if (card.isOneTimeCard()) {
-            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).execute();
+            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).forceExecute();
             new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIban(), email)
                     .execute();
+//            card.regenerateCardNumber();
         }
 
     }
