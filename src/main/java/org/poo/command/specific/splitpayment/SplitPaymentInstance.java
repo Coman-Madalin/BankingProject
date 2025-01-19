@@ -76,6 +76,7 @@ public final class SplitPaymentInstance {
     public void notifyEveryone() {
         for (final SplitPaymentParticipant participant : participants) {
             final boolean enoughFunds = participant.checkForFunds();
+
             if (!enoughFunds) {
                 notifyEveryoneInsufficientFunds(participant.getAccount().getIban());
                 Input.getInstance().getSplitPaymentInstances().remove(this);

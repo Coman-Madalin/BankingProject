@@ -1,5 +1,6 @@
 package org.poo.command.specific;
 
+import com.google.gson.JsonObject;
 import org.poo.account.specific.BusinessAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
@@ -28,7 +29,11 @@ public final class ChangeDepositLimit extends BaseCommand {
                 .getAccountByIBAN(account);
 
         if (!businessAccount.getUser().getEmail().equals(email)) {
-            //TODO: only the CEO can change limits
+            final JsonObject outputJson = new JsonObject();
+            outputJson.addProperty("description",
+                    "You must be owner in order to change deposit limit.");
+            outputJson.addProperty("timestamp", getTimestamp());
+            setOutput(outputJson.toString());
             return;
         }
 

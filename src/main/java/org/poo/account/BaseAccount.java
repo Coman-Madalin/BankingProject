@@ -68,13 +68,7 @@ public class BaseAccount {
      * @return the boolean
      */
     public boolean hasEnoughBalance(final double amount) {
-        final double oldBalance = balance;
-        double balanceCopy = balance - amount;
-        if (balanceCopy < 0) {
-            balanceCopy = 0;
-        }
-
-        return amount - 1 < (oldBalance - balanceCopy) && (oldBalance - balanceCopy) < amount + 1;
+        return !(balance - amount < 0);
     }
 
     /**
@@ -119,7 +113,8 @@ public class BaseAccount {
         if (data == null) {
             data = new Data(0, 0);
         }
-        System.out.printf("prev: %f, curr: %f, total: %f\n",
+        System.out.printf("vvvvvvvvvv SpendingThreshold: Previous: %f, CurrentSpend: %f, Total: " +
+                        "%f vvvvvvvvvv\n",
                 totalPaidToToCommerciantOfSpendCashback, amount,
                 totalPaidToToCommerciantOfSpendCashback + amount);
         final int[] thresholds = {100, 300, 500};
@@ -145,7 +140,8 @@ public class BaseAccount {
 
         if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
             totalPaidToToCommerciantOfSpendCashback += amount;
-            System.out.println("^^^^^^^^^^^^^^^^VALID SPENDING UPDATE^^^^^^^^^^^^^");
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ VALID SPENDING UPDATE " +
+                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
     }
 

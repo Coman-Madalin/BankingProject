@@ -132,7 +132,12 @@ public final class SendMoney extends BaseCommand {
     private void sendToCompany(final BaseAccount baseAccount, final Commerciant commerciant) {
         final User user = baseAccount.getUser();
         double totalAmount = amount;
-        final double senderCommission = user.getServicePlan().getCommission(amount);
+        final double amountInRON = Input.getInstance().getExchanges().convertCurrency(amount,
+                baseAccount.getCurrency(), "RON");
+
+        final double senderCommissionInRON = user.getServicePlan().getCommission(amountInRON);
+        final double senderCommission = Input.getInstance().getExchanges().convertCurrency(
+                senderCommissionInRON, "RON", baseAccount.getCurrency());
         totalAmount += senderCommission;
 
         double discount = baseAccount.getDiscountForTransactionCount(commerciant.getType());
@@ -140,9 +145,6 @@ public final class SendMoney extends BaseCommand {
             totalAmount = totalAmount - amount * discount;
             baseAccount.invalidateCashback();
         }
-
-        final double amountInRON = Input.getInstance().getExchanges().convertCurrency(amount,
-                baseAccount.getCurrency(), "RON");
 
         if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
             discount = baseAccount.getSpendingDiscount(commerciant, amountInRON);

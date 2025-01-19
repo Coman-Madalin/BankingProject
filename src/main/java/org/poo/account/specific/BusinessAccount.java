@@ -72,11 +72,6 @@ public final class BusinessAccount extends BaseAccount {
             return;
         }
 
-        if (user.getEmail().equals("Iris_Sanders-Kramer@outlook.nl")) {
-            System.out.println("AQE");
-        }
-
-
         if (employeeAlreadyExists(user.getEmail())) {
             return;
         }

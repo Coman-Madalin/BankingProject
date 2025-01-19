@@ -57,7 +57,6 @@ public final class User {
     //TODO: rewrite this so we don't need the initial if before this method is called
     public boolean increaseNumberOfOver300Payments() {
         if (servicePlan != ServicePlans.SILVER) {
-            System.out.printf("%s doesn't have silver plan\n", getEmail());
             return false;
         }
 

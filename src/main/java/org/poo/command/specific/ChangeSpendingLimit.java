@@ -36,10 +36,6 @@ public final class ChangeSpendingLimit extends BaseCommand {
 
         if (!baseAccount.getType().equalsIgnoreCase("business")) {
             printLog("ChangeSpendingLimit:NotBusinessAccount", getTimestamp(), -1, -1, account);
-//            baseAccount.getTransactionsHistory().add(new BaseTransaction(
-//                    "This is not a business account",
-//                    getTimestamp()
-//            ));
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "This is not a business account");
             outputJson.addProperty("timestamp", getTimestamp());
