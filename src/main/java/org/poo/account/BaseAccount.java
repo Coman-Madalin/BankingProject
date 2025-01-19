@@ -7,7 +7,6 @@ import org.poo.commerciant.Cashbacks;
 import org.poo.commerciant.Commerciant;
 import org.poo.transactions.BaseTransaction;
 import org.poo.user.Card;
-import org.poo.user.Data;
 import org.poo.user.User;
 
 import java.util.ArrayList;
@@ -32,12 +31,11 @@ public class BaseAccount {
     private List<BaseTransaction> transactionsHistory = new ArrayList<>();
     private User user;
 
-    @Setter
     private Cashbacks cashbackForTransactionsCount = Cashbacks.NONE;
 
     private double totalPaidToToCommerciantOfSpendCashback = 0;
 
-    private HashMap<Commerciant, Data> COMMERCIANT_TO_DATA = new HashMap<>();
+    private HashMap<Commerciant, Integer> commerciantNrTransactionsMap = new HashMap<>();
 
     /**
      * Instantiates a new Base account.
@@ -102,19 +100,12 @@ public class BaseAccount {
     /**
      * Gets spending discount.
      *
-     * @param commerciant the commerciant
-     * @param amount      the amount
+     * @param amount the amount
      * @return the spending discount
      */
-    public double getSpendingDiscount(final Commerciant commerciant, final double amount) {
-        // TODO: Change COMMERCIANT_TO_DATA to just point to a Double as we don't need total
-        //  spend amount per commeciant anymore
-        Data data = COMMERCIANT_TO_DATA.get(commerciant);
-        if (data == null) {
-            data = new Data(0, 0);
-        }
-        System.out.printf("vvvvvvvvvv SpendingThreshold: Previous: %f, CurrentSpend: %f, Total: " +
-                        "%f vvvvvvvvvv\n",
+    public double getSpendingDiscount(final double amount) {
+        System.out.printf("vvvvvvvvvv SpendingThreshold: Previous: %f, CurrentSpend: %f, Total: "
+                        + "%f vvvvvvvvvv\n",
                 totalPaidToToCommerciantOfSpendCashback, amount,
                 totalPaidToToCommerciantOfSpendCashback + amount);
         final int[] thresholds = {100, 300, 500};
@@ -134,14 +125,14 @@ public class BaseAccount {
      * @param amount      the amount
      */
     public void addTransaction(final Commerciant commerciant, final double amount) {
-        final Data data = COMMERCIANT_TO_DATA.getOrDefault(commerciant, new Data(0, 0));
-        data.addTransaction(amount);
-        COMMERCIANT_TO_DATA.put(commerciant, data);
+        Integer data = commerciantNrTransactionsMap.getOrDefault(commerciant, 0);
+        data += 1;
+        commerciantNrTransactionsMap.put(commerciant, data);
 
         if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
             totalPaidToToCommerciantOfSpendCashback += amount;
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ VALID SPENDING UPDATE " +
-                    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ VALID SPENDING UPDATE "
+                    + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
     }
 
@@ -164,9 +155,9 @@ public class BaseAccount {
      * @param commerciant the commerciant
      */
     public void updateCashback(final Commerciant commerciant) {
-        final Data data = COMMERCIANT_TO_DATA.get(commerciant);
+        final Integer data = commerciantNrTransactionsMap.get(commerciant);
         cashbackForTransactionsCount =
-                cashbackForTransactionsCount.updateCashBack(data.getNrTransactions());
+                cashbackForTransactionsCount.updateCashBack(data);
     }
 
     /**

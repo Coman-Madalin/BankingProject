@@ -42,10 +42,7 @@ public final class AddAccount extends BaseCommand {
     public void execute() {
         final Input input = Input.getInstance();
         final User user = input.getUsers().getUserByEmail(email);
-        if (user == null) {
-            // TODO: user not found
-            return;
-        }
+
         BaseAccount account = null;
 
         switch (accountType) {

@@ -42,10 +42,6 @@ public final class DeleteAccount extends BaseCommand {
             this.setOutput(outputJson.toString());
 
             final BaseAccount userAccount = input.getUsers().getAccountByIBAN(account);
-            if (userAccount == null) {
-                //TODO: account not found
-                return;
-            }
 
             userAccount.getTransactionsHistory().add(new BaseTransaction(
                     "Account couldn't be deleted - there are funds remaining",

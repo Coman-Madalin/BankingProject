@@ -2,13 +2,10 @@ package org.poo.input;
 
 import lombok.Getter;
 import org.poo.account.BaseAccount;
-import org.poo.commerciant.Commerciant;
 import org.poo.user.Card;
-import org.poo.user.Data;
 import org.poo.user.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The type Users.
@@ -136,56 +133,6 @@ public class Users {
     }
 
     /**
-     * Gets account by email and card number.
-     *
-     * @param email      the email
-     * @param cardNumber the card number
-     * @return the account by email and card number
-     */
-    public BaseAccount getAccountByEmailAndCardNumber(final String email, final String cardNumber) {
-        for (final User user : users) {
-            if (!user.getEmail().equals(email)) {
-                continue;
-            }
-
-            for (final BaseAccount account : user.getAccounts()) {
-                for (final Card card : account.getCards()) {
-                    if (card.getCardNumber().equals(cardNumber)) {
-                        return account;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets card by email and card number.
-     *
-     * @param email      the email
-     * @param cardNumber the card number
-     * @return the card by email and card number
-     */
-    public Card getCardByEmailAndCardNumber(final String email, final String cardNumber) {
-        for (final User user : users) {
-            if (!user.getEmail().equals(email)) {
-                continue;
-            }
-
-            for (final BaseAccount account : user.getAccounts()) {
-                for (final Card card : account.getCards()) {
-                    if (card.getCardNumber().equals(cardNumber)) {
-                        return card;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Gets card by card number.
      *
      * @param cardNumber the card number
@@ -218,89 +165,5 @@ public class Users {
             }
         }
         return null;
-    }
-
-    /**
-     * Gets user by card number.
-     *
-     * @param cardNumber the card number
-     * @return the user by card number
-     */
-    public User getUserByCardNumber(final String cardNumber) {
-        for (final User user : users) {
-            for (final BaseAccount account : user.getAccounts()) {
-                if (account.getCardByCardNumber(cardNumber) != null) {
-                    return user;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Print all.
-     *
-     * @param time the time
-     */
-    public void printAll(final int time) {
-        System.out.println("[");
-        System.out.println("!!!!TIME=" + time + "!!!!");
-        for (final User user : users) {
-            System.out.println("    {");
-            System.out.println("    email: " + user.getEmail());
-            System.out.println("    plan: " + user.getServicePlan());
-            System.out.println("    Accounts: [");
-            for (final BaseAccount account : user.getAccounts()) {
-                System.out.println("        Iban: " + account.getIban());
-                System.out.println("        Balance: " + account.getBalance());
-                System.out.println("        Currency: " + account.getCurrency());
-                System.out.println("        Commerciants data: [");
-                for (final Map.Entry<Commerciant, Data> commerciantDataEntry
-                        : account.getCOMMERCIANT_TO_DATA().entrySet()) {
-                    System.out.println("            {");
-                    System.out.println("            Commerciant name = "
-                            + commerciantDataEntry.getKey().getCommerciant());
-                    System.out.println("            Spend = "
-                            + commerciantDataEntry.getValue().getTotalSpend());
-                    System.out.println("            Transactions = "
-                            + commerciantDataEntry.getValue().getNrTransactions());
-
-                    System.out.println("            }");
-                }
-                System.out.println("        ],");
-            }
-            System.out.println("    ],");
-            System.out.println("    },");
-        }
-        System.out.println("]\n\n");
-    }
-
-    /**
-     * Print specific iban.
-     *
-     * @param time the time
-     * @param iban the iban
-     */
-    public void printSpecificIBAN(final int time, final String iban) {
-        final BaseAccount account = Input.getInstance().getUsers().getAccountByIBAN(iban);
-        if (account == null) {
-            return;
-        }
-
-        System.out.println("\n\n");
-
-        System.out.println("!!!!TIME=" + time + "!!!!");
-        System.out.println("Iban: " + account.getIban());
-        System.out.println("Balance: " + account.getBalance() + " " + account.getCurrency());
-        System.out.println("Cards: [");
-        for (Card card : account.getCards()) {
-            System.out.println("    {");
-            System.out.println("    cardNumber: " + card.getCardNumber());
-            System.out.println("    isOneTime: " + card.isOneTimeCard());
-            System.out.println("    }");
-        }
-        System.out.println("]");
-        System.out.println("\n\n");
-
     }
 }

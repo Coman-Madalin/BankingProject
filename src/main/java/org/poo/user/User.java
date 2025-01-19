@@ -19,6 +19,7 @@ import static org.poo.input.Input.printLog;
 @Getter
 public final class User {
     private static final int NR_OF_TRANSACTIONS_FOR_AUTOMATIC_UPGRADE = 5;
+    private static final double AUTOMATIC_UPGRADE_MINIMUM_PAYMENT = 300;
     private final List<BaseAccount> accounts = new ArrayList<>();
     private final List<SplitPaymentParticipant> splitPaymentParticipantList = new ArrayList<>();
     private String firstName;
@@ -50,13 +51,32 @@ public final class User {
     }
 
     /**
+     * Gets account by iban.
+     *
+     * @param iban the iban
+     * @return the account by iban
+     */
+    public BaseAccount getAccountByIBAN(final String iban) {
+        for (final BaseAccount account : accounts) {
+            if (account.getIban().equals(iban)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Increase number of over 300 payments boolean.
      *
+     * @param amount the amount
      * @return the boolean
      */
-    //TODO: rewrite this so we don't need the initial if before this method is called
-    public boolean increaseNumberOfOver300Payments() {
+    public boolean increaseNumberOfOver300Payments(final double amount) {
         if (servicePlan != ServicePlans.SILVER) {
+            return false;
+        }
+
+        if (amount < AUTOMATIC_UPGRADE_MINIMUM_PAYMENT) {
             return false;
         }
 
@@ -90,25 +110,6 @@ public final class User {
     }
 
     /**
-     * Delete card by card number card.
-     *
-     * @param cardNumber the card number
-     * @return the card
-     */
-    public Card deleteCardByCardNumber(final String cardNumber) {
-        for (final BaseAccount account : accounts) {
-            for (final Card card : account.getCards()) {
-                if (card.getCardNumber().equals(cardNumber)) {
-                    account.getCards().remove(card);
-                    return card;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Gets card by card number.
      *
      * @param cardNumber the card number
@@ -119,23 +120,6 @@ public final class User {
             for (final Card card : account.getCards()) {
                 if (card.getCardNumber().equals(cardNumber)) {
                     return card;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets account by card number.
-     *
-     * @param cardNumber the card number
-     * @return the account by card number
-     */
-    public BaseAccount getAccountByCardNumber(final String cardNumber) {
-        for (final BaseAccount account : accounts) {
-            for (final Card card : account.getCards()) {
-                if (card.getCardNumber().equals(cardNumber)) {
-                    return account;
                 }
             }
         }

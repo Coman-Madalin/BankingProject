@@ -18,7 +18,6 @@ public final class InputDeserializer implements JsonDeserializer<Input> {
                              final JsonDeserializationContext context) throws JsonParseException {
         final Input toReturn = new Input();
 
-        // TODO: Make all of them lists
         final JsonArray users = json.getAsJsonObject().getAsJsonArray("users");
         JsonObject elem = new JsonObject();
         elem.add("users", users);

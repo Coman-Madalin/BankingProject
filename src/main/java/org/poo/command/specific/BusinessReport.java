@@ -43,11 +43,6 @@ public final class BusinessReport extends BaseCommand {
         final BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
                 .getAccountByIBAN(account);
 
-        if (businessAccount == null) {
-            // TODO: Account not found
-            return;
-        }
-
         final JsonObject outputJson = new JsonObject();
         outputJson.addProperty("IBAN", businessAccount.getIban());
         outputJson.addProperty("balance", businessAccount.getBalance());
@@ -67,11 +62,6 @@ public final class BusinessReport extends BaseCommand {
     private void generateTransactionReport() {
         final BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
                 .getAccountByIBAN(account);
-
-        if (businessAccount == null) {
-            // TODO: Account not found
-            return;
-        }
 
         final JsonObject outputJson = new JsonObject();
         outputJson.addProperty("IBAN", businessAccount.getIban());

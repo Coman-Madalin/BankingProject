@@ -39,11 +39,6 @@ public final class AddFunds extends BaseCommand {
         final Input input = Input.getInstance();
         final BaseAccount baseAccount = input.getUsers().getAccountByIBAN(account);
 
-        if (baseAccount == null) {
-            //TODO: account not found
-            return;
-        }
-
         if (baseAccount.getType().equals("business")) {
             handleBusinessAccount((BusinessAccount) baseAccount);
             return;

@@ -37,7 +37,6 @@ public final class SendMoney extends BaseCommand {
     @Override
     public void execute() {
         final Input input = Input.getInstance();
-        // TODO: Maybe check first time for user using email and then on it check for account
         final User senderUser = input.getUsers().getUserByEmail(email);
 
         if (senderUser == null) {
@@ -48,7 +47,7 @@ public final class SendMoney extends BaseCommand {
             return;
         }
 
-        final BaseAccount senderAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
+        final BaseAccount senderAccount = senderUser.getAccountByIBAN(account);
 
         final Commerciant commerciant = Input.getInstance().getCommerciants()
                 .getCommerciantByIBAN(receiver);
@@ -147,7 +146,7 @@ public final class SendMoney extends BaseCommand {
         }
 
         if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
-            discount = baseAccount.getSpendingDiscount(commerciant, amountInRON);
+            discount = baseAccount.getSpendingDiscount(amountInRON);
             if (discount != 0) {
                 totalAmount = totalAmount - amount * discount;
             }
@@ -175,14 +174,12 @@ public final class SendMoney extends BaseCommand {
                 "sent"
         ));
 
-        if (amountInRON > 300) {
-            final boolean result = user.increaseNumberOfOver300Payments();
-            if (result) {
-                baseAccount.getTransactionsHistory().add(new PlanUpgradeTransaction(
-                        "Upgrade plan", getTimestamp(), "gold", account
-                ));
-            }
+        final boolean result = user.increaseNumberOfOver300Payments(amountInRON);
+        if (result) {
 
+            baseAccount.getTransactionsHistory().add(new PlanUpgradeTransaction(
+                    "Upgrade plan", getTimestamp(), "gold", account
+            ));
         }
 
         printLog("SendMoney:business", getTimestamp(), totalAmount, baseAccount.getBalance(),

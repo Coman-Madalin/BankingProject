@@ -40,18 +40,18 @@ public final class BusinessAccount extends BaseAccount {
         depositLimit = limitsValue;
     }
 
-    private boolean employeeAlreadyExists(String email) {
+    private boolean employeeAlreadyExists(final String email) {
         if (getUser().getEmail().equalsIgnoreCase(email)) {
             return true;
         }
 
-        for (Employee manager : managers) {
+        for (final Employee manager : managers) {
             if (manager.getUser().getEmail().equals(email)) {
                 return true;
             }
         }
 
-        for (Employee employee : employees) {
+        for (final Employee employee : employees) {
             if (employee.getUser().getEmail().equals(email)) {
                 return true;
             }
@@ -67,7 +67,6 @@ public final class BusinessAccount extends BaseAccount {
      * @param role the role
      */
     public void addEmployee(final User user, final String role) {
-        // TODO: Check that the employee is not already added
         if (getUser().getEmail().equalsIgnoreCase(user.getEmail())) {
             return;
         }
@@ -126,7 +125,6 @@ public final class BusinessAccount extends BaseAccount {
         final Employee employee = getEmployeeByEmailAndRole(email, null);
 
         if (employee == null) {
-            //TODO: employee not found
             return;
         }
 
@@ -138,9 +136,9 @@ public final class BusinessAccount extends BaseAccount {
         printLog("AddFunds:business", timestamp, amount, getBalance(), getIban());
 
         if (employee.getUser() == null) {
-            //TODO: The CEO is making this command
             return;
         }
+
         employee.addDeposit(amount, timestamp);
     }
 
@@ -175,27 +173,12 @@ public final class BusinessAccount extends BaseAccount {
             final CommerciantReportData commerciantReportData = new CommerciantReportData();
             commerciantReportData.setCommerciant(commerciant);
 
-            //TODO: remove the duplicate code
             for (final Employee manager : managers) {
-                for (final EmployeeData payment : manager.getSpendData()) {
-                    if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
-                        continue;
-                    }
-
-                    commerciantReportData.increaseTotalSpend(payment.getAmount());
-                    commerciantReportData.addToList(manager.getUsername(), manager.getRole());
-                }
+                processForCommerciantData(commerciant, manager, commerciantReportData);
             }
 
             for (final Employee employee : employees) {
-                for (final EmployeeData payment : employee.getSpendData()) {
-                    if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
-                        continue;
-                    }
-
-                    commerciantReportData.increaseTotalSpend(payment.getAmount());
-                    commerciantReportData.addToList(employee.getUsername(), employee.getRole());
-                }
+                processForCommerciantData(commerciant, employee, commerciantReportData);
             }
 
             commerciantReportData.postProcessing();
@@ -206,27 +189,29 @@ public final class BusinessAccount extends BaseAccount {
         return commerciantReportDataList;
     }
 
-    @Override
-    // TODO: Use getEmployeeRole instead
-    public boolean isValidEmail(final String email) {
-        if (getUser().getEmail().equalsIgnoreCase(email)) {
-            return true;
-        }
-
-        for (final Employee manager : managers) {
-            if (manager.getUser().getEmail().equalsIgnoreCase(email)) {
-                return true;
+    private void processForCommerciantData(final String commerciant, final Employee employee,
+                                           final CommerciantReportData commerciantReportData) {
+        for (final EmployeeData payment : employee.getSpendData()) {
+            if (!payment.getCommerciant().equalsIgnoreCase(commerciant)) {
+                continue;
             }
-        }
-        for (final Employee employee : employees) {
-            if (employee.getUser().getEmail().equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
 
-        return false;
+            commerciantReportData.increaseTotalSpend(payment.getAmount());
+            commerciantReportData.addToList(employee.getUsername(), employee.getRole());
+        }
     }
 
+    @Override
+    public boolean isValidEmail(final String email) {
+        return !(getEmployeeRole(email) == null);
+    }
+
+    /**
+     * Gets employee role.
+     *
+     * @param email the email
+     * @return the employee role
+     */
     public String getEmployeeRole(final String email) {
         if (getUser().getEmail().equalsIgnoreCase(email)) {
             return "owner";

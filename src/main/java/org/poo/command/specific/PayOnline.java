@@ -51,7 +51,6 @@ public final class PayOnline extends BaseCommand {
                                           final double discount) {
         final Employee employee = businessAccount.getEmployeeByEmailAndRole(email, null);
         if (employee == null) {
-            //TODO: Employee was not found
             setOutputAsError();
             return false;
         }
@@ -70,20 +69,10 @@ public final class PayOnline extends BaseCommand {
 
         if (employee.getRole().equals("employee")
                 && totalAmount > businessAccount.getSpendingLimit()) {
-            //TODO: employee is over spending
             return false;
         }
 
         businessAccount.decreaseBalance(totalAmount);
-
-//        if (amountInRON > 300) {
-//            boolean result = businessAccount.getUser().increaseNumberOfOver300Payments();
-//            if (result) {
-//                businessAccount.getTransactionsHistory().add(new PlanUpgradeTransaction(
-//                        "Upgrade plan", getTimestamp(), "gold", businessAccount.getIban()
-//                ));
-//            }
-//        }
 
         employee.addSpending(commerciant, amountInAccountCurrency, getTimestamp());
 
@@ -142,12 +131,6 @@ public final class PayOnline extends BaseCommand {
         final Commerciant commerciant1 = Input.getInstance().getCommerciants()
                 .getCommerciantByName(commerciant);
 
-        if (commerciant1 == null) {
-            System.out.println("NO COMMERCIANT");
-            // TODO: there is no commerciant with this name
-            return false;
-        }
-
         account.addTransaction(commerciant1, amountInRON);
 
         if (commerciant1.getCashback() == CashbackPlans.NR_OF_TRANSACTIONS) {
@@ -161,13 +144,11 @@ public final class PayOnline extends BaseCommand {
                 commerciant
         ));
 
-        if (amountInRON > 300) {
-            final boolean result = account.getUser().increaseNumberOfOver300Payments();
-            if (result) {
-                account.getTransactionsHistory().add(new PlanUpgradeTransaction(
-                        "Upgrade plan", getTimestamp(), "gold", account.getIban()
-                ));
-            }
+        final boolean result = account.getUser().increaseNumberOfOver300Payments(amountInRON);
+        if (result) {
+            account.getTransactionsHistory().add(new PlanUpgradeTransaction(
+                    "Upgrade plan", getTimestamp(), "gold", account.getIban()
+            ));
         }
 
         return true;
@@ -195,7 +176,7 @@ public final class PayOnline extends BaseCommand {
         }
 
         if (commerciant1.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
-            discount = account.getSpendingDiscount(commerciant1, amountInRON);
+            discount = account.getSpendingDiscount(amountInRON);
             if (discount != 0) {
                 totalDiscount = totalDiscount + amountInAccountCurrency * discount;
             }
@@ -242,13 +223,11 @@ public final class PayOnline extends BaseCommand {
         if (!success) {
             return;
         }
-        Card card = account.getCardByCardNumber(cardNumber);
+        final Card card = account.getCardByCardNumber(cardNumber);
 
         if (card.isOneTimeCard()) {
-            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).forceExecute();
-            new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIban(), email)
-                    .execute();
-//            card.regenerateCardNumber();
+            new DeleteCard(getTimestamp(), email, cardNumber).forceExecute();
+            new CreateOneTimeCard(getTimestamp(), account.getIban(), email).execute();
         }
 
     }

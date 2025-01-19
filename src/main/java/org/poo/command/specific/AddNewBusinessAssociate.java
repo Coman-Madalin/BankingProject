@@ -28,11 +28,6 @@ public final class AddNewBusinessAssociate extends BaseCommand {
         final BusinessAccount businessAccount = (BusinessAccount) Input.getInstance().getUsers()
                 .getAccountByIBAN(account);
 
-        if (businessAccount == null) {
-            //TODO: business account not found
-            return;
-        }
-
         final User employee = Input.getInstance().getUsers().getUserByEmail(email);
 
         businessAccount.addEmployee(employee, role);
