@@ -7,36 +7,22 @@ import org.poo.transactions.specific.CardActionTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Create one time card.
  */
 public final class CreateOneTimeCard extends BaseCommand {
-    private String account;
-    private String email;
+    private final String account;
+    private final String email;
 
     /**
      * Instantiates a new Create one time card.
      *
-     * @param command   the command
-     * @param timestamp the timestamp
-     */
-    public CreateOneTimeCard(final String command, final int timestamp) {
-        super(command, timestamp);
-    }
-
-    /**
-     * Instantiates a new Create one time card.
-     *
-     * @param command   the command
      * @param timestamp the timestamp
      * @param account   the account
      * @param email     the email
      */
-    public CreateOneTimeCard(final String command, final int timestamp, final String account,
-                             final String email) {
-        super(command, timestamp);
+    public CreateOneTimeCard(final int timestamp, final String account, final String email) {
+        super("createOneTimeCard", timestamp);
         this.account = account;
         this.email = email;
     }
@@ -47,8 +33,6 @@ public final class CreateOneTimeCard extends BaseCommand {
         final BaseAccount userAccount = input.getUsers().getAccountByEmailAndIBAN(email, account);
 
         if (userAccount == null) {
-            printLog("CreateOneTimeCard:AccountNotFound", getTimestamp(), 0, 0,
-                    account);
             return;
         }
 
@@ -63,8 +47,5 @@ public final class CreateOneTimeCard extends BaseCommand {
                 card.getCardNumber(),
                 user.getEmail()
         ));
-
-        printLog("CreateOneTimeCard:" + card.getCardNumber(), getTimestamp(), -1, -1,
-                userAccount.getIban());
     }
 }

@@ -14,8 +14,6 @@ import org.poo.transactions.specific.PlanUpgradeTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Pay online.
  */
@@ -76,9 +74,6 @@ public final class PayOnline extends BaseCommand {
 
         employee.addSpending(commerciant, amountInAccountCurrency, getTimestamp());
 
-        printLog("Payonline:business", getTimestamp(), totalAmount, businessAccount.getBalance(),
-                businessAccount.getIban());
-
         return true;
     }
 
@@ -110,19 +105,6 @@ public final class PayOnline extends BaseCommand {
         }
 
         account.decreaseBalance(totalAmount);
-
-//        if (amountInRON > 300) {
-//            boolean result = account.getUser().increaseNumberOfOver300Payments();
-//
-//            if (result) {
-//                account.getTransactionsHistory().add(new PlanUpgradeTransaction(
-//                        "Upgrade plan", getTimestamp(), "gold", account.getIban()
-//                ));
-//            }
-//        }
-
-        printLog("PayOnline:classic", getTimestamp(), totalAmount, account.getBalance(),
-                account.getIban());
 
         return true;
     }

@@ -11,8 +11,6 @@ import org.poo.user.User;
 
 import java.util.*;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Business account.
  */
@@ -133,7 +131,6 @@ public final class BusinessAccount extends BaseAccount {
         }
 
         this.increaseBalance(amount);
-        printLog("AddFunds:business", timestamp, amount, getBalance(), getIban());
 
         if (employee.getUser() == null) {
             return;

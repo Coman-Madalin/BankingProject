@@ -7,8 +7,6 @@ import org.poo.transactions.BaseTransaction;
 import org.poo.transactions.specific.WithdrawSavingsTransaction;
 import org.poo.user.User;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Withdraw savings.
  */
@@ -54,8 +52,6 @@ public final class WithdrawSavings extends BaseCommand {
                 .convertCurrency(amount, currency, senderAccount.getCurrency());
 
         if (!senderAccount.hasEnoughBalance(amountInSenderCurrency)) {
-            printLog("WithdrawSavings:NotEnoughBalance", getTimestamp(), amountInSenderCurrency,
-                    senderAccount.getBalance(), senderAccount.getIban());
             return;
         }
 
@@ -69,11 +65,6 @@ public final class WithdrawSavings extends BaseCommand {
                 receiverAccount.getIban(),
                 senderAccount.getIban()
         );
-
-        printLog("WithdrawSavings, FROM:", getTimestamp(), amountInSenderCurrency,
-                senderAccount.getBalance(), senderAccount.getIban());
-        printLog("WithdrawSavings, TO:", getTimestamp(), amount,
-                receiverAccount.getBalance(), receiverAccount.getIban());
 
         senderAccount.getTransactionsHistory().add(transaction);
         receiverAccount.getTransactionsHistory().add(transaction);

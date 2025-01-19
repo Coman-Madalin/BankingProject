@@ -9,8 +9,6 @@ import org.poo.transactions.specific.WithdrawalTransaction;
 import org.poo.user.Card;
 import org.poo.user.User;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Cash withdrawal.
  */
@@ -45,8 +43,6 @@ public final class CashWithdrawal extends BaseCommand {
         final Card card = user.getCardByCardNumber(cardNumber);
 
         if (card == null) {
-            printLog("CashWithdrawal:CardNotFound", getTimestamp(), 0, 0, cardNumber);
-
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "Card not found");
             outputJson.addProperty("timestamp", this.getTimestamp());
@@ -72,13 +68,5 @@ public final class CashWithdrawal extends BaseCommand {
 
         account.decreaseBalance(totalAmount);
         account.getTransactionsHistory().add(new WithdrawalTransaction(getTimestamp(), amount));
-        printLog("CashWithdrawal", getTimestamp(), totalAmount, account.getBalance(),
-                account.getIban());
-
-//        if (card.isOneTimeCard()) {
-//            new DeleteCard("deleteCard", getTimestamp(), email, cardNumber).forceExecute();
-//            new CreateOneTimeCard("createOneTimeCard", getTimestamp(), account.getIban(), email)
-//                    .execute();
-//        }
     }
 }

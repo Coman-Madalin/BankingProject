@@ -9,8 +9,6 @@ import org.poo.transactions.specific.PlanUpgradeTransaction;
 import org.poo.user.ServicePlans;
 import org.poo.user.User;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Upgrade plan.
  */
@@ -54,7 +52,6 @@ public final class UpgradePlan extends BaseCommand {
 
         final Integer fee = user.getServicePlan().canUpgrade(newServicePlan);
         if (fee == null) {
-            System.out.println("Error parsing the new plan");
             return;
         }
 
@@ -72,14 +69,6 @@ public final class UpgradePlan extends BaseCommand {
             accountUser.getTransactionsHistory().add(new PlanUpgradeTransaction(
                     "Upgrade plan", getTimestamp(), newPlanType, account
             ));
-
-            printLog("UpgradePlan:" + newPlanType, getTimestamp(), accountCurrencyAmount,
-                    accountUser.getBalance(), accountUser.getUser().getEmail());
-
-        } else {
-            System.out.printf("Can't upgrade %s from %s -> %s\n", accountUser.getIban(),
-                    accountUser.getUser().getServicePlan().toString(), newPlanType);
         }
-
     }
 }

@@ -5,8 +5,6 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.user.User;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Reject split payment.
  */
@@ -34,14 +32,11 @@ public final class RejectSplitPayment extends BaseCommand {
             outputJson.addProperty("timestamp", getTimestamp());
             setOutput(outputJson.toString());
 
-            printLog("RejectSplitPayment:UserNotFound", getTimestamp(), 0, 0, email);
             return;
         }
 
         final SplitPaymentParticipant payment = user.getFirstSplitPayment(splitPaymentType);
         if (payment == null) {
-            System.out.println(user.getEmail() + " doesn't have any split payment of type "
-                    + splitPaymentType);
             return;
         }
 

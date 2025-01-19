@@ -6,14 +6,12 @@ import org.poo.input.Input;
 import org.poo.transactions.specific.CardActionTransaction;
 import org.poo.user.Card;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Delete card.
  */
 public final class DeleteCard extends BaseCommand {
-    private String email;
-    private String cardNumber;
+    private final String email;
+    private final String cardNumber;
 
     /**
      * Instantiates a new Delete card.
@@ -33,7 +31,6 @@ public final class DeleteCard extends BaseCommand {
         final Card card = Input.getInstance().getUsers().getCardByCardNumber(cardNumber);
 
         if (card == null) {
-            printLog("DeleteCard:CardNotFound", getTimestamp(), -1, 0, cardNumber);
             return;
         }
 
@@ -44,15 +41,10 @@ public final class DeleteCard extends BaseCommand {
         }
 
         if (account.getBalance() != 0) {
-            printLog("DeleteCard:FoundFunds", getTimestamp(), -1, account.getBalance(),
-                    cardNumber);
-
-            // The Account has funds, so we don't delete the card, for some reason
             return;
         }
 
         if (!account.isValidEmail(email)) {
-            System.out.println("Invalid email!");
             return;
         }
 

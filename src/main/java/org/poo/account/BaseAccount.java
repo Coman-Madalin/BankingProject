@@ -104,10 +104,6 @@ public class BaseAccount {
      * @return the spending discount
      */
     public double getSpendingDiscount(final double amount) {
-        System.out.printf("vvvvvvvvvv SpendingThreshold: Previous: %f, CurrentSpend: %f, Total: "
-                        + "%f vvvvvvvvvv\n",
-                totalPaidToToCommerciantOfSpendCashback, amount,
-                totalPaidToToCommerciantOfSpendCashback + amount);
         final int[] thresholds = {100, 300, 500};
         for (int i = thresholds.length - 1; i >= 0; i--) {
 
@@ -131,8 +127,6 @@ public class BaseAccount {
 
         if (commerciant.getCashback() == CashbackPlans.SPENDING_THRESHOLD) {
             totalPaidToToCommerciantOfSpendCashback += amount;
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ VALID SPENDING UPDATE "
-                    + "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         }
     }
 

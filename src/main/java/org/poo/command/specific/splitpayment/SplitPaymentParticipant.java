@@ -113,8 +113,8 @@ public final class SplitPaymentParticipant {
                     mediator.getPaymentCommand().getAmountForUsers().get(0)
             );
 
-            default -> System.out.println("ERROR: UNSUPPORTED SPLIT PAYMENT TYPE!");
-
+            default -> {
+            }
         }
 
         return transaction;

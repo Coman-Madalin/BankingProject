@@ -5,8 +5,6 @@ import org.poo.account.specific.BusinessAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Add funds.
  */
@@ -45,8 +43,5 @@ public final class AddFunds extends BaseCommand {
         }
 
         baseAccount.increaseBalance(amount);
-        printLog("AddFunds:classic", getTimestamp(), amount, baseAccount.getBalance(),
-                baseAccount.getIban());
-
     }
 }

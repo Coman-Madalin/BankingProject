@@ -50,32 +50,14 @@ public final class Input {
     }
 
     /**
-     * Print log.
-     *
-     * @param action    the action
-     * @param timestamp the timestamp
-     * @param amount    the amount
-     * @param balance   the balance
-     * @param account   the account
-     */
-    public static void printLog(final String action, final int timestamp, final double amount,
-                                final double balance, final String account) {
-        System.out.printf("%d        %s          %f         %s          %f%n", timestamp, action,
-                amount, account, balance);
-    }
-
-    /**
      * Run.
      */
     public void run() {
         calculateAgeOfUsers();
         checkForStudents();
         initializeCashbackPlans();
-
         exchanges.makeCommonCurrencyExchange();
 
-        System.out.println("Time            Action                  Amount                    "
-                + "Account                     Balance");
         for (final BaseCommand command : commands) {
             command.execute();
         }
@@ -88,7 +70,7 @@ public final class Input {
      * @throws IOException the io exception
      */
     public void gamesToJson(final String filePath1) throws IOException {
-        try (FileWriter fileWriter = new FileWriter(filePath1)) {
+        try (final FileWriter fileWriter = new FileWriter(filePath1)) {
             final Gson gson = JsonUtils.getGSON();
             gson.toJson(commands, fileWriter);
         }

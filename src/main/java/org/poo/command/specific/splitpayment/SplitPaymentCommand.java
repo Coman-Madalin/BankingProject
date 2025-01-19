@@ -43,7 +43,6 @@ public final class SplitPaymentCommand extends BaseCommand {
                     .getAccountByIBAN(accountIban);
 
             if (account == null) {
-                System.out.println("ERROR: ACCOUNT NOT FOUND IN EQUAL SPLIT PAYMENT");
                 return;
             }
 
@@ -64,7 +63,6 @@ public final class SplitPaymentCommand extends BaseCommand {
                     .getAccountByIBAN(accounts.get(i));
 
             if (account == null) {
-                System.out.println("ERROR: ACCOUNT NOT FOUND IN CUSTOM SPLIT PAYMENT");
                 return;
             }
 
@@ -82,7 +80,8 @@ public final class SplitPaymentCommand extends BaseCommand {
         switch (splitPaymentType) {
             case "equal" -> createEqualSplitPayment();
             case "custom" -> createCustomSplitPayment();
-            default -> System.out.println("UNKNOWN SPLIT PAYMENT TYPE");
+            default -> {
+            }
         }
     }
 }

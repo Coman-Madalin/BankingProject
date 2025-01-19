@@ -12,7 +12,6 @@ import org.poo.transactions.specific.TransferTransaction;
 import org.poo.user.User;
 
 import static org.poo.input.Input.isAlias;
-import static org.poo.input.Input.printLog;
 
 /**
  * The type Send money.
@@ -53,7 +52,6 @@ public final class SendMoney extends BaseCommand {
                 .getCommerciantByIBAN(receiver);
 
         if (commerciant != null) {
-            System.out.println("SEND MONEY: FOUND COMMERCIANT");
             sendToCompany(senderAccount, commerciant);
             return;
         }
@@ -121,11 +119,6 @@ public final class SendMoney extends BaseCommand {
                 receiverCurrencyAmount + " " + receiverAccount.getCurrency(),
                 "received"
         ));
-
-        printLog("SendMoney:Classic, FROM:", getTimestamp(), senderTotal,
-                senderAccount.getBalance(), senderAccount.getIban());
-        printLog("SendMoney:Classic, TO:", getTimestamp(), receiverCurrencyAmount,
-                receiverAccount.getBalance(), receiverAccount.getIban());
     }
 
     private void sendToCompany(final BaseAccount baseAccount, final Commerciant commerciant) {
@@ -175,14 +168,11 @@ public final class SendMoney extends BaseCommand {
         ));
 
         final boolean result = user.increaseNumberOfOver300Payments(amountInRON);
-        if (result) {
 
+        if (result) {
             baseAccount.getTransactionsHistory().add(new PlanUpgradeTransaction(
                     "Upgrade plan", getTimestamp(), "gold", account
             ));
         }
-
-        printLog("SendMoney:business", getTimestamp(), totalAmount, baseAccount.getBalance(),
-                baseAccount.getIban());
     }
 }

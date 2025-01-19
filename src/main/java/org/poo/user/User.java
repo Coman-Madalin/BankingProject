@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type User.
  */
@@ -84,7 +82,6 @@ public final class User {
 
         if (numberOfOver300Payments == NR_OF_TRANSACTIONS_FOR_AUTOMATIC_UPGRADE) {
             servicePlan = ServicePlans.GOLD;
-            printLog("UpgradePlan:AUTOMATIC", -1, 0, 0, getEmail());
             return true;
         }
         return false;

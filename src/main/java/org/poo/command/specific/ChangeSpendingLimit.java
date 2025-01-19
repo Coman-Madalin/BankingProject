@@ -6,8 +6,6 @@ import org.poo.account.specific.BusinessAccount;
 import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Change spending limit.
  */
@@ -30,12 +28,10 @@ public final class ChangeSpendingLimit extends BaseCommand {
     public void execute() {
         final BaseAccount baseAccount = Input.getInstance().getUsers().getAccountByIBAN(account);
         if (baseAccount == null) {
-            printLog("ChangeSpendingLimit:AccountNotFound", getTimestamp(), -1, -1, account);
             return;
         }
 
         if (!baseAccount.getType().equalsIgnoreCase("business")) {
-            printLog("ChangeSpendingLimit:NotBusinessAccount", getTimestamp(), -1, -1, account);
             final JsonObject outputJson = new JsonObject();
             outputJson.addProperty("description", "This is not a business account");
             outputJson.addProperty("timestamp", getTimestamp());

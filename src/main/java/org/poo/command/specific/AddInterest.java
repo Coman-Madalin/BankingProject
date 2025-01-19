@@ -7,8 +7,6 @@ import org.poo.command.BaseCommand;
 import org.poo.input.Input;
 import org.poo.transactions.specific.InterestTransaction;
 
-import static org.poo.input.Input.printLog;
-
 /**
  * The type Add interest.
  */
@@ -47,8 +45,5 @@ public final class AddInterest extends BaseCommand {
                 amountToAdd,
                 savingsAccount.getCurrency()
         ));
-
-        printLog("AddInterest", getTimestamp(), amountToAdd, savingsAccount.getBalance(),
-                savingsAccount.getIban());
     }
 }
